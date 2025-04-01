@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration des Utilisateurs - MaBourse</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .hidden {
+            display: none;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border-left-color: #4F46E5;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Page de connexion administrateur -->
+    <div id="login-page" class="min-h-screen flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+            <div class="text-center mb-6">
+                <h1 class="text-2xl font-bold text-indigo-600">MaBourse</h1>
+                <h2 class="text-lg text-gray-700">Accès Administrateur</h2>
+            </div>
+            <div id="login-alert" class="mb-4 hidden rounded-lg p-4 border"></div>
+            <form id="admin-login-form" class="space-y-6">
+                <div>
+                    <label for="admin-username" class="block text-sm font-medium text-gray-700">Nom d'utilisateur</label>
+                    <input type="text" id="admin-username" name="username" required
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <div>
+                    <label for="admin-login-password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
+                    <input type="password" id="admin-login-password" name="password" required
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <div>
+                    <button type="submit" 
+                            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <span id="login-btn-text">Se connecter</span>
+                        <span id="login-btn-spinner" class="spinner ml-2 hidden"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Page principale d'administration -->
+    <div id="admin-page" class="hidden">
+        <header class="bg-indigo-600 shadow-lg text-white p-4">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-xl font-bold">MaBourse - Administration des Utilisateurs</h1>
+                <div class="flex items-center">
+                    <span id="admin-name" class="mr-4 text-sm bg-indigo-700 px-3 py-1 rounded"></span>
+                    <span id="server-status" class="px-3 py-1 rounded text-sm mr-4">Vérification...</span>
+                    <button id="refresh-btn" class="bg-white text-indigo-600 px-3 py-1 rounded text-sm hover:bg-indigo-100 transition mr-2">
+                        Actualiser
+                    </button>
+                    <button id="logout-btn" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition">
+                        Déconnexion
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="container mx-auto py-8 px-4">
+            <!-- Alerte de statut du serveur -->
+            <div id="server-alert" class="mb-8 hidden rounded-lg p-4 border"></div>
+
+            <!-- Tableau des utilisateurs -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="p-4 bg-gray-50 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-700">Liste des Utilisateurs</h2>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Nom d'utilisateur
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Date de création
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Dernière connexion
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body" class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                                    <div class="spinner mr-2"></div>
+                                    Chargement des utilisateurs...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Créer un nouvel utilisateur -->
+            <div class="mt-8 bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="p-4 bg-gray-50 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-700">Créer un Nouvel Utilisateur</h2>
+                </div>
+                <div class="p-6">
+                    <form id="create-user-form" class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <div>
+                            <label for="new-username" class="block text-sm font-medium text-gray-700">Nom d'utilisateur</label>
+                            <input type="text" id="new-username" name="username" required
+                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label for="new-password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
+                            <input type="password" id="new-password" name="password" required
+                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        <div class="md:col-span-2">
+                            <button type="submit" 
+                                    class="w-full md:w-auto px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Créer l'utilisateur
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Gestion des administrateurs -->
+            <div class="mt-8 bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="p-4 bg-gray-50 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-700">Gestion des Administrateurs</h2>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Nom d'administrateur
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Par défaut
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Date de création
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Dernière connexion
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="admins-table-body" class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                                    <div class="spinner mr-2"></div>
+                                    Chargement des administrateurs...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="p-6 border-t border-gray-200">
+                    <h3 class="text-md font-semibold text-gray-700 mb-4">Ajouter un Nouvel Administrateur</h3>
+                    <form id="create-admin-form" class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <div>
+                            <label for="new-admin-username" class="block text-sm font-medium text-gray-700">Nom d'administrateur</label>
+                            <input type="text" id="new-admin-username" name="username" required
+                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label for="new-admin-password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
+                            <input type="password" id="new-admin-password" name="password" required
+                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        <div class="md:col-span-2">
+                            <button type="submit" 
+                                    class="w-full md:w-auto px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Ajouter l'administrateur
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal pour modifier un utilisateur -->
+    <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative">
+            <button id="close-edit-modal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <h3 class="text-lg font-semibold mb-4">Modifier l'utilisateur</h3>
+            <form id="edit-user-form">
+                <input type="hidden" id="edit-user-id">
+                <div class="mb-4">
+                    <label for="edit-username" class="block text-sm font-medium text-gray-700">Nom d'utilisateur</label>
+                    <input type="text" id="edit-username" name="username" disabled
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100">
+                </div>
+                <div class="mb-4">
+                    <label for="edit-password" class="block text-sm font-medium text-gray-700">Nouveau mot de passe</label>
+                    <input type="password" id="edit-password" name="password" required
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <button type="submit" 
+                        class="w-full px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Mettre à jour le mot de passe
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de confirmation de suppression -->
+    <div id="delete-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative">
+            <button id="close-delete-modal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <h3 class="text-lg font-semibold mb-4">Confirmer la suppression</h3>
+            <p class="mb-4 text-gray-600">Êtes-vous sûr de vouloir supprimer l'utilisateur <span id="delete-username" class="font-semibold"></span> ? Cette action est irréversible.</p>
+            <form id="delete-user-form">
+                <input type="hidden" id="delete-user-id">
+                <div class="flex justify-end space-x-2">
+                    <button type="button" id="cancel-delete" 
+                            class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Annuler
+                    </button>
+                    <button type="submit" 
+                            class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        Supprimer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal pour changer son propre mot de passe administrateur -->
+    <div id="change-admin-password-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative">
+            <button id="close-change-admin-pw-modal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <h3 class="text-lg font-semibold mb-4">Changer votre mot de passe administrateur</h3>
+            <form id="change-admin-pw-form">
+                <div class="mb-4">
+                    <label for="current-admin-password" class="block text-sm font-medium text-gray-700">Mot de passe actuel</label>
+                    <input type="password" id="current-admin-password" name="currentPassword" required
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <div class="mb-4">
+                    <label for="new-admin-pw" class="block text-sm font-medium text-gray-700">Nouveau mot de passe</label>
+                    <input type="password" id="new-admin-pw" name="newPassword" required
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <div class="mb-4">
+                    <label for="confirm-admin-pw" class="block text-sm font-medium text-gray-700">Confirmer le mot de passe</label>
+                    <input type="password" id="confirm-admin-pw" name="confirmPassword" required
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <button type="submit" 
+                        class="w-full px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Mettre à jour le mot de passe
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal pour supprimer un administrateur -->
+    <div id="delete-admin-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative">
+            <button id="close-delete-admin-modal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <h3 class="text-lg font-semibold mb-4">Confirmer la suppression</h3>
+            <p class="mb-4 text-gray-600">Êtes-vous sûr de vouloir supprimer l'administrateur <span id="delete-admin-username" class="font-semibold"></span> ? Cette action est irréversible.</p>
+            <form id="delete-admin-form">
+                <input type="hidden" id="delete-admin-id">
+                <div class="flex justify-end space-x-2">
+                    <button type="button" id="cancel-delete-admin" 
+                            class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Annuler
+                    </button>
+                    <button type="submit" 
+                            class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        Supprimer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Configuration de l'API
+        const API_BASE_URL = window.location.hostname && window.location.hostname !== '' 
+            ? `http://${window.location.hostname}:3001/api`
+            : 'http://localhost:3001/api';
+        
+        // Variables pour stocker les informations de session administrateur
+        let currentAdminUser = null;
+        let currentAdminPassword = null;
+
+        // Fonction pour afficher un message d'alerte
+        function showAlert(elementId, type, message) {
+            const alertElement = document.getElementById(elementId);
+            alertElement.classList.remove('hidden');
+            
+            let alertClass, iconPath;
+            
+            if (type === 'error') {
+                alertClass = 'bg-red-50 border-red-200 text-red-700';
+                iconPath = '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />';
+            } else if (type === 'success') {
+                alertClass = 'bg-green-50 border-green-200 text-green-700';
+                iconPath = '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />';
+            } else {
+                alertClass = 'bg-yellow-50 border-yellow-200 text-yellow-700';
+                iconPath = '<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />';
+            }
+            
+            alertElement.className = `rounded-lg p-4 border ${alertClass}`;
+            alertElement.innerHTML = `
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        ${iconPath}
+                    </svg>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            // Pour les alertes de succès, les masquer après 3 secondes
+            if (type === 'success') {
+                setTimeout(() => {
+                    alertElement.classList.add('hidden');
+                }, 3000);
+            }
+        }
+
+        // Fonction pour vérifier si le serveur est disponible
+        async function checkServerAvailable() {
+            const serverStatus = document.getElementById('server-status');
+            const serverAlert = document.getElementById('server-alert');
+            
+            try {
+                serverStatus.textContent = 'Vérification...';
+                serverStatus.className = 'px-3 py-1 rounded text-sm mr-4 bg-yellow-500';
+                
+                // Essayer d'accéder à l'API de liste des utilisateurs
+                const response = await fetch(`${API_BASE_URL}/storage/users-list`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    serverStatus.textContent = 'Connecté';
+                    serverStatus.className = 'px-3 py-1 rounded text-sm mr-4 bg-green-500';
+                    serverAlert.classList.add('hidden');
+                    return true;
+                } else {
+                    throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                console.error('Erreur serveur:', error);
+                serverStatus.textContent = 'Déconnecté';
+                serverStatus.className = 'px-3 py-1 rounded text-sm mr-4 bg-red-500';
+                
+                // Afficher un message d'erreur
+                showAlert('server-alert', 'error', `Impossible de se connecter au serveur à l'adresse: ${API_BASE_URL}/storage. Vérifiez que le serveur est en cours d'exécution.`);
+                return false;
+            }
+        }
+
+        // Fonction pour l'authentification administrateur
+        async function adminLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('admin-username').value.trim();
+            const password = document.getElementById('admin-login-password').value;
+            
+            if (!username || !password) {
+                showAlert('login-alert', 'error', 'Veuillez remplir tous les champs');
+                return;
+            }
+            
+            // Afficher l'indicateur de chargement
+            document.getElementById('login-btn-text').textContent = 'Connexion...';
+            document.getElementById('login-btn-spinner').classList.remove('hidden');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username,
+                        password
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    // Enregistrer les informations d'authentification
+                    currentAdminUser = username;
+                    currentAdminPassword = password;
+                    
+                    // Mettre à jour l'interface utilisateur
+                    document.getElementById('admin-name').textContent = `Admin: ${username}`;
+                    
+                    // Passer à la page d'administration
+                    document.getElementById('login-page').classList.add('hidden');
+                    document.getElementById('admin-page').classList.remove('hidden');
+                    
+                    // Charger les données
+                    loadUsersList();
+                    loadAdminsList();
+                } else {
+                    showAlert('login-alert', 'error', result.error || 'Identifiants incorrects');
+                }
+            } catch (error) {
+                console.error('Erreur de connexion:', error);
+                showAlert('login-alert', 'error', `Erreur de connexion: ${error.message}`);
+            } finally {
+                // Réinitialiser le bouton
+                document.getElementById('login-btn-text').textContent = 'Se connecter';
+                document.getElementById('login-btn-spinner').classList.add('hidden');
+            }
+        }
+
+        // Fonction de déconnexion
+        function adminLogout() {
+            // Réinitialiser les informations d'authentification
+            currentAdminUser = null;
+            currentAdminPassword = null;
+            
+            // Réinitialiser le formulaire de connexion
+            document.getElementById('admin-login-form').reset();
+            document.getElementById('login-alert').classList.add('hidden');
+            
+            // Revenir à la page de connexion
+            document.getElementById('admin-page').classList.add('hidden');
+            document.getElementById('login-page').classList.remove('hidden');
+        }
+
+        // Fonction pour charger la liste des utilisateurs
+        async function loadUsersList() {
+            const tableBody = document.getElementById('users-table-body');
+            
+            try {
+                const serverAvailable = await checkServerAvailable();
+                if (!serverAvailable) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="px-6 py-4 text-center text-red-500">
+                                Serveur non disponible. Impossible de charger les utilisateurs.
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                // Afficher un état de chargement
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                            <div class="spinner mr-2"></div>
+                            Chargement des utilisateurs...
+                        </td>
+                    </tr>
+                `;
+                
+                // Charger la liste des utilisateurs avec les métadonnées détaillées
+                const response = await fetch(`${API_BASE_URL}/storage/users-list?detailed=true`);
+                
+                if (!response.ok) {
+                    throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+                }
+                
+                const result = await response.json();
+                
+                if (result.success && Array.isArray(result.data)) {
+                    if (result.data.length === 0) {
+                        tableBody.innerHTML = `
+                            <tr>
+                                <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                                    Aucun utilisateur trouvé.
+                                </td>
+                            </tr>
+                        `;
+                    } else {
+                        // Fonction pour formater les dates
+                        const formatDate = (dateStr) => {
+                            if (!dateStr) return 'Jamais';
+                            const date = new Date(dateStr);
+                            return date.toLocaleString('fr-FR');
+                        };
+                        
+                        // Afficher chaque utilisateur avec ses métadonnées
+                        tableBody.innerHTML = result.data.map(user => {
+                            // Rétrocompatibilité si l'API renvoie toujours des chaînes simples
+                            const username = typeof user === 'string' ? user : user.username;
+                            const createdAt = typeof user === 'string' ? null : user.createdAt;
+                            const lastLogin = typeof user === 'string' ? null : user.lastLogin;
+                            
+                            return `
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">${username}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-500">${createdAt ? formatDate(createdAt) : 'Non disponible'}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-500">${lastLogin ? formatDate(lastLogin) : 'Non disponible'}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button class="text-indigo-600 hover:text-indigo-900 mr-3" 
+                                                onclick="showEditModal('${username}')">
+                                            Modifier
+                                        </button>
+                                        <button class="text-red-600 hover:text-red-900" 
+                                                onclick="showDeleteModal('${username}')">
+                                            Supprimer
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('');
+                    }
+                } else {
+                    throw new Error('Format de réponse invalide');
+                }
+            } catch (error) {
+                console.error('Erreur lors du chargement des utilisateurs:', error);
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-center text-red-500">
+                            Erreur lors du chargement des utilisateurs: ${error.message}
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Fonction pour charger la liste des administrateurs
+        async function loadAdminsList() {
+            const tableBody = document.getElementById('admins-table-body');
+            
+            if (!currentAdminUser || !currentAdminPassword) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="px-6 py-4 text-center text-red-500">
+                            Authentification requise pour afficher les administrateurs.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            try {
+                // Afficher un état de chargement
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                            <div class="spinner mr-2"></div>
+                            Chargement des administrateurs...
+                        </td>
+                    </tr>
+                `;
+                
+                // Charger la liste des administrateurs
+                const response = await fetch(`${API_BASE_URL}/admin/list`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        adminUsername: currentAdminUser,
+                        adminPassword: currentAdminPassword
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.success && Array.isArray(result.data)) {
+                    // Formater les dates
+                    const formatDate = (dateStr) => {
+                        if (!dateStr) return 'Jamais';
+                        const date = new Date(dateStr);
+                        return date.toLocaleString('fr-FR');
+                    };
+                    
+                    // Afficher chaque administrateur
+                    tableBody.innerHTML = result.data.map(admin => `
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900 ${admin.username === currentAdminUser ? 'font-bold' : ''}">${admin.username}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm ${admin.isDefault ? 'text-orange-500 font-medium' : 'text-gray-500'}">
+                                    ${admin.isDefault ? 'Oui' : 'Non'}
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-500">${formatDate(admin.createdAt)}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-500">${formatDate(admin.lastLogin)}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                ${admin.username === currentAdminUser ? 
+                                    `<button class="text-indigo-600 hover:text-indigo-900" 
+                                            onclick="showChangeAdminPasswordModal()">
+                                        Changer mon mot de passe
+                                    </button>` : 
+                                    `<button class="text-red-600 hover:text-red-900" 
+                                            onclick="showDeleteAdminModal('${admin.username}')"
+                                            ${result.data.length <= 1 ? 'disabled title="Impossible de supprimer le dernier administrateur"' : ''}>
+                                        Supprimer
+                                    </button>`
+                                }
+                            </td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="px-6 py-4 text-center text-red-500">
+                                ${result.error || 'Erreur lors du chargement des administrateurs'}
+                            </td>
+                        </tr>
+                    `;
+                }
+            } catch (error) {
+                console.error('Erreur lors du chargement des administrateurs:', error);
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="px-6 py-4 text-center text-red-500">
+                            Erreur lors du chargement des administrateurs: ${error.message}
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Fonction pour créer un nouvel utilisateur
+        async function createUser(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('new-username').value.trim();
+            const password = document.getElementById('new-password').value;
+            
+            if (!username || !password) {
+                alert('Veuillez remplir tous les champs');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/storage/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username,
+                        password,
+                        data: {
+                            accounts: [],
+                            transactions: [],
+                            recurringTransactions: [],
+                            userPreferences: {
+                                theme: 'light',
+                                currency: 'EUR',
+                                dateFormat: 'dd/MM/yyyy',
+                                language: 'fr'
+                            }
+                        }
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    showAlert('server-alert', 'success', `Utilisateur ${username} créé avec succès !`);
+                    document.getElementById('new-username').value = '';
+                    document.getElementById('new-password').value = '';
+                    loadUsersList();
+                } else {
+                    showAlert('server-alert', 'error', result.error || 'La création a échoué');
+                }
+            } catch (error) {
+                console.error('Erreur lors de la création de l\'utilisateur:', error);
+                showAlert('server-alert', 'error', `Erreur lors de la création de l'utilisateur: ${error.message}`);
+            }
+        }
+
+        // Fonction pour créer un nouvel administrateur
+        async function createAdmin(event) {
+            event.preventDefault();
+            
+            const newUsername = document.getElementById('new-admin-username').value.trim();
+            const newPassword = document.getElementById('new-admin-password').value;
+            
+            if (!newUsername || !newPassword) {
+                alert('Veuillez remplir tous les champs');
+                return;
+            }
+            
+            if (!currentAdminUser || !currentAdminPassword) {
+                showAlert('server-alert', 'error', 'Vous devez être connecté en tant qu\'administrateur');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/add`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        adminUsername: currentAdminUser,
+                        adminPassword: currentAdminPassword,
+                        newUsername,
+                        newPassword
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    showAlert('server-alert', 'success', `Administrateur ${newUsername} créé avec succès !`);
+                    document.getElementById('new-admin-username').value = '';
+                    document.getElementById('new-admin-password').value = '';
+                    loadAdminsList();
+                } else {
+                    showAlert('server-alert', 'error', result.error || 'La création a échoué');
+                }
+            } catch (error) {
+                console.error('Erreur lors de la création de l\'administrateur:', error);
+                showAlert('server-alert', 'error', `Erreur lors de la création de l'administrateur: ${error.message}`);
+            }
+        }
+
+        // Fonction pour afficher le modal de modification
+        function showEditModal(username) {
+            document.getElementById('edit-username').value = username;
+            document.getElementById('edit-user-id').value = username;
+            document.getElementById('edit-modal').classList.remove('hidden');
+        }
+
+        // Fonction pour fermer le modal de modification
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.add('hidden');
+            document.getElementById('edit-password').value = '';
+        }
+
+        // Fonction pour modifier un utilisateur (changer le mot de passe)
+        async function updateUserPassword(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('edit-user-id').value;
+            const newPassword = document.getElementById('edit-password').value;
+            
+            if (!username || !newPassword) {
+                alert('Veuillez remplir tous les champs');
+                return;
+            }
+            
+            if (!currentAdminUser || !currentAdminPassword) {
+                alert('Authentification administrateur requise');
+                closeEditModal();
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/reset-user-password`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        adminUsername: currentAdminUser,
+                        adminPassword: currentAdminPassword,
+                        userToReset: username,
+                        newPassword
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    showAlert('server-alert', 'success', `Mot de passe de ${username} mis à jour avec succès !`);
+                    closeEditModal();
+                } else {
+                    showAlert('server-alert', 'error', result.error || 'La mise à jour a échoué');
+                    closeEditModal();
+                }
+            } catch (error) {
+                console.error('Erreur lors de la modification du mot de passe:', error);
+                showAlert('server-alert', 'error', `Erreur lors de la modification: ${error.message}`);
+                closeEditModal();
+            }
+        }
+
+        // Fonction pour afficher le modal de suppression
+        function showDeleteModal(username) {
+            document.getElementById('delete-username').textContent = username;
+            document.getElementById('delete-user-id').value = username;
+            document.getElementById('delete-modal').classList.remove('hidden');
+        }
+
+        // Fonction pour fermer le modal de suppression
+        function closeDeleteModal() {
+            document.getElementById('delete-modal').classList.add('hidden');
+        }
+
+        // Fonction pour supprimer un utilisateur
+        async function deleteUser(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('delete-user-id').value;
+            
+            if (!username) {
+                alert('Nom d\'utilisateur invalide');
+                closeDeleteModal();
+                return;
+            }
+            
+            if (!currentAdminUser || !currentAdminPassword) {
+                alert('Authentification administrateur requise');
+                closeDeleteModal();
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/delete-user`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        adminUsername: currentAdminUser,
+                        adminPassword: currentAdminPassword,
+                        userToDelete: username
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    showAlert('server-alert', 'success', `Utilisateur ${username} supprimé avec succès !`);
+                    closeDeleteModal();
+                    loadUsersList();
+                } else {
+                    showAlert('server-alert', 'error', result.error || 'La suppression a échoué');
+                    closeDeleteModal();
+                }
+            } catch (error) {
+                console.error('Erreur lors de la suppression de l\'utilisateur:', error);
+                showAlert('server-alert', 'error', `Erreur lors de la suppression: ${error.message}`);
+                closeDeleteModal();
+            }
+        }
+
+        // Fonction pour afficher le modal de changement de mot de passe administrateur
+        function showChangeAdminPasswordModal() {
+            document.getElementById('change-admin-password-modal').classList.remove('hidden');
+        }
+
+        // Fonction pour fermer le modal de changement de mot de passe administrateur
+        function closeChangeAdminPasswordModal() {
+            document.getElementById('change-admin-password-modal').classList.add('hidden');
+            document.getElementById('change-admin-pw-form').reset();
+        }
+
+        // Fonction pour changer le mot de passe administrateur
+        async function changeAdminPassword(event) {
+            event.preventDefault();
+            
+            const currentPassword = document.getElementById('current-admin-password').value;
+            const newPassword = document.getElementById('new-admin-pw').value;
+            const confirmPassword = document.getElementById('confirm-admin-pw').value;
+            
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                alert('Veuillez remplir tous les champs');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                alert('Les mots de passe ne correspondent pas');
+                return;
+            }
+            
+            if (!currentAdminUser) {
+                alert('Authentification administrateur requise');
+                closeChangeAdminPasswordModal();
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/change-password`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: currentAdminUser,
+                        currentPassword,
+                        newPassword
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    // Mettre à jour le mot de passe stocké
+                    currentAdminPassword = newPassword;
+                    
+                    showAlert('server-alert', 'success', 'Mot de passe administrateur mis à jour avec succès !');
+                    closeChangeAdminPasswordModal();
+                    loadAdminsList();
+                } else {
+                    showAlert('server-alert', 'error', result.error || 'La mise à jour du mot de passe a échoué');
+                    closeChangeAdminPasswordModal();
+                }
+            } catch (error) {
+                console.error('Erreur lors du changement de mot de passe administrateur:', error);
+                showAlert('server-alert', 'error', `Erreur: ${error.message}`);
+                closeChangeAdminPasswordModal();
+            }
+        }
+
+        // Fonction pour afficher le modal de suppression d'administrateur
+        function showDeleteAdminModal(username) {
+            document.getElementById('delete-admin-username').textContent = username;
+            document.getElementById('delete-admin-id').value = username;
+            document.getElementById('delete-admin-modal').classList.remove('hidden');
+        }
+
+        // Fonction pour fermer le modal de suppression d'administrateur
+        function closeDeleteAdminModal() {
+            document.getElementById('delete-admin-modal').classList.add('hidden');
+        }
+
+        // Fonction pour supprimer un administrateur
+        async function deleteAdmin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('delete-admin-id').value;
+            
+            if (!username) {
+                alert('Nom d\'administrateur invalide');
+                closeDeleteAdminModal();
+                return;
+            }
+            
+            if (!currentAdminUser || !currentAdminPassword) {
+                alert('Authentification administrateur requise');
+                closeDeleteAdminModal();
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/remove`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        adminUsername: currentAdminUser,
+                        adminPassword: currentAdminPassword,
+                        usernameToRemove: username
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    showAlert('server-alert', 'success', `Administrateur ${username} supprimé avec succès !`);
+                    closeDeleteAdminModal();
+                    loadAdminsList();
+                } else {
+                    showAlert('server-alert', 'error', result.error || 'La suppression a échoué');
+                    closeDeleteAdminModal();
+                }
+            } catch (error) {
+                console.error('Erreur lors de la suppression de l\'administrateur:', error);
+                showAlert('server-alert', 'error', `Erreur lors de la suppression: ${error.message}`);
+                closeDeleteAdminModal();
+            }
+        }
+
+        // Ajouter les gestionnaires d'événements
+        document.addEventListener('DOMContentLoaded', () => {
+            // Vérifier si nous ouvrons le fichier directement (protocole file://)
+            if (window.location.protocol === 'file:') {
+                showAlert('login-alert', 'warning', `
+                    Vous avez ouvert cette page directement depuis votre disque dur (protocole file://).
+                    Pour un fonctionnement optimal, lancez d'abord 'start_with_server.bat'
+                    puis accédez à cette page via http://localhost:3001/admin-users.html
+                `);
+            }
+            
+            // Gestionnaire pour le formulaire de connexion administrateur
+            document.getElementById('admin-login-form').addEventListener('submit', adminLogin);
+            
+            // Gestionnaire pour le bouton de déconnexion
+            document.getElementById('logout-btn').addEventListener('click', adminLogout);
+            
+            // Gestionnaire pour le bouton d'actualisation
+            document.getElementById('refresh-btn').addEventListener('click', () => {
+                loadUsersList();
+                loadAdminsList();
+            });
+            
+            // Gestionnaire pour le formulaire de création d'utilisateur
+            document.getElementById('create-user-form').addEventListener('submit', createUser);
+            
+            // Gestionnaire pour le formulaire de création d'administrateur
+            document.getElementById('create-admin-form').addEventListener('submit', createAdmin);
+            
+            // Gestionnaires pour le modal de modification
+            document.getElementById('close-edit-modal').addEventListener('click', closeEditModal);
+            document.getElementById('edit-user-form').addEventListener('submit', updateUserPassword);
+            
+            // Gestionnaires pour le modal de suppression
+            document.getElementById('close-delete-modal').addEventListener('click', closeDeleteModal);
+            document.getElementById('cancel-delete').addEventListener('click', closeDeleteModal);
+            document.getElementById('delete-user-form').addEventListener('submit', deleteUser);
+            
+            // Gestionnaires pour le modal de changement de mot de passe administrateur
+            document.getElementById('close-change-admin-pw-modal').addEventListener('click', closeChangeAdminPasswordModal);
+            document.getElementById('change-admin-pw-form').addEventListener('submit', changeAdminPassword);
+            
+            // Gestionnaires pour le modal de suppression d'administrateur
+            document.getElementById('close-delete-admin-modal').addEventListener('click', closeDeleteAdminModal);
+            document.getElementById('cancel-delete-admin').addEventListener('click', closeDeleteAdminModal);
+            document.getElementById('delete-admin-form').addEventListener('submit', deleteAdmin);
+            
+            // Exposer les fonctions au contexte global (pour les boutons inline)
+            window.showEditModal = showEditModal;
+            window.showDeleteModal = showDeleteModal;
+            window.showChangeAdminPasswordModal = showChangeAdminPasswordModal;
+            window.showDeleteAdminModal = showDeleteAdminModal;
+        });
+    </script>
+</body>
+</html>

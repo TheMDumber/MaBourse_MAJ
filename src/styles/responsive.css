@@ -1,0 +1,263 @@
+/* responsive.css - Media queries et classes responsives */
+
+/* Breakpoints:
+ * - xs: < 640px (mobile)
+ * - sm: 640px - 767px (mobile large)
+ * - md: 768px - 1023px (tablette)
+ * - lg: 1024px - 1279px (desktop)
+ * - xl: 1280px - 1535px (desktop large)
+ * - 2xl: >= 1536px (desktop très large)
+ */
+
+/* Classes d'affichage responsive */
+.hide-xs {
+  display: none !important;
+}
+
+@media (min-width: 640px) {
+  .hide-xs {
+    display: initial !important;
+  }
+  .hide-sm {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .hide-sm {
+    display: initial !important;
+  }
+  .hide-md {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hide-md {
+    display: initial !important;
+  }
+  .hide-lg {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hide-lg {
+    display: initial !important;
+  }
+  .hide-xl {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1536px) {
+  .hide-xl {
+    display: initial !important;
+  }
+  .hide-2xl {
+    display: none !important;
+  }
+}
+
+/* Affichage uniquement sur certaines tailles d'écran */
+.show-xs-only {
+  display: none !important;
+}
+
+@media (max-width: 639px) {
+  .show-xs-only {
+    display: initial !important;
+  }
+}
+
+.show-sm-only {
+  display: none !important;
+}
+
+@media (min-width: 640px) and (max-width: 767px) {
+  .show-sm-only {
+    display: initial !important;
+  }
+}
+
+.show-md-only {
+  display: none !important;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .show-md-only {
+    display: initial !important;
+  }
+}
+
+.show-lg-only {
+  display: none !important;
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .show-lg-only {
+    display: initial !important;
+  }
+}
+
+.show-xl-only {
+  display: none !important;
+}
+
+@media (min-width: 1280px) and (max-width: 1535px) {
+  .show-xl-only {
+    display: initial !important;
+  }
+}
+
+.show-2xl-only {
+  display: none !important;
+}
+
+@media (min-width: 1536px) {
+  .show-2xl-only {
+    display: initial !important;
+  }
+}
+
+/* Classes de layout responsive */
+@media (max-width: 639px) {
+  .container-fluid-xs {
+    width: 100%;
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+  
+  .row-stack-xs {
+    flex-direction: column !important;
+  }
+  
+  .full-width-xs {
+    width: 100% !important;
+  }
+  
+  .mt-xs-4 {
+    margin-top: var(--space-4) !important;
+  }
+  
+  .mb-xs-4 {
+    margin-bottom: var(--space-4) !important;
+  }
+  
+  .text-center-xs {
+    text-align: center !important;
+  }
+  
+  /* Ajustements spécifiques pour mobile */
+  .border-radius-sm-xs {
+    border-radius: var(--radius-lg) !important;
+  }
+  
+  .font-size-sm-xs {
+    font-size: var(--text-sm) !important;
+  }
+  
+  .padding-reduced-xs {
+    padding: var(--space-2) !important;
+  }
+}
+
+/* Tablette */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container-fluid-md {
+    width: 100%;
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+  
+  .grid-2-cols-md {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+  
+  .w-75-md {
+    width: 75% !important;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .container-fluid-lg {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .grid-3-cols-lg {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--space-5);
+  }
+  
+  .grid-4-cols-lg {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: var(--space-5);
+  }
+  
+  .side-by-side-lg {
+    display: flex;
+  }
+  
+  .flex-1-lg {
+    flex: 1;
+  }
+  
+  .sidebar-visible-lg {
+    display: block !important;
+  }
+}
+
+/* Ajustements pour les graphiques */
+@media (max-width: 639px) {
+  .chart-container {
+    height: 250px !important;
+  }
+  
+  .chart-legend-compact {
+    font-size: var(--text-xs) !important;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .chart-container {
+    height: 300px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .chart-container {
+    height: 400px !important;
+  }
+}
+
+/* Espacement adaptatif */
+.responsive-spacing {
+  padding: var(--space-2);
+}
+
+@media (min-width: 640px) {
+  .responsive-spacing {
+    padding: var(--space-4);
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-spacing {
+    padding: var(--space-6);
+  }
+}
+
+/* Breakpoint spécifique pour le menu contextuel */
+@media (max-width: 1200px) {
+  .context-menu-compact {
+    width: 200px !important;
+  }
+}

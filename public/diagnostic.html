@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostic - MaBourse</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-top: 0;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            color: #3498db;
+            margin-top: 20px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        
+        .info {
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+        }
+        
+        .warning {
+            background-color: #fff5e6;
+            border-left: 4px solid #f39c12;
+        }
+        
+        .error {
+            background-color: #fee;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .success {
+            background-color: #e9f7ef;
+            border-left: 4px solid #2ecc71;
+        }
+        
+        pre {
+            background-color: #f8f8f8;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+        
+        th, td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .action-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-start;
+        }
+        
+        .variable-name {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .variable-value {
+            font-family: monospace;
+            padding: 2px 4px;
+            background-color: #f0f0f0;
+            border-radius: 3px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-ok {
+            background-color: #2ecc71;
+        }
+        
+        .status-warning {
+            background-color: #f39c12;
+        }
+        
+        .status-error {
+            background-color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Diagnostic MaBourse</h1>
+        
+        <div class="section info">
+            <h2>Informations système</h2>
+            <table>
+                <tr>
+                    <td>Navigateur</td>
+                    <td id="browser-info">Chargement...</td>
+                </tr>
+                <tr>
+                    <td>Mode réseau</td>
+                    <td id="network-mode">Chargement...</td>
+                </tr>
+                <tr>
+                    <td>Date et heure</td>
+                    <td id="current-time">Chargement...</td>
+                </tr>
+                <tr>
+                    <td>IndexedDB disponible</td>
+                    <td id="indexeddb-status">Chargement...</td>
+                </tr>
+                <tr>
+                    <td>LocalStorage disponible</td>
+                    <td id="localstorage-status">Chargement...</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="section" id="auth-section">
+            <h2>État d'authentification</h2>
+            <div id="auth-status">Vérification en cours...</div>
+        </div>
+        
+        <div class="section" id="db-section">
+            <h2>État de la base de données</h2>
+            <div id="db-status">Vérification en cours...</div>
+        </div>
+        
+        <div class="section" id="localstorage-section">
+            <h2>Marqueurs LocalStorage</h2>
+            <div id="localstorage-content">Vérification en cours...</div>
+        </div>
+        
+        <div class="section" id="troubleshooting-section">
+            <h2>Diagnostic et résolution</h2>
+            <div id="diagnosis-result">Analyse en cours...</div>
+        </div>
+        
+        <div class="action-buttons">
+            <button id="repair-button">Réparer la base de données</button>
+            <button id="clear-localstorage-button">Effacer les marqueurs</button>
+            <button id="force-logout-button">Déconnexion forcée</button>
+            <button id="refresh-button">Rafraîchir le diagnostic</button>
+        </div>
+    </div>
+
+    <script>
+        // Constantes
+        const DB_NAME = 'ma-bourse';
+        const DB_VERSION = 3;
+        
+        // Fonctions utilitaires
+        function formatDate(date) {
+            return new Date(date).toLocaleString();
+        }
+        
+        function formatStatus(element, status, message) {
+            let statusClass = '';
+            let statusIndicator = '';
+            
+            if (status === 'ok') {
+                statusClass = 'success';
+                statusIndicator = '<span class="status-indicator status-ok"></span>';
+            } else if (status === 'warning') {
+                statusClass = 'warning';
+                statusIndicator = '<span class="status-indicator status-warning"></span>';
+            } else if (status === 'error') {
+                statusClass = 'error';
+                statusIndicator = '<span class="status-indicator status-error"></span>';
+            }
+            
+            element.className = `section ${statusClass}`;
+            return statusIndicator + message;
+        }
+        
+        function checkIfLoggedIn() {
+            const userSession = localStorage.getItem('userSession');
+            return userSession ? true : false;
+        }
+        
+        function getUserName() {
+            try {
+                const userSession = localStorage.getItem('userSession');
+                if (userSession) {
+                    const session = JSON.parse(userSession);
+                    return session.username || 'Inconnu';
+                }
+                return 'Non connecté';
+            } catch (e) {
+                return 'Erreur de lecture';
+            }
+        }
+        
+        // Vérification de l'état du navigateur
+        function checkBrowserStatus() {
+            document.getElementById('browser-info').textContent = navigator.userAgent;
+            
+            const isRemoteNetwork = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+            document.getElementById('network-mode').textContent = isRemoteNetwork ? 'Réseau distant' : 'Local';
+            document.getElementById('current-time').textContent = new Date().toLocaleString();
+            
+            // Vérifier IndexedDB
+            if ('indexedDB' in window) {
+                document.getElementById('indexeddb-status').textContent = 'Disponible';
+            } else {
+                document.getElementById('indexeddb-status').textContent = 'Non disponible (erreur critique)';
+            }
+            
+            // Vérifier LocalStorage
+            try {
+                localStorage.setItem('test', 'test');
+                localStorage.removeItem('test');
+                document.getElementById('localstorage-status').textContent = 'Disponible';
+            } catch (e) {
+                document.getElementById('localstorage-status').textContent = 'Non disponible (erreur critique)';
+            }
+        }
+        
+        // Vérification de l'état d'authentification
+        function checkAuthStatus() {
+            const authSection = document.getElementById('auth-section');
+            const authStatus = document.getElementById('auth-status');
+            
+            const isLoggedIn = checkIfLoggedIn();
+            const username = getUserName();
+            
+            if (isLoggedIn) {
+                authStatus.innerHTML = formatStatus(authSection, 'ok', `Connecté en tant que: <strong>${username}</strong>`);
+            } else {
+                authStatus.innerHTML = formatStatus(authSection, 'warning', 'Non connecté');
+            }
+        }
+        
+        // Vérification de l'état de la base de données
+        function checkDatabaseStatus() {
+            const dbSection = document.getElementById('db-section');
+            const dbStatus = document.getElementById('db-status');
+            
+            dbStatus.innerHTML = 'Vérification de la base de données...';
+            
+            try {
+                const openRequest = indexedDB.open(DB_NAME);
+                
+                openRequest.onsuccess = function(event) {
+                    const db = event.target.result;
+                    const version = db.version;
+                    const stores = Array.from(db.objectStoreNames);
+                    
+                    let html = formatStatus(dbSection, 'ok', `Base de données trouvée (version ${version})`);
+                    
+                    html += '<p>Object stores disponibles:</p><ul>';
+                    
+                    const expectedStores = ['accounts', 'transactions', 'recurringTransactions', 'userPreferences', 'balanceAdjustments'];
+                    const missingStores = [];
+                    
+                    for (const store of expectedStores) {
+                        if (stores.includes(store)) {
+                            html += `<li>${store} ✓</li>`;
+                        } else {
+                            html += `<li>${store} ✗</li>`;
+                            missingStores.push(store);
+                        }
+                    }
+                    
+                    html += '</ul>';
+                    
+                    if (missingStores.length > 0) {
+                        dbSection.className = 'section warning';
+                        html += `<p>⚠️ Stores manquants: ${missingStores.join(', ')}</p>`;
+                    }
+                    
+                    // Vérifier le contenu des stores
+                    const tx = db.transaction(['accounts'], 'readonly');
+                    const accountsStore = tx.objectStore('accounts');
+                    const countRequest = accountsStore.count();
+                    
+                    countRequest.onsuccess = function() {
+                        const count = countRequest.result;
+                        
+                        if (count === 0) {
+                            html += formatStatus(dbSection, 'warning', 'Aucun compte trouvé dans la base de données');
+                        } else {
+                            html += `<p>Nombre de comptes: ${count}</p>`;
+                        }
+                        
+                        dbStatus.innerHTML = html;
+                    };
+                    
+                    countRequest.onerror = function(event) {
+                        html += formatStatus(dbSection, 'error', `Erreur lors du comptage des comptes: ${event.target.error}`);
+                        dbStatus.innerHTML = html;
+                    };
+                    
+                    db.close();
+                };
+                
+                openRequest.onerror = function(event) {
+                    dbStatus.innerHTML = formatStatus(dbSection, 'error', `Erreur lors de l'ouverture de la base de données: ${event.target.error}`);
+                };
+                
+                openRequest.onblocked = function() {
+                    dbStatus.innerHTML = formatStatus(dbSection, 'warning', 'Base de données bloquée par une autre connexion');
+                };
+                
+                openRequest.onupgradeneeded = function(event) {
+                    dbStatus.innerHTML = formatStatus(dbSection, 'warning', 'Base de données en cours de mise à jour');
+                };
+            } catch (e) {
+                dbStatus.innerHTML = formatStatus(dbSection, 'error', `Exception lors de la vérification de la base de données: ${e.message}`);
+            }
+        }
+        
+        // Vérifier le contenu du localStorage
+        function checkLocalStorage() {
+            const localStorageSection = document.getElementById('localstorage-section');
+            const localStorageContent = document.getElementById('localstorage-content');
+            
+            let html = '<table><tr><th>Clé</th><th>Valeur</th></tr>';
+            
+            const criticalKeys = [
+                'userSession', 'lastAuthCheck', 'needsFullRecovery', 'isRedirecting',
+                'isCheckingRedirect', 'isSyncing', 'syncEventTriggered', 'lastSyncTime',
+                'deviceId', 'syncState', 'rebootCount', 'lastRebootTime'
+            ];
+            
+            let hasProblematicMarkers = false;
+            const problematicMarkers = [];
+            
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                let value = localStorage.getItem(key);
+                
+                // Tronquer les valeurs trop longues
+                if (value && value.length > 100) {
+                    value = value.substring(0, 100) + '...';
+                }
+                
+                // Vérifier si c'est une clé critique
+                const isCritical = criticalKeys.includes(key);
+                const rowClass = isCritical ? 'critical-key' : '';
+                
+                // Détecter les marqueurs problématiques
+                if ((key === 'isRedirecting' && value === 'true') || 
+                    (key === 'isCheckingRedirect' && value === 'true') ||
+                    (key === 'isSyncing' && value === 'true') ||
+                    (key === 'needsFullRecovery' && value === 'true')) {
+                    hasProblematicMarkers = true;
+                    problematicMarkers.push(key);
+                }
+                
+                html += `<tr class="${rowClass}">
+                    <td><span class="variable-name">${key}</span></td>
+                    <td><span class="variable-value">${value}</span></td>
+                </tr>`;
+            }
+            
+            html += '</table>';
+            
+            if (hasProblematicMarkers) {
+                html = formatStatus(localStorageSection, 'warning', 
+                    `Marqueurs problématiques détectés: ${problematicMarkers.join(', ')}`) + html;
+            } else {
+                html = formatStatus(localStorageSection, 'ok', 'Aucun marqueur problématique détecté') + html;
+            }
+            
+            localStorageContent.innerHTML = html;
+        }
+        
+        // Diagnostiquer les problèmes potentiels
+        function diagnoseProblems() {
+            const troubleshootingSection = document.getElementById('troubleshooting-section');
+            const diagnosisResult = document.getElementById('diagnosis-result');
+            
+            const isLoggedIn = checkIfLoggedIn();
+            const isRedirecting = localStorage.getItem('isRedirecting') === 'true';
+            const isCheckingRedirect = localStorage.getItem('isCheckingRedirect') === 'true';
+            const isSyncing = localStorage.getItem('isSyncing') === 'true';
+            const needsFullRecovery = localStorage.getItem('needsFullRecovery') === 'true';
+            const rebootCount = parseInt(localStorage.getItem('rebootCount') || '0');
+            
+            let html = '';
+            let problems = [];
+            
+            // Vérifier les problèmes potentiels
+            if (isRedirecting) {
+                problems.push('Redirection active (isRedirecting=true)');
+            }
+            
+            if (isCheckingRedirect) {
+                problems.push('Vérification de redirection active (isCheckingRedirect=true)');
+            }
+            
+            if (isSyncing) {
+                problems.push('Synchronisation active (isSyncing=true)');
+            }
+            
+            if (needsFullRecovery) {
+                problems.push('Récupération complète nécessaire (needsFullRecovery=true)');
+            }
+            
+            if (rebootCount >= 2) {
+                problems.push(`Redémarrages multiples détectés (rebootCount=${rebootCount})`);
+            }
+            
+            // Vérifier l'état de la base de données
+            try {
+                const openRequest = indexedDB.open(DB_NAME);
+                
+                openRequest.onsuccess = function(event) {
+                    const db = event.target.result;
+                    const version = db.version;
+                    const stores = Array.from(db.objectStoreNames);
+                    
+                    // Chercher les stores manquants
+                    const expectedStores = ['accounts', 'transactions', 'recurringTransactions', 'userPreferences', 'balanceAdjustments'];
+                    const missingStores = expectedStores.filter(store => !stores.includes(store));
+                    
+                    if (missingStores.length > 0) {
+                        problems.push(`Base de données incomplète: stores manquants (${missingStores.join(', ')})`);
+                    }
+                    
+                    if (version !== DB_VERSION) {
+                        problems.push(`Version de base de données incorrecte (${version} au lieu de ${DB_VERSION})`);
+                    }
+                    
+                    // Diagnostic final
+                    if (problems.length > 0) {
+                        html = formatStatus(troubleshootingSection, 'warning', 'Problèmes détectés');
+                        html += '<ul>';
+                        problems.forEach(problem => {
+                            html += `<li>${problem}</li>`;
+                        });
+                        html += '</ul>';
+                        
+                        html += '<h3>Recommandations:</h3><ul>';
+                        
+                        if (isRedirecting || isCheckingRedirect) {
+                            html += '<li>Effacer les marqueurs de redirection</li>';
+                        }
+                        
+                        if (isSyncing) {
+                            html += '<li>Effacer le marqueur de synchronisation</li>';
+                        }
+                        
+                        if (needsFullRecovery || missingStores.length > 0) {
+                            html += '<li>Réparer la base de données</li>';
+                        }
+                        
+                        if (rebootCount >= 2) {
+                            html += '<li>Effectuer une déconnexion forcée</li>';
+                        }
+                        
+                        html += '</ul>';
+                    } else {
+                        html = formatStatus(troubleshootingSection, 'success', 'Aucun problème détecté');
+                    }
+                    
+                    diagnosisResult.innerHTML = html;
+                    db.close();
+                };
+                
+                openRequest.onerror = function(event) {
+                    problems.push(`Erreur d'accès à la base de données: ${event.target.error}`);
+                    html = formatStatus(troubleshootingSection, 'error', 'Problèmes critiques détectés');
+                    html += '<ul>';
+                    problems.forEach(problem => {
+                        html += `<li>${problem}</li>`;
+                    });
+                    html += '</ul>';
+                    
+                    html += '<h3>Recommandations:</h3>';
+                    html += '<p>Effectuer une réinitialisation complète de l\'application:</p>';
+                    html += '<ol>';
+                    html += '<li>Déconnexion forcée</li>';
+                    html += '<li>Effacer le cache du navigateur</li>';
+                    html += '<li>Recharger l\'application</li>';
+                    html += '</ol>';
+                    
+                    diagnosisResult.innerHTML = html;
+                };
+            } catch (e) {
+                problems.push(`Exception lors de la vérification de la base de données: ${e.message}`);
+                html = formatStatus(troubleshootingSection, 'error', 'Erreur critique');
+                html += `<p>${e.message}</p>`;
+                html += '<p>Recommandation: Effectuer une déconnexion forcée et effacer le cache du navigateur</p>';
+                
+                diagnosisResult.innerHTML = html;
+            }
+        }
+        
+        // Actions
+        function repairDatabase() {
+            try {
+                // D'abord supprimer la base de données
+                const deleteRequest = indexedDB.deleteDatabase(DB_NAME);
+                
+                deleteRequest.onsuccess = function() {
+                    alert('Base de données supprimée avec succès. La page va être rechargée.');
+                    
+                    // Nettoyer les marqueurs problématiques
+                    localStorage.removeItem('isRedirecting');
+                    localStorage.removeItem('isCheckingRedirect');
+                    localStorage.removeItem('isSyncing');
+                    localStorage.removeItem('syncEventTriggered');
+                    localStorage.removeItem('layoutRefreshing');
+                    localStorage.removeItem('statsRefreshing');
+                    
+                    // Forcer une récupération complète
+                    localStorage.setItem('needsFullRecovery', 'true');
+                    
+                    // Recharger la page
+                    window.location.reload();
+                };
+                
+                deleteRequest.onerror = function(event) {
+                    alert(`Erreur lors de la suppression de la base de données: ${event.target.error}`);
+                };
+            } catch (e) {
+                alert(`Exception lors de la réparation: ${e.message}`);
+            }
+        }
+        
+        function clearLocalStorage() {
+            try {
+                // Sauvegarder la session utilisateur si connecté
+                const userSession = localStorage.getItem('userSession');
+                
+                // Effacer tout le localStorage
+                localStorage.clear();
+                
+                // Restaurer la session si nécessaire
+                if (userSession) {
+                    localStorage.setItem('userSession', userSession);
+                }
+                
+                alert('Marqueurs effacés avec succès. La page va être rechargée.');
+                window.location.reload();
+            } catch (e) {
+                alert(`Erreur lors de l'effacement des marqueurs: ${e.message}`);
+            }
+        }
+        
+        function forceLogout() {
+            if (confirm('Êtes-vous sûr de vouloir effectuer une déconnexion forcée ? Cela effacera toutes vos données locales.')) {
+                window.location.href = '/logout.html?auto=true';
+            }
+        }
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            checkBrowserStatus();
+            checkAuthStatus();
+            checkDatabaseStatus();
+            checkLocalStorage();
+            diagnoseProblems();
+            
+            // Événements des boutons
+            document.getElementById('repair-button').addEventListener('click', repairDatabase);
+            document.getElementById('clear-localstorage-button').addEventListener('click', clearLocalStorage);
+            document.getElementById('force-logout-button').addEventListener('click', forceLogout);
+            document.getElementById('refresh-button').addEventListener('click', function() {
+                window.location.reload();
+            });
+        });
+    </script>
+</body>
+</html>

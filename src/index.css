@@ -1,0 +1,270 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Thème clair (défaut) */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 221.2 83% 53.3%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83% 53.3%;
+
+    --radius: 0.5rem;
+
+    /* Budget app specific colors */
+    --budget-positive: 142.1 76.2% 36.3%;
+    --budget-negative: 0 84.2% 60.2%;
+    --budget-neutral: 245.9 42.3% 53.7%;
+    --budget-accent: 37 92% 50%;
+
+    --sidebar-background: 210 40% 98%;
+    --sidebar-foreground: 222.2 47.4% 11.2%;
+    --sidebar-primary: 221.2 83% 53.3%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 210 40% 96.1%;
+    --sidebar-accent-foreground: 222.2 47.4% 11.2%;
+    --sidebar-border: 214.3 31.8% 91.4%;
+    --sidebar-ring: 221.2 83% 53.3%;
+  }
+
+  /* Thème sombre sobre */
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+
+    /* Budget app specific colors */
+    --budget-positive: 142.1 70.6% 45.3%;
+    --budget-negative: 0 72.2% 50.6%;
+    --budget-neutral: 224.3 76.3% 48%;
+    --budget-accent: 47 92% 50%;
+
+    --sidebar-background: 222.2 84% 2.9%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 217.2 91.2% 59.8%;
+    --sidebar-primary-foreground: 222.2 47.4% 11.2%;
+    --sidebar-accent: 217.2 32.6% 17.5%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217.2 32.6% 17.5%;
+    --sidebar-ring: 224.3 76.3% 48%;
+  }
+
+  /* Thème sombre cyber */
+  .cyber {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 263.4 70% 50.4%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 12 90% 60%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 263.4 70% 50.4%;
+
+    /* Budget app specific colors */
+    --budget-positive: 159 100% 50%;
+    --budget-negative: 12 90% 60%;
+    --budget-neutral: 199 98% 48%;
+    --budget-accent: 65 100% 50%;
+
+    --sidebar-background: 240 10% 3.9%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 263.4 70% 50.4%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 263.4 70% 50.4%;
+  }
+  
+  /* Thème Soft Bank (design moderne et bancaire) */
+  .softbank {
+    --background: 210 40% 98%;
+    --foreground: 224 71% 4%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 224 71% 4%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71% 4%;
+
+    --primary: 250 47% 56%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 186 86% 44%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 8% 46%;
+
+    --accent: 243 75% 59%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 20% 98%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 250 47% 56%;
+
+    /* Budget app specific colors */
+    --budget-positive: 142 76% 36%;
+    --budget-negative: 0 84% 60%;
+    --budget-neutral: 222 47% 44%;
+    --budget-accent: 25 95% 53%;
+
+    --sidebar-background: 250 47% 56%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 250 47% 56%;
+    --sidebar-accent: 243 75% 59%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 243 47% 65%;
+    --sidebar-ring: 0 0% 100%;
+  }
+
+  /* Thème Rouge Banque (style bancaire rouge vif) - v2 */
+  .redbank {
+    --background: 0 0% 97%; /* Gris très clair */
+    --foreground: 0 0% 15%; /* Gris foncé */
+
+    --card: 0 0% 100%; /* Blanc */
+    --card-foreground: 0 0% 15%; /* Gris foncé */
+
+    --popover: 0 0% 100%; /* Blanc */
+    --popover-foreground: 0 0% 15%; /* Gris foncé */
+
+    --primary: 0 90% 55%; /* Rouge vif */
+    --primary-foreground: 0 0% 100%; /* Blanc */
+
+    --secondary: 0 90% 55%; /* Rouge vif */
+    --secondary-foreground: 0 0% 100%; /* Blanc */
+
+    --muted: 0 0% 92%; /* Gris clair pour éléments discrets */
+    --muted-foreground: 0 0% 45%; /* Gris moyen */
+
+    --accent: 0 90% 55%; /* Rouge vif */
+    --accent-foreground: 0 0% 100%; /* Blanc */
+
+    --destructive: 0 85% 50%; /* Rouge légèrement plus foncé pour erreurs */
+    --destructive-foreground: 0 0% 100%; /* Blanc */
+
+    --border: 0 0% 88%; /* Gris clair pour bordures */
+    --input: 0 0% 88%; /* Gris clair pour inputs */
+    --ring: 0 90% 60%; /* Rouge légèrement plus clair pour focus */
+
+    --radius: 1.25rem; /* Augmenter l'arrondi */
+
+    /* Budget app specific colors */
+    --budget-positive: 142 76% 36%; /* Vert (gardé standard) */
+    --budget-negative: 0 90% 55%; /* Rouge vif */
+    --budget-neutral: 222 47% 44%; /* Bleu (gardé standard) */
+    --budget-accent: 25 95% 53%; /* Orange (gardé standard) */
+
+    /* Sidebar */
+    --sidebar-background: 0 90% 55%; /* Rouge vif */
+    --sidebar-foreground: 0 0% 100%; /* Blanc */
+    --sidebar-primary: 0 0% 100%; /* Blanc pour élément actif */
+    --sidebar-primary-foreground: 0 90% 55%; /* Rouge vif pour texte sur élément actif */
+    --sidebar-accent: 0 85% 60%; /* Rouge plus clair pour hover */
+    --sidebar-accent-foreground: 0 0% 100%; /* Blanc */
+    --sidebar-border: 0 80% 50%; /* Rouge plus foncé pour bordures */
+    --sidebar-ring: 0 0% 100%; /* Blanc pour focus */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Classes spécifiques pour l'application */
+@layer components {
+  .glass-card {
+    @apply bg-background/70 backdrop-blur-sm border rounded-lg shadow-sm;
+  }
+  
+  .amount-positive {
+    @apply text-budget-positive;
+  }
+  
+  .amount-negative {
+    @apply text-budget-negative;
+  }
+  
+  .amount-neutral {
+    @apply text-budget-neutral;
+  }
+}

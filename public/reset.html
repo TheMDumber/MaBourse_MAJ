@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réinitialisation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            max-width: 500px;
+        }
+        h1 {
+            color: #333;
+        }
+        .status {
+            margin: 20px 0;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .status-message {
+            font-weight: bold;
+            color: #0066cc;
+        }
+        button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0055aa;
+        }
+        .success {
+            color: #28a745;
+        }
+        .error {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Réinitialisation de la base de données</h1>
+        <div class="status">
+            <p>Cette page permet de réinitialiser la base de données locale et de résoudre les problèmes de connexion.</p>
+            <p class="status-message">État : <span id="status">En attente...</span></p>
+        </div>
+        <button id="resetBtn">Réinitialiser</button>
+    </div>
+
+    <script>
+        const DB_NAME = 'ma-bourse';
+        const statusEl = document.getElementById('status');
+        const resetBtn = document.getElementById('resetBtn');
+
+        // Fonction pour mettre à jour le message de statut
+        function updateStatus(message, isError = false) {
+            statusEl.textContent = message;
+            statusEl.className = isError ? 'error' : '';
+            
+            if (!isError && message === 'Terminé!') {
+                statusEl.className = 'success';
+                setTimeout(() => {
+                    window.close();
+                }, 2000);
+            }
+        }
+
+        // Fonction pour nettoyer tous les marqueurs dans le localStorage
+        function cleanLocalStorage() {
+            // Lister tous les marqueurs à supprimer
+            const keysToRemove = [
+                'isCheckingRedirect',
+                'isRedirecting',
+                'redirectAttemptCount',
+                'lastRedirectTime',
+                'lastAuthCheck',
+                'isSyncing',
+                'syncEventTriggered',
+                'isInitialSync',
+                'layoutRefreshing',
+                'statsRefreshing',
+                'deviceId',
+                'syncState',
+                'needsFullRecovery',
+                'hasAttemptedDBRepair',
+                'forceSkipSync',
+                'forceServerSync',
+                'lastSyncTime'
+            ];
+
+            // Supprimer chaque marqueur
+            keysToRemove.forEach(key => {
+                localStorage.removeItem(key);
+            });
+
+            updateStatus('LocalStorage nettoyé');
+        }
+
+        // Fonction pour supprimer la base de données IndexedDB
+        function deleteDatabase() {
+            return new Promise((resolve, reject) => {
+                updateStatus('Suppression de la base de données...');
+                
+                const deleteRequest = indexedDB.deleteDatabase(DB_NAME);
+                
+                deleteRequest.onsuccess = () => {
+                    updateStatus('Base de données supprimée');
+                    resolve();
+                };
+                
+                deleteRequest.onerror = (event) => {
+                    updateStatus('Erreur lors de la suppression de la base de données', true);
+                    console.error('Erreur:', event);
+                    reject(event);
+                };
+                
+                deleteRequest.onblocked = () => {
+                    updateStatus('Suppression bloquée, tentative de fermeture des connexions...');
+                    
+                    // Tenter de fermer les connexions ouvertes
+                    try {
+                        const tempDb = indexedDB.open(DB_NAME);
+                        tempDb.onsuccess = (event) => {
+                            const db = event.target.result;
+                            db.close();
+                            updateStatus('Connexions fermées, nouvelle tentative...');
+                            
+                            // Attendre un peu puis réessayer
+                            setTimeout(() => {
+                                const secondDelete = indexedDB.deleteDatabase(DB_NAME);
+                                secondDelete.onsuccess = () => {
+                                    updateStatus('Base de données supprimée après seconde tentative');
+                                    resolve();
+                                };
+                                secondDelete.onerror = (err) => {
+                                    updateStatus('Échec de la seconde tentative', true);
+                                    reject(err);
+                                };
+                            }, 500);
+                        };
+                        
+                        tempDb.onerror = (err) => {
+                            updateStatus('Impossible d\'ouvrir la base pour fermer les connexions', true);
+                            reject(err);
+                        };
+                    } catch (err) {
+                        updateStatus('Erreur lors de la gestion des connexions bloquées', true);
+                        reject(err);
+                    }
+                };
+            });
+        }
+
+        // Fonction principale de réinitialisation
+        async function resetDatabase() {
+            resetBtn.disabled = true;
+            
+            try {
+                updateStatus('Démarrage de la réinitialisation...');
+                
+                // 1. Nettoyer le localStorage
+                cleanLocalStorage();
+                
+                // 2. Supprimer la base de données
+                await deleteDatabase();
+                
+                // 3. Déconnecter l'utilisateur en supprimant la session
+                localStorage.removeItem('userSession');
+                updateStatus('Session utilisateur supprimée');
+                
+                // 4. Terminer
+                updateStatus('Terminé!');
+                
+                // 5. Signaler que la réinitialisation est terminée
+                localStorage.setItem('databaseReset', 'true');
+            } catch (error) {
+                console.error('Erreur lors de la réinitialisation:', error);
+                updateStatus(`Erreur: ${error.message}`, true);
+                resetBtn.disabled = false;
+            }
+        }
+
+        // Attacher l'événement au bouton
+        resetBtn.addEventListener('click', resetDatabase);
+
+        // Exécuter automatiquement après un court délai si appelé depuis le script
+        if (window.location.search.includes('auto=true')) {
+            setTimeout(resetDatabase, 500);
+        }
+    </script>
+</body>
+</html>

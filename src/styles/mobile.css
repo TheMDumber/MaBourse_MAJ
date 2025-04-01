@@ -1,0 +1,392 @@
+/* Styles pour améliorer l'expérience mobile - Design inspiré des applications bancaires modernes */
+
+/* Import des variables CSS globales */
+@import './variables.css';
+
+:root {
+  /* Palette de couleurs douces pour mobile */
+  --mobile-primary: #4F46E5;       /* Violet doux */
+  --mobile-primary-light: #6366F1; /* Violet plus clair */
+  --mobile-secondary: #10B981;     /* Vert menthe */
+  --mobile-accent: #F59E0B;        /* Ambre */
+  --mobile-background: #F9FAFB;    /* Fond légèrement grisé */
+  --mobile-surface: #FFFFFF;       /* Surface/Carte blanche */
+  --mobile-text: #1F2937;          /* Texte principal foncé */
+  --mobile-text-secondary: #6B7280; /* Texte secondaire gris */
+  --mobile-border: #E5E7EB;        /* Bordure légère */
+  --mobile-success: #10B981;       /* Succès vert */
+  --mobile-error: #EF4444;         /* Erreur rouge */
+  --mobile-warning: #F59E0B;       /* Avertissement ambre */
+  --mobile-info: #3B82F6;          /* Info bleue */
+}
+
+/* Base styles pour mobile */
+@media (max-width: 640px) {
+  html, body {
+    font-size: 16px;
+    background-color: var(--mobile-background);
+    color: var(--mobile-text);
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent; /* Supprime le flash bleu sur tap */
+  }
+
+  /* Cartes et conteneurs */
+  .card, 
+  [class*="card-"],
+  .container-mobile {
+    background-color: var(--mobile-surface);
+    border-radius: var(--radius-2xl) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
+    margin-bottom: var(--space-4) !important;
+    padding: var(--space-4) !important;
+    border: none !important;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  /* Effet d'élévation au toucher */
+  .card:active, 
+  [class*="card-"]:active,
+  .container-mobile:active {
+    transform: scale(0.98);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  /* Typographie améliorée */
+  h1, .h1 {
+    font-size: var(--text-2xl) !important;
+    font-weight: var(--font-bold) !important;
+    margin-bottom: var(--space-4) !important;
+    color: var(--mobile-text) !important;
+  }
+
+  h2, .h2 {
+    font-size: var(--text-xl) !important;
+    font-weight: var(--font-semibold) !important;
+    margin-bottom: var(--space-3) !important;
+    color: var(--mobile-text) !important;
+  }
+
+  h3, .h3 {
+    font-size: var(--text-lg) !important;
+    font-weight: var(--font-semibold) !important;
+    margin-bottom: var(--space-2) !important;
+    color: var(--mobile-text) !important;
+  }
+
+  p, span, div {
+    line-height: 1.6 !important;
+    font-size: 0.95rem;
+  }
+
+  /* Zones tactiles plus généreuses */
+  button, 
+  [role="button"],
+  .clickable,
+  a,
+  select,
+  .select-trigger {
+    min-height: 3rem !important;
+    min-width: 3rem !important;
+    padding: var(--space-3) var(--space-4) !important;
+    border-radius: var(--radius-xl) !important;
+    font-weight: var(--font-medium) !important;
+    transition: background var(--transition-fast), transform 0.1s ease !important;
+  }
+
+  /* Boutons primaires */
+  .btn-primary,
+  button[type="submit"] {
+    background-color: var(--mobile-primary) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 5px rgba(79, 70, 229, 0.3) !important;
+  }
+
+  /* Boutons secondaires */
+  .btn-secondary {
+    background-color: var(--mobile-secondary) !important;
+    color: white !important;
+    font-weight: 600 !important;
+  }
+
+  /* Feedback tactile visible */
+  button:active,
+  [role="button"]:active,
+  .clickable:active,
+  a:active {
+    transform: scale(0.97) !important;
+  }
+
+  /* Champs de formulaire */
+  input, select, textarea {
+    font-size: var(--text-base) !important; /* Éviter le zoom sur iOS */
+    padding: var(--space-3) var(--space-4) !important;
+    border-radius: var(--radius-xl) !important;
+    border: 1.5px solid var(--mobile-border) !important;
+    background-color: var(--mobile-surface) !important;
+    width: 100% !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast) !important;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--mobile-primary) !important;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2) !important;
+    outline: none !important;
+  }
+
+  /* Labels de formulaire */
+  label {
+    font-size: var(--text-sm) !important;
+    font-weight: var(--font-medium) !important;
+    color: var(--mobile-text-secondary) !important;
+    margin-bottom: var(--space-2) !important;
+    display: block !important;
+  }
+
+  /* Modales améliorées */
+  [role="dialog"] {
+    max-width: 100% !important;
+    width: calc(100% - 2rem) !important;
+    margin: var(--space-4) !important;
+    border-radius: var(--radius-3xl) !important;
+    background-color: var(--mobile-surface) !important;
+    box-shadow: var(--shadow-xl) !important;
+    animation: modal-slide-up var(--animation-duration-normal) var(--animation-easing-decelerate) !important;
+  }
+
+  @keyframes modal-slide-up {
+    from {
+      transform: translate(-50%, 30%);
+      opacity: 0;
+    }
+    to {
+      transform: translate(-50%, -50%);
+      opacity: 1;
+    }
+  }
+
+  [role="dialog"] h2 {
+    font-size: var(--text-xl) !important;
+    font-weight: var(--font-semibold) !important;
+    color: var(--mobile-text) !important;
+  }
+
+  /* Meilleure visibilité du backdrop de la modale */
+  [data-state="open"] ~ div[class*="overlay"],
+  [data-state="open"] ~ div[class*="backdrop"],
+  .modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(5px) !important;
+  }
+
+  /* Bottom Navigation Bar */
+  .bottom-nav {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 4rem !important;
+    background-color: var(--mobile-surface) !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05) !important;
+    z-index: var(--z-fixed) !important;
+    border-top-left-radius: var(--radius-3xl) !important;
+    border-top-right-radius: var(--radius-3xl) !important;
+  }
+
+  .bottom-nav-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 1 !important;
+    padding: var(--space-2) 0 !important;
+    color: var(--mobile-text-secondary) !important;
+    font-size: var(--text-xs) !important;
+    transition: color var(--transition-fast) !important;
+  }
+
+  .bottom-nav-item.active {
+    color: var(--mobile-primary) !important;
+  }
+
+  .bottom-nav-item svg {
+    margin-bottom: var(--space-1) !important;
+  }
+
+  /* Ajustement du contenu principal avec bottom-bar */
+  .bottom-nav-padding {
+    padding-bottom: 4.5rem !important; /* 4rem + padding */
+  }
+
+  /* Tableaux responsives */
+  table {
+    width: 100% !important;
+    display: block !important;
+    overflow-x: auto !important;
+    border-radius: var(--radius-lg) !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border: 1px solid var(--mobile-border) !important;
+  }
+
+  table th {
+    background-color: rgba(0, 0, 0, 0.02) !important;
+    text-align: left !important;
+    font-weight: var(--font-semibold) !important;
+    padding: var(--space-3) !important;
+    font-size: var(--text-sm) !important;
+    color: var(--mobile-text-secondary) !important;
+  }
+
+  table td {
+    padding: var(--space-3) !important;
+    border-top: 1px solid var(--mobile-border) !important;
+    font-size: var(--text-sm) !important;
+  }
+
+  /* Notifications et badges */
+  .badge {
+    padding: var(--space-1) var(--space-2) !important;
+    border-radius: var(--radius-full) !important;
+    font-size: var(--text-xs) !important;
+    font-weight: var(--font-semibold) !important;
+  }
+
+  .badge-primary {
+    background-color: var(--mobile-primary) !important;
+    color: white !important;
+  }
+
+  .badge-success {
+    background-color: var(--mobile-success) !important;
+    color: white !important;
+  }
+
+  .badge-error {
+    background-color: var(--mobile-error) !important;
+    color: white !important;
+  }
+
+  /* Icônes plus visibles */
+  svg, 
+  img[role="img"] {
+    min-width: 1.375rem !important;
+    min-height: 1.375rem !important;
+  }
+
+  /* Balances et montants */
+  .balance-large {
+    font-size: var(--text-3xl) !important;
+    font-weight: var(--font-bold) !important;
+    color: var(--mobile-text) !important;
+  }
+
+  .amount-positive {
+    color: var(--mobile-success) !important;
+    font-weight: 600 !important;
+  }
+
+  .amount-negative {
+    color: var(--mobile-error) !important;
+    font-weight: 600 !important;
+  }
+
+  /* Graphiques responsives */
+  .chart-container {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 15.625rem !important;
+    border-radius: var(--radius-2xl) !important;
+    overflow: hidden !important;
+    background-color: var(--mobile-surface) !important;
+    padding: var(--space-4) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
+  }
+}
+
+/* Transitions et animations fluides */
+@media (max-width: 640px) {
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  .smooth-transition {
+    transition: all 0.3s ease;
+  }
+
+  /* Effet de pulse pour feedback */
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(79, 70, 229, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
+    }
+  }
+
+  .pulse-effect:active {
+    animation: pulse 0.8s;
+  }
+  
+  /* Animation de slide-in pour le menu latéral */
+  @keyframes slide-in-left {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  
+  .animate-slide-in-left {
+    animation: slide-in-left 0.3s ease-out forwards;
+  }
+  
+  /* Animation pour les éléments qui apparaissent */
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-fade-in-up {
+    animation: fade-in-up 0.4s ease-out;
+  }
+  
+  /* Pour les scrollbars plus délicates */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--mobile-text-secondary);
+    border-radius: 4px;
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

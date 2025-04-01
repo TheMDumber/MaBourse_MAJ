@@ -1,0 +1,14 @@
+# Ce fichier définit les propriétaires du code qui seront automatiquement ajoutés en tant que reviewers
+# lors de la création de pull requests.
+
+# Propriétaires par défaut pour tout le code
+* @votre-username
+
+# Propriétaires spécifiques par domaine
+/src/components/auth/ @votre-username
+/src/lib/db.ts @votre-username
+/server.js @votre-username
+/fileStorage.js @votre-username
+
+# Propriétaires des workflows CI/CD
+/.github/workflows/ @votre-username

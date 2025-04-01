@@ -1,0 +1,13 @@
+{
+  "admins": [
+    {
+      "username": "admin",
+      "passwordHash": "49ba5dd25323e03bf7699a8bd858f720d1231c2346d7a46c7ad70f53b4f961bdbf91a09b3ae54ebdac97ea62ddb5b7557e78ca5b1b8fb2b1741e683b6806de78",
+      "salt": "03ddc191d874812fd957fb16c3b323de",
+      "isDefault": true,
+      "createdAt": "2025-04-01T17:18:05.437Z",
+      "lastLogin": null
+    }
+  ],
+  "lastUpdated": "2025-04-01T17:18:05.443Z"
+}
