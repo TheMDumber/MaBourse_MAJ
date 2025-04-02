@@ -10,14 +10,8 @@ interface ServerResponse<T> {
 
 // Déterminer l'URL du serveur en fonction de l'environnement
 const getBaseUrl = () => {
-  // Utiliser explicitement le port 3001 pour l'API, quel que soit l'environnement
-  if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-    // En production ou sur un réseau distant, utiliser une URL explicite
-    return `http://${window.location.hostname}:3001/api/storage`;
-  }
-  
-  // En développement local (localhost)
-  return `http://${window.location.hostname}:3001/api/storage`;
+  // Toujours utiliser le serveur local en développement
+  return `http://localhost:3001/api/storage`;
 };
 
 // URL de base pour les requêtes vers le serveur local

@@ -27,9 +27,10 @@ interface BalanceEvolutionChartProps {
   period: PeriodOption;
   chartType: ChartType;
   accountFilter: number | "all";
+  onBalanceCalculated?: (month: string, balance: number) => void;
 }
 
-export function BalanceEvolutionChart({ period, chartType, accountFilter }: BalanceEvolutionChartProps) {
+export function BalanceEvolutionChart({ period, chartType, accountFilter, onBalanceCalculated }: BalanceEvolutionChartProps) {
   // Convertir la période en nombre de mois
   const monthsToDisplay = period === "1month" ? 1 : parseInt(period.replace('months', ''));
   

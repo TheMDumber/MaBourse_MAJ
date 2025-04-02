@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
+import { getCachedBalance } from '../../cache';
 import { useAccountFilter } from '@/contexts/AccountFilterContext';
+import { calculate_monthly_balances } from '../../functions/balance_calculator';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { TransactionForm } from '@/components/transactions/TransactionForm';
 import { TransactionsList } from '@/components/transactions/TransactionsList';
@@ -31,6 +33,30 @@ const Transactions = () => {
     queryClient.invalidateQueries({ queryKey: ['recurringTransactions'] });
     // Rafraîchir également le solde prévisionnel
     queryClient.invalidateQueries({ queryKey: ['forecastBalance'] });
+
+    // --- Bloc d'appel initial pour le calcul de solde refactorisé ---
+    console.log("[Debug] Preparing to call calculate_monthly_balances (with placeholders)");
+    // TODO: Récupérer les vraies valeurs pour les arguments ci-dessous depuis l'état de l'application
+    const placeholder_transactions = []; // Placeholder - Utiliser les vraies transactions plus tard
+    const placeholder_start_date = new Date(); // Placeholder - Utiliser la vraie date de création du compte
+    const placeholder_initial_balance = 0.0; // Placeholder - Utiliser le vrai solde initial
+    const placeholder_month_mode = 'calendar'; // Placeholder - Lire depuis la configuration/UI
+    const placeholder_financial_day = 1; // Placeholder - Lire depuis la configuration/UI
+    const placeholder_end_date = new Date(new Date().setFullYear(new Date().getFullYear() + 1)); // Placeholder - Définir une stratégie pertinente
+
+    // Appel à la nouvelle fonction (le résultat n'est pas encore utilisé)
+    const pre_calculated_balances = calculate_monthly_balances(
+      placeholder_transactions, 
+      placeholder_start_date, 
+      placeholder_initial_balance, 
+      placeholder_month_mode, 
+      placeholder_financial_day, 
+      placeholder_end_date
+    );
+    console.log("[Debug] Pre-calculated balances received (placeholder result):", pre_calculated_balances);
+    // TODO: Remplacer les placeholders ci-dessus par les vraies valeurs
+    // TODO: Utiliser le résultat 'pre_calculated_balances' pour déterminer et afficher le solde du mois sélectionné
+    // --- Fin du bloc d'appel ---
   };
 
   // Initialiser la fonction de changement de mois
@@ -42,6 +68,15 @@ const Transactions = () => {
       localStorage.setItem('selectedMonth', month);
       
       setCurrentMonth(month);
+      
+      // Récupérer le solde depuis le cache
+      const cachedBalance = getCachedBalance(month);
+      if (cachedBalance !== undefined) {
+        console.log(`Solde trouvé dans le cache pour ${month}:`, cachedBalance);
+        // TODO: Afficher le solde dans l'interface
+      } else {
+        console.log(`Aucun solde trouvé dans le cache pour ${month}`);
+      }
       
       // Rafraîchir le solde prévisionnel lorsque le mois change
       setTimeout(() => {
@@ -96,7 +131,8 @@ const Transactions = () => {
     if (minSelectableMonth) {
       // @ts-ignore
       window.minSelectableMonth = minSelectableMonth;
-      window.accountCreationMonth = minSelectableMonth; // Pour compatibilité
+      // @ts-ignore
+      window['accountCreationMonth'] = minSelectableMonth; // Pour compatibilité
       
       // Ajouter également comme attribut data sur le body pour les scripts qui utilisent cette méthode
       document.body.setAttribute('data-min-selectable-month', minSelectableMonth);

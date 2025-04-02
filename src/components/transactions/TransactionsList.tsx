@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import { getCachedBalance } from "../../../cache";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDeviceContext } from "@/contexts/DeviceContext";
 import { useFinancialMonth } from "@/contexts/FinancialMonthContext";
@@ -1215,6 +1216,12 @@ export function TransactionsList({
                   style: "currency",
                   currency: "EUR",
                 }).format(categoryTotals.balance)}
+              </p>
+              <p className="text-sm text-muted-foreground mt-1">
+                Solde final: {new Intl.NumberFormat("fr-FR", {
+                  style: "currency",
+                  currency: "EUR",
+                }).format(getCachedBalance(currentMonth) || 0)}
               </p>
             </CardContent>
           </Card>

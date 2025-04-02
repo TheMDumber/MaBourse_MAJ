@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
+import { monthly_balance_cache } from '../../cache';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAccountFilter } from '@/contexts/AccountFilterContext';
 import { useQuery } from '@tanstack/react-query';
@@ -209,7 +210,15 @@ const Statistics = () => {
 
         {timeframe === "past" ? (
           <>
-            <BalanceEvolutionChart period={period} chartType={chartType} accountFilter={selectedAccount} />
+            <BalanceEvolutionChart 
+              period={period} 
+              chartType={chartType} 
+              accountFilter={selectedAccount}
+              onBalanceCalculated={(month, balance) => {
+                monthly_balance_cache[month] = balance;
+                console.log(`[Cache] Stored balance for ${month}: ${balance}`);
+              }}
+            />
             <CategoryBreakdownChart period={period} accountFilter={selectedAccount} />
           </>
         ) : (
