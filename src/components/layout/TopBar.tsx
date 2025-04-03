@@ -35,9 +35,19 @@ interface TopBarProps {
   toggleSidebar: () => void;
   accountFilter?: number | "all";
   selectedMonth?: string; // Format YYYY-MM
+  journalBalance?: number; // Solde provenant directement du journal comptable
+  balanceSource?: string; // Source du solde (ajusté, prévu, initial, etc.)
 }
 
-export const TopBar = ({ theme, changeTheme, toggleSidebar, accountFilter = "all", selectedMonth }: TopBarProps) => {
+export const TopBar = ({ 
+  theme, 
+  changeTheme, 
+  toggleSidebar, 
+  accountFilter = "all", 
+  selectedMonth,
+  journalBalance,
+  balanceSource
+}: TopBarProps) => {
   const { username, logout, syncData, lastSyncTime, isSyncing } = useAuth();
   const [isMobileView, setIsMobileView] = useState(false);
   const [currentBalance, setCurrentBalance] = useState(0);
@@ -116,9 +126,12 @@ export const TopBar = ({ theme, changeTheme, toggleSidebar, accountFilter = "all
     queryClient.invalidateQueries({ queryKey: ["forecastBalance"] });
     queryClient.invalidateQueries({ queryKey: ["monthlyBalances"] });
     queryClient.invalidateQueries({ queryKey: ["historicalBalances"] });
+    queryClient.invalidateQueries({ queryKey: ["accountingJournal"] }); // Invalider le cache du journal comptable
     // Force refresh immédiat
     queryClient.refetchQueries({ queryKey: ["balanceAdjustments", accountFilter, selectedMonth] });
     queryClient.refetchQueries({ queryKey: ["forecastBalance", accountFilter, selectedMonth] });
+    // Rafraîchir le journal comptable
+    queryClient.refetchQueries({ queryKey: ["accountingJournal", selectedMonth, accountFilter] });
   };
   
   // Récupérer tous les comptes
@@ -331,6 +344,11 @@ export const TopBar = ({ theme, changeTheme, toggleSidebar, accountFilter = "all
         note: adjustmentNote,
       });
       
+      // Régénérer le journal comptable pour tenir compte de l'ajustement
+      // Importer dynamiquement pour éviter les références circulaires
+      const { accountingJournalService } = await import('@/lib/accountingJournalService');
+      await accountingJournalService.generateJournalForMonth(yearMonth);
+      
       // Invalider les requêtes pour forcer un rafraîchissement
       invalidateBalanceCache();
       
@@ -360,6 +378,11 @@ export const TopBar = ({ theme, changeTheme, toggleSidebar, accountFilter = "all
     try {
       const yearMonth = selectedMonth || format(new Date(), "yyyy-MM");
       await db.balanceAdjustments.deleteAdjustment(accountFilter as number, yearMonth);
+      
+      // Régénérer le journal comptable après la suppression de l'ajustement
+      // Importer dynamiquement pour éviter les références circulaires
+      const { accountingJournalService } = await import('@/lib/accountingJournalService');
+      await accountingJournalService.generateJournalForMonth(yearMonth);
       
       // Force la mise à jour immédiate de l'UI
       invalidateBalanceCache();
@@ -401,29 +424,54 @@ export const TopBar = ({ theme, changeTheme, toggleSidebar, accountFilter = "all
                   {accountFilter === "all" ? "Tous les comptes" : (accounts.find(a => a.id === accountFilter)?.name || "Compte")} 
                   - <span className="font-medium text-primary">{formattedMonthRange}</span>
                 </div>
-                <div className="flex items-center">
-                  <div className="text-lg sm:text-2xl font-bold" style={{ color: projectedBalance >= 0 ? 'var(--budget-positive)' : 'var(--budget-negative)' }}>
-                    {new Intl.NumberFormat("fr-FR", {
-                      style: "currency",
-                      currency: "EUR",
-                    }).format(projectedBalance)}
+                <div className="flex flex-col">
+                  {/* Affichage des périodes */}
+                  <div className="flex items-center">
+                    <div 
+                      className="text-lg sm:text-2xl font-bold" 
+                      style={{ 
+                        color: (journalBalance !== undefined ? journalBalance : projectedBalance) >= 0 
+                          ? 'var(--budget-positive)' 
+                          : 'var(--budget-negative)' 
+                      }}
+                    >
+                      {/* Priorité au solde du journal si disponible */}
+                      {new Intl.NumberFormat("fr-FR", {
+                        style: "currency",
+                        currency: "EUR",
+                      }).format(journalBalance !== undefined ? journalBalance : projectedBalance)}
+                    </div>
+                    
+                    {/* Badge indiquant la source du solde */}
+                    {journalBalance !== undefined && balanceSource && (
+                      <span className="ml-1 px-1 py-0.5 text-xs bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-400 rounded">
+                        {balanceSource}
+                      </span>
+                    )}
+                    
+                    {/* Badge "ajusté" qui n'apparait que si un ajustement valide existe et qu'on n'a pas de solde du journal */}
+                    {journalBalance === undefined && forecastData && forecastData.isAdjusted && (
+                      <span className="ml-1 px-1 py-0.5 text-xs bg-primary/10 text-primary rounded">
+                        ajusté
+                      </span>
+                    )}
+                    
+                    {accountFilter !== "all" && (
+                      <button
+                        className="ml-2 h-8 w-8 flex items-center justify-center rounded-full bg-primary/10 hover:bg-primary/20"
+                        onClick={handleOpenAdjustmentDialog}
+                        title="Ajuster le solde prévisionnel"
+                      >
+                        <Edit2 className="h-4 w-4 text-primary" />
+                      </button>
+                    )}
                   </div>
                   
-                  {/* Badge "ajusté" qui n'apparait que si un ajustement valide existe */}
-                  {forecastData && forecastData.isAdjusted && (
-                    <span className="ml-1 px-1 py-0.5 text-xs bg-primary/10 text-primary rounded">
-                      ajusté
-                    </span>
-                  )}
-                  
-                  {accountFilter !== "all" && (
-                    <button
-                      className="ml-2 h-8 w-8 flex items-center justify-center rounded-full bg-primary/10 hover:bg-primary/20"
-                      onClick={handleOpenAdjustmentDialog}
-                      title="Ajuster le solde prévisionnel"
-                    >
-                      <Edit2 className="h-4 w-4 text-primary" />
-                    </button>
+                  {/* Sous-titre montrant l'origine du solde */}
+                  {journalBalance !== undefined && (
+                    <div className="text-xs text-muted-foreground mt-0.5">
+                      Solde du journal comptable ({balanceSource || 'final'})
+                    </div>
                   )}
                 </div>
               </div>

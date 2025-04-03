@@ -1,5 +1,5 @@
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
-import { Account, Transaction, RecurringTransaction, UserPreferences, Currency, Theme, TransactionType, BalanceAdjustment } from './types';
+import { Account, Transaction, RecurringTransaction, UserPreferences, Currency, Theme, TransactionType, BalanceAdjustment, JournalEntry } from './types';
 import { objectStoreExists, withFallback } from './dbUtils';
 import { getDBVersion, fixDBVersion } from './versionFix';
 
@@ -44,11 +44,22 @@ interface BudgetAppDB extends DBSchema {
       'by-account-month': [number, string]; // [accountId, yearMonth]
     };
   };
+  accountingJournal: {
+    key: number;
+    value: JournalEntry;
+    indexes: {
+      'yearMonth': string;
+      'date': Date;
+      'accountId': number;
+      'transactionId': number;
+      'isCalculated': boolean;
+    };
+  };
 }
 
 // Nom et version de la base de données
 const DB_NAME = 'ma-bourse';
-let DB_VERSION = 3; // Version de base qui sera ajustée dynamiquement
+let DB_VERSION = 4; // Mis à jour à la version 4 pour le journal comptable
 
 // Instance de la base de données
 let db: IDBPDatabase<BudgetAppDB>;
@@ -60,7 +71,7 @@ export async function initDB(): Promise<IDBPDatabase<BudgetAppDB>> {
   try {
     // Vérifier et corriger la version de la base de données si nécessaire
     const fixedVersion = await fixDBVersion();
-    DB_VERSION = fixedVersion;
+    DB_VERSION = Math.max(fixedVersion, 4); // On s'assure d'au moins avoir la v4
     console.log(`Initialisation de la base de données avec la version: ${DB_VERSION}`);
     
     // Détecter mode réseau
@@ -158,6 +169,25 @@ export async function initDB(): Promise<IDBPDatabase<BudgetAppDB>> {
           // pour éviter les erreurs "requested version is less than existing version"
           
           // Note: Si des changements réels sont nécessaires pour la v3, les ajouter ici
+        }
+        
+        // Mise à jour de la version 3 à 4 (pour le journal comptable)
+        if (oldVersion < 4) {
+          console.log('Mise à jour de la base de données vers la version 4 - Ajout du journal comptable...');
+          
+          // Création du store pour le journal comptable
+          if (!db.objectStoreNames.contains('accountingJournal')) {
+            const journalStore = db.createObjectStore('accountingJournal', { 
+              keyPath: 'id',
+              autoIncrement: true
+            });
+            journalStore.createIndex('yearMonth', 'yearMonth');
+            journalStore.createIndex('date', 'date');
+            journalStore.createIndex('accountId', 'accountId');
+            journalStore.createIndex('transactionId', 'transactionId');
+            journalStore.createIndex('isCalculated', 'isCalculated');
+            console.log('Table accountingJournal créée avec succès');
+          }
         }
       }
     });
@@ -360,8 +390,20 @@ export const accountsAPI = {
         await db.delete('balanceAdjustments', adjustment.id);
       }
     }
+    
+    // 6. Supprimer toutes les entrées du journal comptable pour ce compte
+    try {
+      const journalEntries = await db.getAll('accountingJournal');
+      for (const entry of journalEntries) {
+        if (entry.accountId === id) {
+          await db.delete('accountingJournal', entry.id);
+        }
+      }
+    } catch (error) {
+      console.error('Erreur lors de la suppression des entrées du journal comptable:', error);
+    }
 
-    // 6. Finalement, supprimer le compte lui-même
+    // 7. Finalement, supprimer le compte lui-même
     await db.delete('accounts', id);
   },
 
@@ -833,6 +875,306 @@ export const balanceAdjustmentsAPI = {
   }
 };
 
+// API pour le journal comptable
+export const accountingJournalAPI = {
+  // Ajouter une entrée au journal
+  async add(entry: Omit<JournalEntry, 'id'>): Promise<number> {
+    await initDB();
+    return db.add('accountingJournal', entry);
+  },
+  
+  // Récupérer toutes les entrées du journal
+  async getAll(): Promise<JournalEntry[]> {
+    await initDB();
+    return db.getAll('accountingJournal');
+  },
+  
+  // Récupérer les entrées du journal pour un mois spécifique
+  async getByMonth(yearMonth: string): Promise<JournalEntry[]> {
+    await initDB();
+    try {
+      const index = db.transaction('accountingJournal').store.index('yearMonth');
+      return await index.getAll(yearMonth);
+    } catch (error) {
+      console.error(`Erreur lors de la récupération des entrées du journal pour le mois ${yearMonth}:`, error);
+      return [];
+    }
+  },
+  
+  // Récupérer les entrées du journal pour une plage de dates spécifique
+  async getByDateRange(startDate: Date, endDate: Date): Promise<JournalEntry[]> {
+    await initDB();
+    try {
+      console.log(`Récupération des entrées du journal entre ${startDate.toISOString()} et ${endDate.toISOString()}`);
+      
+      // Utiliser l'index 'date' pour une recherche optimisée
+      const entries: JournalEntry[] = [];
+      const index = db.transaction('accountingJournal', 'readonly').store.index('date');
+      
+      // Utiliser un curseur IDBKeyRange pour filtrer les dates
+      let cursor = await index.openCursor(IDBKeyRange.bound(startDate, endDate));
+      
+      while (cursor) {
+        entries.push(cursor.value);
+        cursor = await cursor.continue();
+      }
+      
+      console.log(`${entries.length} entrées trouvées dans la plage de dates`);
+      return entries;
+    } catch (error) {
+      console.error(`Erreur lors de la récupération des entrées du journal entre ${startDate.toISOString()} et ${endDate.toISOString()}:`, error);
+      
+      // Fallback: utiliser toutes les entrées et filtrer manuellement par date
+      console.log("Tentative de récupération avec fallback (filtrage manuel par date)");
+      try {
+        const allEntries = await this.getAll();
+        const filteredEntries = allEntries.filter(entry => {
+          const entryDate = new Date(entry.date);
+          return entryDate >= startDate && entryDate <= endDate;
+        });
+        
+        console.log(`${filteredEntries.length} entrées trouvées par filtrage manuel`);
+        return filteredEntries;
+      } catch (fallbackError) {
+        console.error("Échec du fallback:", fallbackError);
+        return [];
+      }
+    }
+  },
+  
+  // Récupérer les entrées du journal pour un compte spécifique
+  async getByAccount(accountId: number): Promise<JournalEntry[]> {
+    await initDB();
+    try {
+      const index = db.transaction('accountingJournal').store.index('accountId');
+      return await index.getAll(accountId);
+    } catch (error) {
+      console.error(`Erreur lors de la récupération des entrées du journal pour le compte ${accountId}:`, error);
+      return [];
+    }
+  },
+  
+  // Récupérer les entrées du journal pour une transaction spécifique
+  async getEntriesByTransactionId(transactionId: number): Promise<JournalEntry[]> {
+    await initDB();
+    try {
+      const index = db.transaction('accountingJournal').store.index('transactionId');
+      return await index.getAll(transactionId);
+    } catch (error) {
+      console.error(`Erreur lors de la récupération des entrées du journal pour la transaction ${transactionId}:`, error);
+      return [];
+    }
+  },
+  
+  // Supprimer toutes les entrées du journal pour une transaction spécifique
+  async deleteByTransactionId(transactionId: number): Promise<void> {
+    await initDB();
+    try {
+      const entries = await this.getEntriesByTransactionId(transactionId);
+      
+      if (entries.length === 0) {
+        return;
+      }
+      
+      const tx = db.transaction('accountingJournal', 'readwrite');
+      const store = tx.objectStore('accountingJournal');
+      
+      for (const entry of entries) {
+        await store.delete(entry.id!);
+      }
+    } catch (error) {
+      console.error(`Erreur lors de la suppression des entrées du journal pour la transaction ${transactionId}:`, error);
+    }
+  },
+  
+  // Supprimer une entrée du journal par son ID
+  async delete(id: number): Promise<void> {
+    await initDB();
+    try {
+      await db.delete('accountingJournal', id);
+    } catch (error) {
+      console.error(`Erreur lors de la suppression de l'entrée du journal ${id}:`, error);
+    }
+  },
+  
+  // Supprimer toutes les entrées du journal pour un mois spécifique
+  async deleteAllEntriesForMonth(yearMonth: string): Promise<void> {
+    await initDB();
+    try {
+      const entries = await this.getByMonth(yearMonth);
+      
+      if (entries.length === 0) {
+        return;
+      }
+      
+      console.log(`Suppression de ${entries.length} entrées pour le mois ${yearMonth}`);
+      
+      const tx = db.transaction('accountingJournal', 'readwrite');
+      const store = tx.objectStore('accountingJournal');
+      
+      for (const entry of entries) {
+        await store.delete(entry.id!);
+      }
+    } catch (error) {
+      console.error(`Erreur lors de la suppression des entrées du journal pour le mois ${yearMonth}:`, error);
+    }
+  },
+  
+  // Supprimer toutes les entrées calculées du journal pour un mois spécifique
+  async deleteCalculatedEntriesForMonth(yearMonth: string): Promise<void> {
+    await initDB();
+    try {
+      const entries = await this.getByMonth(yearMonth);
+      const calculatedEntries = entries.filter(entry => entry.isCalculated);
+      
+      if (calculatedEntries.length === 0) {
+        return;
+      }
+      
+      const tx = db.transaction('accountingJournal', 'readwrite');
+      const store = tx.objectStore('accountingJournal');
+      
+      for (const entry of calculatedEntries) {
+        await store.delete(entry.id!);
+      }
+    } catch (error) {
+      console.error(`Erreur lors de la suppression des entrées calculées du journal pour le mois ${yearMonth}:`, error);
+    }
+  },
+  
+  // Obtenir le nombre d'entrées pour un mois spécifique
+  async getCountByMonth(yearMonth: string): Promise<number> {
+    await initDB();
+    try {
+      const entries = await this.getByMonth(yearMonth);
+      return entries.length;
+    } catch (error) {
+      console.error(`Erreur lors du comptage des entrées du journal pour le mois ${yearMonth}:`, error);
+      return 0;
+    }
+  },
+  
+  // Récupérer le solde final pour un mois et un compte spécifiques
+  async getFinalBalanceForMonth(yearMonth: string, accountId?: number): Promise<number | null> {
+    await initDB();
+    try {
+      const entries = await this.getByMonth(yearMonth);
+      
+      // Si un compte spécifique est demandé, chercher le solde pour ce compte
+      if (accountId !== undefined) {
+        const filteredEntries = entries.filter(e => e.accountId === accountId);
+        
+        // Rechercher d'abord un solde ajusté
+        const adjustedEntry = filteredEntries.find(e => 
+          e.name === 'Solde AJUSTÉ Fin de Mois');
+        
+        if (adjustedEntry) {
+          console.log(`Solde ajusté trouvé pour ${yearMonth}, compte #${accountId}: ${adjustedEntry.amount}`);
+          return adjustedEntry.amount;
+        }
+        
+        // Sinon, rechercher un solde prévu
+        const expectedEntry = filteredEntries.find(e => 
+          e.name === 'Solde Prévu Fin de Mois');
+        
+        if (expectedEntry) {
+          console.log(`Solde prévu trouvé pour ${yearMonth}, compte #${accountId}: ${expectedEntry.amount}`);
+          return expectedEntry.amount;
+        }
+        
+        // Enfin, si aucun solde final n'est trouvé, utiliser le solde initial
+        const initialEntry = filteredEntries.find(e => 
+          e.name === 'Solde Initial');
+        
+        if (initialEntry) {
+          console.log(`Solde initial trouvé pour ${yearMonth}, compte #${accountId}: ${initialEntry.amount}`);
+          return initialEntry.amount;
+        }
+      } else {
+        // Si on demande le solde pour "tous les comptes", calculer la somme des soldes de tous les comptes
+        // D'abord, récupérer tous les comptes disponibles
+        const accounts = await db.getAll('accounts');
+        
+        let totalBalance = 0;
+        
+        for (const account of accounts) {
+          const accountEntries = entries.filter(e => e.accountId === account.id);
+          
+          // Priorité 1: Solde ajusté
+          const adjustedEntry = accountEntries.find(e => e.name === 'Solde AJUSTÉ Fin de Mois');
+          if (adjustedEntry) {
+            totalBalance += adjustedEntry.amount;
+            continue;
+          }
+          
+          // Priorité 2: Solde prévu
+          const expectedEntry = accountEntries.find(e => e.name === 'Solde Prévu Fin de Mois');
+          if (expectedEntry) {
+            totalBalance += expectedEntry.amount;
+            continue;
+          }
+          
+          // Priorité 3: En dernier recours, utiliser le solde initial si disponible
+          const initialEntry = accountEntries.find(e => e.name === 'Solde Initial');
+          if (initialEntry) {
+            totalBalance += initialEntry.amount;
+          }
+        }
+        
+        console.log(`Solde total calculé pour tous les comptes, ${yearMonth}: ${totalBalance}`);
+        return totalBalance;
+      }
+      
+      console.log(`Aucun solde trouvé pour ${yearMonth}, compte #${accountId}`);
+      return null;
+    } catch (error) {
+      console.error(`Erreur lors de la récupération du solde final pour le mois ${yearMonth}:`, error);
+      return null;
+    }
+  },
+  
+  // Exporter le journal comptable au format CSV pour un mois spécifique
+  async exportMonthToCSV(yearMonth: string, accountId?: number): Promise<string> {
+    await initDB();
+    try {
+      const entries = await this.getByMonth(yearMonth);
+      
+      // Filtrer par compte si spécifié
+      const filteredEntries = accountId 
+        ? entries.filter(e => e.accountId === accountId || !e.accountId)
+        : entries;
+      
+      // Trier les entrées par date
+      filteredEntries.sort((a, b) => {
+        const dateA = new Date(a.date).getTime();
+        const dateB = new Date(b.date).getTime();
+        return dateA - dateB;
+      });
+      
+      // Créer l'en-tête du CSV
+      let csv = 'Date de la transaction,Catégorie,Nom,Montant\n';
+      
+      // Ajouter une ligne d'en-tête pour le mois
+      csv += `"--------- ${yearMonth.replace('-', '/')} ---------",,,,\n`;
+      
+      // Ajouter les données
+      for (const entry of filteredEntries) {
+        const date = new Date(entry.date).toLocaleDateString('fr-FR');
+        const category = entry.category.replace(/"/g, '""');
+        const name = entry.name.replace(/"/g, '""');
+        const amount = entry.amount.toFixed(2) + '€';
+        
+        csv += `"${date}","${category}","${name}","${amount}"\n`;
+      }
+      
+      return csv;
+    } catch (error) {
+      console.error(`Erreur lors de l'exportation du journal pour le mois ${yearMonth}:`, error);
+      return '';
+    }
+  }
+};
+
 // Fonction utilitaire pour nettoyer les données orphelines
 export async function cleanOrphanedData() {
   await initDB();
@@ -898,6 +1240,22 @@ export async function cleanOrphanedData() {
     console.error('Erreur lors du nettoyage des ajustements de solde:', error);
   }
   
+  // 6. Nettoyer les entrées du journal comptable orphelines
+  try {
+    // Vérifier d'abord si l'object store accountingJournal existe
+    if (db.objectStoreNames.contains('accountingJournal')) {
+      const allEntries = await db.getAll('accountingJournal');
+      for (const entry of allEntries) {
+        if (entry.accountId && !accountIds.includes(entry.accountId)) {
+          console.log(`Suppression de l'entrée de journal orpheline ${entry.id}`);
+          await db.delete('accountingJournal', entry.id);
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Erreur lors du nettoyage des entrées du journal comptable:', error);
+  }
+  
   console.log('Nettoyage terminé');
   return true;
 }
@@ -910,6 +1268,7 @@ export default {
   recurringTransactions: recurringTransactionsAPI,
   preferences: preferencesAPI,
   balanceAdjustments: balanceAdjustmentsAPI,
+  accountingJournal: accountingJournalAPI,
   cleanOrphanedData: cleanOrphanedData,
   capitalizeExistingAccountNames: capitalizeExistingAccountNames
 };

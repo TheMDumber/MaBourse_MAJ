@@ -5,7 +5,9 @@ import {
   BarChartIcon, 
   WalletIcon, 
   ArrowDownUpIcon, 
-  SettingsIcon 
+  BookOpenIcon,
+  SettingsIcon,
+  ShieldAlertIcon 
 } from 'lucide-react';
 
 interface BottomNavigationProps {
@@ -28,7 +30,9 @@ export function BottomNavigation({ className = '' }: BottomNavigationProps) {
     { path: '/accounts', icon: WalletIcon, label: 'Comptes' },
     { path: '/transactions', icon: ArrowDownUpIcon, label: 'Opérations' },
     { path: '/statistics', icon: BarChartIcon, label: 'Statistiques' },
-    { path: '/settings', icon: SettingsIcon, label: 'Réglages' }
+    { path: '/journal', icon: BookOpenIcon, label: 'Journal' },
+    { path: '/settings', icon: SettingsIcon, label: 'Réglages' },
+    { path: '/admin', icon: ShieldAlertIcon, label: 'Admin' }
   ];
 
   return (

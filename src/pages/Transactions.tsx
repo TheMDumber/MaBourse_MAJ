@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { getCachedBalance } from '../../cache';
 import { useAccountFilter } from '@/contexts/AccountFilterContext';
 import { calculate_monthly_balances } from '../../functions/balance_calculator';
+import { useQuery } from '@tanstack/react-query';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { TransactionForm } from '@/components/transactions/TransactionForm';
 import { TransactionsList } from '@/components/transactions/TransactionsList';
@@ -27,35 +28,128 @@ const Transactions = () => {
   const [onMonthChangeCallback, setOnMonthChangeCallback] = useState<((month: string) => void) | null>(null);
   const queryClient = useQueryClient();
   
+  // Requête pour récupérer le solde du journal
+  const { data: journalBalanceData, isLoading: isLoadingJournalBalance } = useQuery({
+    queryKey: ['journalBalance', currentMonth, selectedAccount],
+    queryFn: async () => {
+      try {
+        // Récupérer le solde initial ou ajusté à partir du journal comptable
+        const accountId = selectedAccount !== "all" ? selectedAccount as number : undefined;
+        
+        // Utiliser la méthode du service qui priorise le solde ajusté puis prévu
+        const { accountingJournalService } = await import('@/lib/accountingJournalService');
+        return await accountingJournalService.getCurrentMonthBalance(currentMonth, accountId);
+      } catch (error) {
+        console.error('Erreur lors de la récupération du solde du journal:', error);
+        return { amount: 0, source: 'erreur' };
+      }
+    },
+    staleTime: 1 * 60 * 1000 // 1 minute (pour être plus réactif)
+  });
+  
+  // Extraire les valeurs pour faciliter l'utilisation
+  const journalBalance = journalBalanceData?.amount;
+  const balanceSource = journalBalanceData?.source;
+  
   // Fonction pour rafraîchir les données après une modification
   const refreshData = () => {
+    // Rafraîchir les transactions et les soldes
     queryClient.invalidateQueries({ queryKey: ['transactions'] });
     queryClient.invalidateQueries({ queryKey: ['recurringTransactions'] });
-    // Rafraîchir également le solde prévisionnel
     queryClient.invalidateQueries({ queryKey: ['forecastBalance'] });
+    queryClient.invalidateQueries({ queryKey: ['journalBalance'] });
+    // Rafraîchir également le journal comptable car il est impliqué dans le calcul du solde prévu
+    queryClient.invalidateQueries({ queryKey: ['accountingJournal'] });
 
-    // --- Bloc d'appel initial pour le calcul de solde refactorisé ---
-    console.log("[Debug] Preparing to call calculate_monthly_balances (with placeholders)");
-    // TODO: Récupérer les vraies valeurs pour les arguments ci-dessous depuis l'état de l'application
-    const placeholder_transactions = []; // Placeholder - Utiliser les vraies transactions plus tard
-    const placeholder_start_date = new Date(); // Placeholder - Utiliser la vraie date de création du compte
-    const placeholder_initial_balance = 0.0; // Placeholder - Utiliser le vrai solde initial
-    const placeholder_month_mode = 'calendar'; // Placeholder - Lire depuis la configuration/UI
-    const placeholder_financial_day = 1; // Placeholder - Lire depuis la configuration/UI
-    const placeholder_end_date = new Date(new Date().setFullYear(new Date().getFullYear() + 1)); // Placeholder - Définir une stratégie pertinente
-
-    // Appel à la nouvelle fonction (le résultat n'est pas encore utilisé)
-    const pre_calculated_balances = calculate_monthly_balances(
-      placeholder_transactions, 
-      placeholder_start_date, 
-      placeholder_initial_balance, 
-      placeholder_month_mode, 
-      placeholder_financial_day, 
-      placeholder_end_date
-    );
-    console.log("[Debug] Pre-calculated balances received (placeholder result):", pre_calculated_balances);
-    // TODO: Remplacer les placeholders ci-dessus par les vraies valeurs
-    // TODO: Utiliser le résultat 'pre_calculated_balances' pour déterminer et afficher le solde du mois sélectionné
+    // --- Bloc d'appel pour le calcul de solde avec vraies données ---
+    console.log("[Debug] Preparing to call calculate_monthly_balances with actual data");
+    
+    // Récupérer toutes les transactions
+    db.transactions.getAll().then(transactions => {
+      // Formater les transactions pour qu'elles correspondent à la structure attendue
+      const formattedTransactions = transactions.map(tx => ({
+        date: new Date(tx.date),
+        amount: tx.amount,
+        type: tx.type,
+        accountId: tx.accountId,
+        toAccountId: tx.toAccountId
+      }));
+      
+      // Récupérer la date de création du compte depuis localStorage
+      const accountCreationMonth = localStorage.getItem('minSelectableMonth') || localStorage.getItem('accountCreationMonth');
+      const accountCreationDate = accountCreationMonth 
+        ? new Date(`${accountCreationMonth}-01T00:00:00`) 
+        : new Date('2020-01-01'); // Date par défaut si non disponible
+      
+      // Récupérer les préférences utilisateur pour le mode mois et le jour financier
+      db.preferences.get().then(prefs => {
+        const monthMode = prefs.useFinancialMonth ? 'financial' : 'calendar';
+        const financialDay = prefs.financialMonthStartDay || 1;
+        
+        // Récupérer le solde initial du compte si un compte spécifique est sélectionné
+        let initialBalance = 0;
+        
+        const getInitialBalance = async () => {
+          if (selectedAccount !== "all") {
+            try {
+              const account = await db.accounts.getById(selectedAccount as number);
+              if (account) {
+                initialBalance = account.initialBalance;
+              }
+            } catch (error) {
+              console.error("Erreur lors de la récupération du compte:", error);
+            }
+          } else {
+            // Pour tous les comptes, cumuler les soldes initiaux
+            const accounts = await db.accounts.getAll();
+            initialBalance = accounts.reduce((sum, acc) => sum + acc.initialBalance, 0);
+          }
+          
+          // Définir la date de fin comme un an après aujourd'hui
+          const endDate = new Date();
+          endDate.setFullYear(endDate.getFullYear() + 1);
+          
+          console.log(`Calling calculate_monthly_balances with real data:
+            - Transactions: ${formattedTransactions.length} transactions
+            - Account Creation: ${accountCreationDate.toISOString()}
+            - Initial Balance: ${initialBalance}
+            - Month Mode: ${monthMode}
+            - Financial Day: ${financialDay}
+            - End Date: ${endDate.toISOString()}
+            - Selected Account: ${selectedAccount}
+          `);
+          
+          // Appel à la fonction avec les vraies données
+          const calculatedBalances = calculate_monthly_balances(
+            formattedTransactions,
+            accountCreationDate,
+            initialBalance,
+            monthMode as 'calendar' | 'financial',
+            financialDay,
+            endDate,
+            selectedAccount !== "all" ? selectedAccount as number : undefined
+          );
+          
+          console.log("[Debug] Calculated balances:", calculatedBalances);
+          
+          // Utiliser les résultats pour afficher le solde du mois sélectionné
+          const currentMonthBalance = calculatedBalances[currentMonth];
+          if (currentMonthBalance !== undefined) {
+            console.log(`Solde calculé pour ${currentMonth}: ${currentMonthBalance}`);
+            // TODO: Afficher ce solde dans l'interface
+            // localStorage.setItem('cachedBalance_' + currentMonth, currentMonthBalance.toString());
+          } else {
+            console.log(`Aucun solde calculé pour ${currentMonth}`);
+          }
+        };
+        
+        getInitialBalance();
+      }).catch(error => {
+        console.error("Erreur lors de la récupération des préférences:", error);
+      });
+    }).catch(error => {
+      console.error("Erreur lors de la récupération des transactions:", error);
+    });
     // --- Fin du bloc d'appel ---
   };
 
@@ -69,19 +163,42 @@ const Transactions = () => {
       
       setCurrentMonth(month);
       
-      // Récupérer le solde depuis le cache
-      const cachedBalance = getCachedBalance(month);
-      if (cachedBalance !== undefined) {
-        console.log(`Solde trouvé dans le cache pour ${month}:`, cachedBalance);
-        // TODO: Afficher le solde dans l'interface
-      } else {
-        console.log(`Aucun solde trouvé dans le cache pour ${month}`);
-      }
+      // Rafraîchir immédiatement les soldes lorsque le mois change
+      queryClient.invalidateQueries({ queryKey: ['journalBalance'] });
+      queryClient.invalidateQueries({ queryKey: ['forecastBalance'] });
       
-      // Rafraîchir le solde prévisionnel lorsque le mois change
-      setTimeout(() => {
-        queryClient.invalidateQueries({ queryKey: ['forecastBalance'] });
-      }, 100);
+      // Pour s'assurer que le journal est bien généré pour ce mois
+      setTimeout(async () => {
+        try {
+          const accountId = selectedAccount !== "all" ? selectedAccount as number : undefined;
+          
+          // Vérifier si le journal contient des entrées pour ce mois
+          const entries = await db.accountingJournal.getByMonth(month);
+          
+          // Si le journal est vide pour ce mois, proposer de le générer
+          if (entries.length === 0) {
+            console.log(`Aucune entrée de journal trouvée pour ${month}, proposition de génération`);
+            if (confirm(`Aucune entrée de journal n'existe pour ${month}. Voulez-vous générer le journal pour ce mois?`)) {
+              try {
+                const { accountingJournalService } = await import('@/lib/accountingJournalService');
+                await accountingJournalService.generateJournalForMonth(month);
+                
+                // Rafraîchir toutes les données qui dépendent du journal
+                queryClient.invalidateQueries({ queryKey: ['journalBalance'] });
+                queryClient.invalidateQueries({ queryKey: ['forecastBalance'] });
+                queryClient.invalidateQueries({ queryKey: ['accountingJournal'] });
+                
+                alert(`Journal généré avec succès pour ${month}`);
+              } catch (error) {
+                console.error('Erreur lors de la génération du journal:', error);
+                alert('Erreur lors de la génération du journal');
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Erreur lors de la vérification du journal:', error);
+        }
+      }, 500);
     };
     
     setOnMonthChangeCallback(() => handleMonthChange);
@@ -212,7 +329,16 @@ const Transactions = () => {
   }, [selectedAccount, setSelectedAccount]);
 
   return (
-    <MainLayout accountFilter={selectedAccount} selectedMonth={currentMonth}>
+    <MainLayout 
+      accountFilter={selectedAccount} 
+      selectedMonth={currentMonth}
+      // Passer les données du solde au MainLayout pour affichage correct
+      journalBalance={journalBalance}
+      balanceSource={balanceSource}
+    >
+      <h1 className="text-2xl font-bold mb-4">
+        <span>Transactions</span>
+      </h1>
       <div className="space-y-6">
         <TransactionsList 
           onAddTransaction={handleAddTransaction}

@@ -72,13 +72,21 @@ export class FileStorageAdapter {
   async login(username: string, password: string): Promise<boolean> {
     try {
       console.log('Tentative de connexion à', API_BASE_URL);
+      
+      // Ajouter un timeout pour éviter les attentes infinies
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
+      
       const response = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password }),
+        signal: controller.signal
       });
+      
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         console.error('Erreur de connexion:', response.status, response.statusText);
@@ -94,6 +102,7 @@ export class FileStorageAdapter {
         
         // Sauvegarder la session dans localStorage
         localStorage.setItem('userSession', JSON.stringify({ username, password }));
+        console.log('Session sauvegardée avec succès dans localStorage');
         return true;
       }
       
@@ -143,16 +152,35 @@ export class FileStorageAdapter {
     }
 
     try {
+      // Ajouter un timeout pour éviter les attentes infinies
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
+      
       const response = await fetch(`${API_BASE_URL}/data`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username: this.username, password: this.password }),
+        signal: controller.signal
       });
+      
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         console.error('Erreur de chargement des données:', response.status, response.statusText);
+        
+        // Si erreur 401, tenter de se reconnecter
+        if (response.status === 401) {
+          console.log('Session expirée, tentative de reconnexion...');
+          const loginSuccess = await this.login(this.username, this.password);
+          
+          if (loginSuccess) {
+            console.log('Reconnexion réussie, nouvel essai de chargement des données');
+            return await this.loadUserData();
+          }
+        }
+        
         return null;
       }
 
@@ -204,6 +232,10 @@ export class FileStorageAdapter {
     try {
       console.log(`Tentative de sauvegarde des données pour l'utilisateur ${this.username}`);
       
+      // Ajouter un timeout pour éviter les attentes infinies
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
+      
       const response = await fetch(`${API_BASE_URL}/save`, {
         method: 'POST',
         headers: {
@@ -214,7 +246,10 @@ export class FileStorageAdapter {
           password: this.password,
           data
         }),
+        signal: controller.signal
       });
+      
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         console.error('Erreur de sauvegarde des données:', response.status, response.statusText);
@@ -260,13 +295,21 @@ export class FileStorageAdapter {
   async checkUsernameExists(username: string): Promise<boolean> {
     try {
       console.log('Vérification du nom d\'utilisateur à', API_BASE_URL);
+      
+      // Ajouter un timeout pour éviter les attentes infinies
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
+      
       const response = await fetch(`${API_BASE_URL}/check-username`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username }),
+        signal: controller.signal
       });
+      
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         console.error('Erreur de vérification du nom d\'utilisateur:', response.status, response.statusText);
@@ -284,7 +327,15 @@ export class FileStorageAdapter {
   // Obtenir la liste des utilisateurs
   async getUsersList(): Promise<string[]> {
     try {
-      const response = await fetch(`${API_BASE_URL}/users-list`);
+      // Ajouter un timeout pour éviter les attentes infinies
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
+      
+      const response = await fetch(`${API_BASE_URL}/users-list`, {
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
       
       if (!response.ok) {
         console.error('Erreur de récupération de la liste des utilisateurs:', response.status, response.statusText);

@@ -130,3 +130,38 @@ export interface BalanceAdjustment {
   createdAt: Date;
   updatedAt: Date;
 }
+
+// --- Nouveaux types pour le journal comptable ---
+
+// Catégories du journal comptable
+export enum JournalCategory {
+  BALANCE = "Solde",
+  INCOME = "Revenu",
+  FIXED_EXPENSE = "Dépenses Fixes",
+  CURRENT_EXPENSE = "Dépenses Courantes",
+  EXCEPTIONAL_EXPENSE = "Dépenses Exceptionnelles",
+  SUMMARY = "Résumé"
+}
+
+// Noms standardisés des entrées du journal
+export enum JournalEntryName {
+  INITIAL_BALANCE = "Solde Initial",
+  MONTHLY_INCOME_TOTAL = "Total Revenus du Mois",
+  MONTHLY_EXPENSE_TOTAL = "Total Dépenses du Mois",
+  MONTHLY_BALANCE = "Balance du Mois",
+  EXPECTED_BALANCE = "Solde Prévu Fin de Mois",
+  ADJUSTED_BALANCE = "Solde AJUSTÉ Fin de Mois"
+}
+
+// Structure d'une entrée dans le journal comptable
+export interface JournalEntry {
+  id?: number;           // Identifiant unique (pour IndexedDB)
+  date: Date;            // Date de la transaction
+  category: string;      // Catégorie (Solde, Revenu, Dépenses Fixes, etc.)
+  name: string;          // Nom détaillé de l'opération
+  amount: number;        // Montant (positif pour revenus, négatif pour dépenses)
+  isCalculated: boolean; // Pour distinguer les entrées calculées (résumés, soldes)
+  yearMonth: string;     // Format "YYYY-MM" pour faciliter le filtrage
+  accountId?: number;    // ID du compte associé (facultatif)
+  transactionId?: number; // Référence à la transaction d'origine (si applicable)
+}

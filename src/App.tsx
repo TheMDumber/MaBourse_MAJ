@@ -25,12 +25,15 @@ import Accounts from "./pages/Accounts";
 import Transactions from "./pages/Transactions";
 import Statistics from "./pages/Statistics";
 import Settings from "./pages/Settings";
+import Journal from "./pages/Journal";
+import AdminPage from "./pages/AdminPage";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import AuthPatch from "./lib/patches/AuthPatch";
 
 import db from "./lib/db";
 import { executeRecurringTransactions } from "./lib/recurringTransactionManager";
+import { accountingJournalService } from "./lib/accountingJournalService";
 
 // Utilisation de l'instance partagée du queryClient depuis queryConfig.ts
 
@@ -71,11 +74,25 @@ const AppContent = () => {
           await db.cleanOrphanedData();
           await db.capitalizeExistingAccountNames(); // Capitaliser les noms de comptes existants
           
+          // Générer le journal comptable avec la nouvelle méthode optimisée
+          try {
+            console.log("Génération du journal comptable au démarrage de l'application...");
+            // Utiliser generateJournalAtStartup pour bénéficier des nouvelles fonctionnalités:
+            // - Couverture temporelle complète depuis le compte le plus ancien
+            // - Génération prévisionnelle étendue à 12 mois
+            // - Persistance des données pour une régénération sélective
+            await accountingJournalService.generateJournalAtStartup();
+            console.log("Journal comptable généré avec succès (historique complet + 12 mois de prévision)");
+          } catch (journalError) {
+            console.error("Erreur lors de la génération du journal comptable:", journalError);
+          }
+          
           // Invalider toutes les requêtes après le nettoyage
           queryClient.invalidateQueries({ queryKey: ['accounts'] });
           queryClient.invalidateQueries({ queryKey: ['transactions'] });
           queryClient.invalidateQueries({ queryKey: ['recurringTransactions'] });
           queryClient.invalidateQueries({ queryKey: ['statistics'] });
+          queryClient.invalidateQueries({ queryKey: ['accountingJournal'] });
         } catch (initError) {
           console.error('Erreur lors de l\'initialisation de la base de données:', initError);
           
@@ -110,11 +127,24 @@ const AppContent = () => {
           const executedCount = await executeRecurringTransactions();
           if (executedCount > 0) {
             console.log(`${executedCount} transactions récurrentes exécutées`);
+            
+            // Régénérer le journal comptable pour prendre en compte les nouvelles transactions
+            try {
+              console.log("Mise à jour du journal comptable après exécution des transactions récurrentes...");
+              // Utilisation de la nouvelle méthode pour bénéficier de l'optimisation
+              // et de la couverture temporelle complète
+              await accountingJournalService.generateJournalAtStartup();
+              console.log("Journal comptable mis à jour avec succès (historique complet + prévision 12 mois)");
+            } catch (journalError) {
+              console.error("Erreur lors de la mise à jour du journal comptable:", journalError);
+            }
+            
             // Invalider les requêtes pour que les nouveaux soldes soient recalculés
             queryClient.invalidateQueries({ queryKey: ['accounts'] });
             queryClient.invalidateQueries({ queryKey: ['transactions'] });
             queryClient.invalidateQueries({ queryKey: ['forecastBalance'] });
             queryClient.invalidateQueries({ queryKey: ['historicalBalances'] });
+            queryClient.invalidateQueries({ queryKey: ['accountingJournal'] });
           } else {
             console.log("Aucune transaction récurrente à exécuter aujourd'hui");
           }
@@ -254,6 +284,22 @@ const AppContent = () => {
             element={
               <AuthGuard>
                 <Settings />
+              </AuthGuard>
+            } 
+          />
+          <Route 
+            path="/journal" 
+            element={
+              <AuthGuard>
+                <Journal />
+              </AuthGuard>
+            } 
+          />
+          <Route 
+            path="/admin" 
+            element={
+              <AuthGuard>
+                <AdminPage />
               </AuthGuard>
             } 
           />

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { ArrowRightLeft, CalendarIcon, Pencil, Trash2 } from "lucide-react";
@@ -53,6 +53,7 @@ import {
 import db from "@/lib/db";
 import { cn } from "@/lib/utils";
 import { Account, Transaction, TransactionType, ExpenseCategory } from "@/lib/types";
+import { accountingJournalService } from "@/lib/accountingJournalService";
 import { toast } from "sonner";
 
 // Schéma de validation pour l'édition de transaction
@@ -111,6 +112,8 @@ export function TransactionEditForm({
   // Options d'édition/suppression pour les transactions
   const [affectAllRecurring, setAffectAllRecurring] = useState(false);
   const [affectAllOccurrences, setAffectAllOccurrences] = useState(false);
+  
+  const queryClient = useQueryClient();
   
   const { data: accounts, isLoading: isLoadingAccounts } = useQuery({
     queryKey: ["accounts"],
@@ -190,24 +193,59 @@ export function TransactionEditForm({
         );
         
         // Mettre à jour toutes les transactions récurrentes
+        let successCount = 0; // Compteur pour les transactions mises à jour avec succès
+        const errors = []; // Collecter les erreurs
+        
         for (const tx of recurringTransactions) {
           if (tx.id) {
             try {
               // Vérifier que la transaction existe toujours avant de la mettre à jour
               const exists = await db.transactions.getAll().then(txs => txs.some(t => t.id === tx.id));
               if (exists) {
+                // Mise à jour de la transaction
                 await db.transactions.update(tx.id, {
                   ...updateData,
                   // Conserver la date d'origine pour chaque transaction de la série
                   date: tx.date 
                 });
+                
+                // Récupérer la transaction mise à jour et mettre à jour le journal
+                const updatedTx = await db.transactions.getById(tx.id);
+                if (updatedTx) {
+                  try {
+                    await accountingJournalService.handleTransactionUpdated(updatedTx);
+                    successCount++;
+                  } catch (journalError) {
+                    console.error(`Erreur lors de la mise à jour du journal pour la transaction ${tx.id}:`, journalError);
+                    errors.push(`Erreur journal pour transaction #${tx.id}: ${journalError.message}`);
+                    
+                    // Tenter une régénération complète du mois
+                    try {
+                      const txMonth = format(new Date(tx.date), 'yyyy-MM');
+                      await accountingJournalService.generateJournalForMonth(txMonth);
+                    } catch (regenerateError) {
+                      console.error(`Échec de la régénération du journal pour le mois:`, regenerateError);
+                    }
+                  }
+                }
               }
             } catch (e) {
               console.error(`Erreur lors de la mise à jour de la transaction récurrente ${tx.id}:`, e);
+              errors.push(`Erreur transaction #${tx.id}: ${e.message}`);
             }
           }
         }
-        toast.success(`${recurringTransactions.length} transactions récurrentes mises à jour !`);
+        
+        // Si des erreurs se sont produites, afficher une notification avec détails
+        if (errors.length > 0) {
+          console.warn(`${errors.length} erreurs lors de la mise à jour des transactions récurrentes`);
+          if (successCount > 0) {
+            toast.success(`${successCount} transactions mises à jour avec succès !`);
+          }
+          toast.error(`${errors.length} erreurs lors de la mise à jour. Vérifiez la console pour les détails.`);
+        } else {
+          toast.success(`${successCount} transactions récurrentes mises à jour !`);
+        }
       } 
       // Option 2: Si on veut mettre à jour toutes les occurrences similaires
       else if (affectAllOccurrences) {
@@ -229,38 +267,98 @@ export function TransactionEditForm({
         
         // Mettre à jour toutes les transactions similaires
         let successCount = 0;
+        const errors = [];
+        
         for (const tx of similarTransactions) {
           if (tx.id) {
             try {
               // Vérifier que la transaction existe toujours avant de la mettre à jour
               const exists = await db.transactions.getAll().then(txs => txs.some(t => t.id === tx.id));
               if (exists) {
+                // Mise à jour de la transaction
                 await db.transactions.update(tx.id, {
                   ...updateData,
                   // Conserver la date d'origine pour chaque transaction
                   date: tx.date
                 });
-                successCount++;
+                
+                // Récupérer la transaction mise à jour et mettre à jour le journal
+                const updatedTx = await db.transactions.getById(tx.id);
+                if (updatedTx) {
+                  try {
+                    await accountingJournalService.handleTransactionUpdated(updatedTx);
+                    successCount++;
+                  } catch (journalError) {
+                    console.error(`Erreur lors de la mise à jour du journal pour la transaction ${tx.id}:`, journalError);
+                    errors.push(`Erreur journal pour transaction #${tx.id}: ${journalError.message}`);
+                    
+                    // Tenter une régénération complète du mois
+                    try {
+                      const txMonth = format(new Date(tx.date), 'yyyy-MM');
+                      await accountingJournalService.generateJournalForMonth(txMonth);
+                    } catch (regenerateError) {
+                      console.error(`Échec de la régénération du journal pour le mois:`, regenerateError);
+                    }
+                  }
+                }
               }
             } catch (e) {
               console.error(`Erreur lors de la mise à jour de la transaction similaire ${tx.id}:`, e);
+              errors.push(`Erreur transaction #${tx.id}: ${e.message}`);
             }
           }
         }
         
-        toast.success(`${successCount} transactions similaires mises à jour !`);
+        // Si des erreurs se sont produites, afficher une notification avec détails
+        if (errors.length > 0) {
+          console.warn(`${errors.length} erreurs lors de la mise à jour des transactions similaires`);
+          if (successCount > 0) {
+            toast.success(`${successCount} transactions mises à jour avec succès !`);
+          }
+          toast.error(`${errors.length} erreurs lors de la mise à jour. Vérifiez la console pour les détails.`);
+        } else {
+          toast.success(`${successCount} transactions similaires mises à jour !`);
+        }
       } else {
         // Mettre à jour uniquement la transaction courante
         await db.transactions.update(transaction.id, updateData);
-        toast.success("Transaction mise à jour avec succès !");
+        
+        // Récupérer la transaction mise à jour
+        const updatedTransaction = await db.transactions.getById(transaction.id);
+        
+        // Mettre à jour le journal comptable
+        if (updatedTransaction) {
+          try {
+            await accountingJournalService.handleTransactionUpdated(updatedTransaction);
+            toast.success("Transaction mise à jour avec succès !");
+          } catch (journalError) {
+            console.error("Erreur lors de la mise à jour du journal comptable:", journalError);
+            toast.error("Transaction mise à jour, mais erreur lors de la mise à jour du journal");
+            
+            // Tenter une régénération complète du mois
+            try {
+              const txMonth = format(new Date(updatedTransaction.date), 'yyyy-MM');
+              await accountingJournalService.generateJournalForMonth(txMonth);
+              toast.success("Journal régénéré avec succès !");
+            } catch (regenerateError) {
+              console.error(`Échec de la régénération du journal pour le mois:`, regenerateError);
+            }
+          }
+        } else {
+          toast.error("Transaction mise à jour, mais impossible de la récupérer pour mettre à jour le journal");
+        }
       }
+      
+      // Invalider les requêtes pour forcer un rafraîchissement des données
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["accountingJournal"] });
       
       form.reset();
       onSuccess?.();
       onClose();
     } catch (error) {
       console.error("Erreur lors de la mise à jour de la transaction:", error);
-      toast.error("Erreur lors de la mise à jour de la transaction");
+      toast.error(`Erreur lors de la mise à jour: ${error.message || "Une erreur s'est produite"}`);
     }
   }
   
@@ -283,7 +381,14 @@ export function TransactionEditForm({
         // Supprimer toutes les transactions récurrentes
         for (const tx of recurringTransactions) {
           if (tx.id) {
+            // Conserver une copie de la transaction avant de la supprimer
+            const txCopy = { ...tx };
+            
+            // Supprimer la transaction
             await db.transactions.delete(tx.id);
+            
+            // Mettre à jour le journal comptable
+            await accountingJournalService.handleTransactionDeleted(txCopy);
           }
         }
         toast.success(`${recurringTransactions.length} transactions récurrentes supprimées !`);
@@ -310,15 +415,30 @@ export function TransactionEditForm({
         let count = 0;
         for (const tx of similarTransactions) {
           if (tx.id) {
+            // Conserver une copie de la transaction avant de la supprimer
+            const txCopy = { ...tx };
+            
+            // Supprimer la transaction
             await db.transactions.delete(tx.id);
+            
+            // Mettre à jour le journal comptable
+            await accountingJournalService.handleTransactionDeleted(txCopy);
+            
             count++;
           }
         }
         
         toast.success(`${count} transactions similaires supprimées !`);
       } else {
+        // Conserver une copie de la transaction avant de la supprimer
+        const txCopy = { ...transaction };
+        
         // Supprimer uniquement la transaction courante
         await db.transactions.delete(transaction.id);
+        
+        // Mettre à jour le journal comptable
+        await accountingJournalService.handleTransactionDeleted(txCopy);
+        
         toast.success("Transaction supprimée avec succès !");
       }
       

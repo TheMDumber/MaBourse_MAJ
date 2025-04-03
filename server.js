@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import fs from 'fs';
+import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { 
@@ -32,11 +33,12 @@ const corsOptions = {
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   optionsSuccessStatus: 204,
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'X-Requested-With', 'Accept', 'Origin']
 };
 
 // Middleware
 app.use(cors(corsOptions));
+
 app.use(express.json({ limit: '10mb' }));
 
 // Servir les fichiers statiques (public, puis racine)
@@ -56,9 +58,15 @@ try {
   console.error('Erreur lors de la vérification du dossier dist:', error);
 }
 
+// Définir le chemin du dossier de données
+const DATA_DIR = path.resolve(__dirname, 'data');
+
 // S'assurer que le dossier de données existe et que le fichier admin existe
 ensureDataDir();
 ensureAdminFile();
+
+// Définir le chemin du fichier utilisateurs
+const USERS_FILE = path.join(DATA_DIR, 'users.json');
 
 // Middleware pour logger les requêtes
 app.use((req, res, next) => {
@@ -142,15 +150,22 @@ app.post('/api/storage/data', async (req, res) => {
       });
     }
     
-    // Récupérer l'ID de l'utilisateur pour obtenir les métadonnées
-    const usersListContent = await fs.promises.readFile(USERS_FILE, 'utf-8');
-    const usersList = JSON.parse(usersListContent);
-    const userEntry = usersList.users.find(u => u.username === username);
-    
-    // Date de création du compte
     let accountCreationDate = null;
-    if (userEntry && userEntry.createdAt) {
-      accountCreationDate = userEntry.createdAt;
+    let userEntry = null;
+    
+    // Récupérer l'ID de l'utilisateur pour obtenir les métadonnées
+    try {
+      const usersListContent = await fs.promises.readFile(USERS_FILE, 'utf-8');
+      const usersList = JSON.parse(usersListContent);
+      userEntry = usersList.users.find(u => u.username === username);
+      
+      // Date de création du compte
+      if (userEntry && userEntry.createdAt) {
+        accountCreationDate = userEntry.createdAt;
+      }
+    } catch (error) {
+      console.warn('Erreur lors de la lecture des métadonnées utilisateur:', error);
+      // Continuer sans les métadonnées
     }
     
     const userData = await loadUserData(username, password);

@@ -797,6 +797,22 @@ export function TransactionsList({
     }));
   }, [filteredTransactions, pagination.pageSize]);
 
+  // Requête pour récupérer le solde du journal
+  const { data: journalBalance, isLoading: isLoadingJournalBalance } = useQuery({
+    queryKey: ['journalBalance', currentMonth, initialAccountFilter],
+    queryFn: async () => {
+      try {
+        // Récupérer le solde ajusté ou prévu à partir du journal comptable
+        const accountId = initialAccountFilter !== "all" ? initialAccountFilter as number : undefined;
+        return await db.accountingJournal.getFinalBalanceForMonth(currentMonth, accountId);
+      } catch (error) {
+        console.error('Erreur lors de la récupération du solde du journal:', error);
+        return null;
+      }
+    },
+    staleTime: 5 * 60 * 1000 // 5 minutes
+  });
+
   // Requête pour les transactions mensuelles pour les statistiques
   const { data: monthlyTransactions = [] } = useQuery({
     queryKey: ["monthlyTransactions", currentMonth, financialMonthsEnabled],
@@ -1221,7 +1237,7 @@ export function TransactionsList({
                 Solde final: {new Intl.NumberFormat("fr-FR", {
                   style: "currency",
                   currency: "EUR",
-                }).format(getCachedBalance(currentMonth) || 0)}
+                }).format(journalBalance !== null ? journalBalance : getCachedBalance(currentMonth) || 0)}
               </p>
             </CardContent>
           </Card>

@@ -1,4 +1,11 @@
 {
-  "users": [],
-  "lastUpdated": "2025-04-01T17:18:05.440Z"
+  "users": [
+    {
+      "username": "test",
+      "id": "098f6bcd4621d373cade4e832627b4f6",
+      "createdAt": "2025-04-03T15:49:35.148Z",
+      "lastLogin": "2025-04-03T16:12:58.328Z"
+    }
+  ],
+  "lastUpdated": "2025-04-03T16:12:58.333Z"
 }

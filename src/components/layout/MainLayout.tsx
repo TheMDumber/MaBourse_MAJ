@@ -17,9 +17,18 @@ interface MainLayoutProps {
   accountFilter?: number | "all";
   selectedMonth?: string; // Format YYYY-MM
   hideHeader?: boolean; // Nouvelle prop pour masquer le bandeau d'information
+  journalBalance?: number; // Solde du journal (directement récupéré du journal)
+  balanceSource?: string; // Source du solde (ajusté, prévu, initial, etc.)
 }
 
-export const MainLayout = ({ children, accountFilter = "all", selectedMonth, hideHeader = false }: MainLayoutProps) => {
+export const MainLayout = ({ 
+  children, 
+  accountFilter = "all", 
+  selectedMonth, 
+  hideHeader = false,
+  journalBalance,
+  balanceSource
+}: MainLayoutProps) => {
   const { theme, changeTheme, isLoading: themeLoading } = useTheme();
   const [dbInitialized, setDbInitialized] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
@@ -27,6 +36,7 @@ export const MainLayout = ({ children, accountFilter = "all", selectedMonth, hid
   const [monthlyIncomes, setMonthlyIncomes] = useState(0);
   const [monthlyExpenses, setMonthlyExpenses] = useState(0);
   const [projectedBalance, setProjectedBalance] = useState(0);
+  const [displayedBalance, setDisplayedBalance] = useState(0); // Solde à afficher (journal ou calculé)
 
   const location = useLocation();
   const queryClient = useQueryClient(); // Obtenir l'instance de queryClient
@@ -217,6 +227,20 @@ export const MainLayout = ({ children, accountFilter = "all", selectedMonth, hid
       console.log('Aucune donnée prévisionnelle reçue, mode:', financialMonthsEnabled ? 'Mois financier' : 'Mois calendaire');
     }
   }, [forecastData, financialMonthsEnabled, financialDates, accountFilter, selectedMonth]);
+  
+  // Déterminer le solde à afficher (priorité au solde du journal)
+  useEffect(() => {
+    if (journalBalance !== undefined) {
+      console.log(`Utilisation du solde du journal: ${journalBalance} (${balanceSource})`);
+      setDisplayedBalance(journalBalance);
+    } else if (forecastData) {
+      console.log(`Utilisation du solde calculé: ${projectedBalance}`);
+      setDisplayedBalance(projectedBalance);
+    } else {
+      console.log(`Aucun solde disponible, affichage à 0`);
+      setDisplayedBalance(0);
+    }
+  }, [journalBalance, balanceSource, projectedBalance, forecastData]);
   
   // Forcer la mise à jour du prévisionnel lors de changements significatifs
   useEffect(() => {
@@ -500,6 +524,9 @@ export const MainLayout = ({ children, accountFilter = "all", selectedMonth, hid
               toggleSidebar={() => setIsMobileNavOpen(!isMobileNavOpen)}
               accountFilter={accountFilter}
               selectedMonth={selectedMonth}
+              // Passer le solde du journal à la TopBar avec priorité sur le solde calculé
+              journalBalance={journalBalance}
+              balanceSource={balanceSource}
             />
           )}
           
@@ -539,8 +566,13 @@ export const MainLayout = ({ children, accountFilter = "all", selectedMonth, hid
                   {new Intl.NumberFormat("fr-FR", {
                     style: "currency",
                     currency: "EUR",
-                  }).format(projectedBalance)}
+                  }).format(displayedBalance)}
                 </div>
+                {journalBalance !== undefined && balanceSource && (
+                  <div className="text-xs text-center mb-1 opacity-80">
+                    Solde {balanceSource} (journal)
+                  </div>
+                )}
                 <div className="flex justify-between items-center">
                   <div>
                     <div className="text-xs opacity-80">Revenus</div>

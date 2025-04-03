@@ -44,6 +44,7 @@ import { Textarea } from "@/components/ui/textarea";
 import db from "@/lib/db";
 import { cn } from "@/lib/utils";
 import { Account, TransactionType, ExpenseCategory, RecurringFrequency } from "@/lib/types";
+import { accountingJournalService } from "@/lib/accountingJournalService";
 import { toast } from "sonner";
 
 // Create a conditional schema based on transaction type
@@ -156,14 +157,25 @@ export function TransactionForm({
         };
 
         // Créer les transactions pour chaque mois demandé
+        const createdTransactionIds = [];
         for (let i = 0; i < months; i++) {
           const transactionDate = new Date(data.date);
           transactionDate.setMonth(transactionDate.getMonth() + i);
           
-          await db.transactions.create({
+          const transactionId = await db.transactions.create({
             ...baseTransaction,
             date: transactionDate,
           });
+          
+          createdTransactionIds.push(transactionId);
+        }
+        
+        // Mettre à jour le journal comptable pour chaque transaction créée
+        for (const transactionId of createdTransactionIds) {
+          const transaction = await db.transactions.getById(transactionId);
+          if (transaction) {
+            await accountingJournalService.handleTransactionAdded(transaction);
+          }
         }
         
         toast.success(`${data.type === TransactionType.INCOME ? "Revenus" : "Dépenses"} mensuels créés pour ${months} mois !`);
@@ -179,9 +191,17 @@ export function TransactionForm({
           date: data.date,
         });
         
+        // Récupérer la transaction créée
+        const createdTransaction = await db.transactions.getById(transactionId);
+        
+        // Mettre à jour le journal comptable
+        if (createdTransaction) {
+          await accountingJournalService.handleTransactionAdded(createdTransaction);
+        }
+        
         // Si c'est un transfert, mettre à jour les soldes des comptes
         if (data.type === TransactionType.TRANSFER && data.toAccountId) {
-          // Cette partie est gérée par la base de données
+          // Cette partie est gérée par la base de données et le journal comptable
           toast.success("Transfert effectué avec succès !");
         } else {
           const typeText = data.type === TransactionType.INCOME ? "Revenu" : "Dépense";

@@ -95,7 +95,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoading(true);
 
     try {
-      const success = await fileStorage.login(username, password);
+      console.log(`Tentative de connexion pour l'utilisateur: ${username}`);
+      
+      // Essais multiples en cas d'échec temporaire
+      let loginAttempts = 0;
+      let success = false;
+      
+      while (loginAttempts < 2 && !success) {
+        try {
+          success = await fileStorage.login(username, password);
+          if (success) {
+            console.log('Connexion réussie');
+            break;
+          } else {
+            console.warn(`Tentative de connexion ${loginAttempts + 1} échouée`);
+            // Attendre un peu avant de réessayer
+            await new Promise(resolve => setTimeout(resolve, 500));
+          }
+        } catch (loginError) {
+          console.error(`Erreur lors de la tentative ${loginAttempts + 1}:`, loginError);
+        }
+        
+        loginAttempts++;
+      }
 
       if (success) {
         setIsAuthenticated(true);

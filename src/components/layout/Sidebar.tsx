@@ -1,5 +1,5 @@
 
-import { Home, Wallet, PiggyBank, BarChartBig, Settings, X } from 'lucide-react';
+import { Home, Wallet, PiggyBank, BarChartBig, BookOpen, Settings, X, ShieldAlert } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Theme } from '@/lib/types';
 import { Link, useLocation } from 'react-router-dom';
@@ -76,11 +76,22 @@ export const Sidebar = ({ theme, changeTheme, closeMobileNav }: SidebarProps) =>
               </Button>
             </Link>
           </li>
+          <li>
+            <Link to="/journal">
+              <Button 
+                variant={isActive('/journal') ? "default" : "ghost"} 
+                className={`w-full justify-start ${isActive('/journal') ? 'bg-sidebar-primary text-sidebar-primary-foreground' : 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'}`}
+              >
+                <BookOpen className="mr-2 h-5 w-5" />
+                Journal
+              </Button>
+            </Link>
+          </li>
         </ul>
       </nav>
       
       {/* Pied de page */}
-      <div className="p-4 border-t border-sidebar-border">
+      <div className="p-4 border-t border-sidebar-border space-y-2">
         <Link to="/settings">
           <Button 
             variant={isActive('/settings') ? "default" : "ghost"} 
@@ -88,6 +99,15 @@ export const Sidebar = ({ theme, changeTheme, closeMobileNav }: SidebarProps) =>
           >
             <Settings className="mr-2 h-5 w-5" />
             Paramètres
+          </Button>
+        </Link>
+        <Link to="/admin">
+          <Button 
+            variant={isActive('/admin') ? "default" : "ghost"} 
+            className={`w-full justify-start ${isActive('/admin') ? 'bg-sidebar-primary text-sidebar-primary-foreground' : 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'}`}
+          >
+            <ShieldAlert className="mr-2 h-5 w-5" />
+            Administration
           </Button>
         </Link>
       </div>

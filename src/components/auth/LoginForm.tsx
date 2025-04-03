@@ -72,6 +72,15 @@ export function LoginForm({ onSuccess, onRegisterClick }: LoginFormProps) {
         setIsLoading(false);
         return;
       }
+      
+      // Ajouter un délai pour éviter les problèmes de requêtes trop rapprochées
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Ajouter un délai pour éviter les problèmes de requêtes trop rapprochées
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Ajouter un délai pour éviter les problèmes de requêtes trop rapprochées
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       // Nettoyer tous les marqueurs de synchronisation avant de tenter la connexion
       localStorage.removeItem('isRedirecting');
