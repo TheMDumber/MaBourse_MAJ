@@ -49,6 +49,14 @@ app.use(express.static(__dirname));
 const distPath = join(__dirname, 'dist');
 try {
   if (fs.existsSync(distPath)) {
+    // Middleware pour forcer le bon Content-Type pour les fichiers .js
+    app.use((req, res, next) => {
+      if (req.url.endsWith('.js')) {
+        res.type('application/javascript');
+      }
+      next();
+    });
+
     app.use(express.static(distPath));
     console.log('Servir le contenu du dossier dist');
   } else {

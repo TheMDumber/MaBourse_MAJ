@@ -619,7 +619,7 @@ export const MainLayout = ({
           {!isMobile && (
             <footer className="p-3 md:p-4 flex justify-between items-center text-xs md:text-sm text-muted-foreground border-t border-border">
               <div>© {new Date().getFullYear()} @TheDumber</div>
-              <div>Version 1.0</div>
+              <div>Version 2.1</div>
             </footer>
           )}
         </div>

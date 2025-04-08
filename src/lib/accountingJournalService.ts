@@ -42,13 +42,14 @@ export class AccountingJournalService {
     // Supprimer TOUTES les entrées existantes pour ce mois
     await db.accountingJournal.deleteAllEntriesForMonth(yearMonth);
     
-    // Pour chaque compte, générer son journal du mois
-    for (const account of accounts) {
-      await this.generateJournalForAccountAndMonth(account, yearMonth, allTransactions);
-    }
-    
-    // Générer un journal consolidé pour tous les comptes
-    await this.generateConsolidatedJournalForMonth(yearMonth, accounts, allTransactions);
+        // Pour chaque compte, générer son journal du mois
+        for (const account of accounts) {
+          // Fournir les arguments optionnels manquants
+          await this.generateJournalForAccountAndMonth(account, yearMonth, allTransactions, false, 1); 
+        }
+        
+        // Générer un journal consolidé pour tous les comptes
+        await this.generateConsolidatedJournalForMonth(yearMonth, accounts, allTransactions, false, 1);
     
     console.log(`Journal pour le mois ${yearMonth} régénéré avec succès`);
   }
@@ -83,11 +84,10 @@ export class AccountingJournalService {
       const entries = await db.accountingJournal.getByMonth(yearMonth);
       
       // Trouver les entrées correspondant aux critères
-      const matchingEntries = entries.filter(entry => 
-        entry.name === entryName && 
-        entry.accountId === accountId && 
-        entry.yearMonth === yearMonth
-      );
+      let matchingEntries = entries.filter(entry => entry.name === entryName && entry.yearMonth === yearMonth);
+      if (accountId !== undefined) {
+        matchingEntries = matchingEntries.filter(entry => entry.accountId === accountId);
+      }
       
       if (matchingEntries.length > 0) {
         console.log(`Suppression de ${matchingEntries.length} entrées de type "${entryName}" pour ${accountId ? `le compte #${accountId}` : 'consolidation'} - Mois ${yearMonth}`);
@@ -142,7 +142,7 @@ export class AccountingJournalService {
     
     // Utiliser la méthode de génération pour plusieurs mois
     console.log(`Génération du journal pour ${months.length} mois, de ${months[0]} à ${months[months.length - 1]}...`);
-    await this.generateJournalForMultipleMonths(months, accounts, transactions);
+    await this.generateJournalForMultipleMonths(months);
     
     console.log('Journal comptable généré avec succès pour toute la période historique et prévisionnelle.');
     
@@ -286,9 +286,9 @@ export class AccountingJournalService {
       }
     }
     
-    // 2. Ajouter l'entrée de solde initial consolidé
+    // 2. Ajouter systématiquement l'entrée de solde initial consolidé
     const initialBalanceEntry: JournalEntry = {
-      date: currentMonthStart, // Premier jour du mois (calendaire ou financier)
+      date: currentMonthStart, // Premier jour du mois
       category: JournalCategory.BALANCE,
       name: JournalEntryName.INITIAL_BALANCE,
       amount: initialConsolidatedBalance,
@@ -450,12 +450,24 @@ export class AccountingJournalService {
     // 1. Trouver le solde initial du mois
     let initialBalance = 0;
     
-    // Si c'est le tout premier mois du compte, utiliser son solde initial défini
+    // Si c'est le tout premier mois du compte, ajouter une entrée de création de compte
     if (new Date(account.createdAt) <= currentMonthStart) {
       if (new Date(account.createdAt).getFullYear() === year && 
           new Date(account.createdAt).getMonth() === month - 1) {
+        // Ajouter l'entrée de création du compte
+        const accountCreationEntry: JournalEntry = {
+          date: new Date(account.createdAt),
+          category: JournalCategory.BALANCE,
+          name: "Création du compte",
+          amount: account.initialBalance,
+          isCalculated: false,
+          yearMonth,
+          accountId: account.id
+        };
+        await db.accountingJournal.add(accountCreationEntry);
+        
         initialBalance = account.initialBalance;
-        console.log(`Premier mois du compte, utilisation du solde initial: ${initialBalance}`);
+        console.log(`Premier mois du compte, ajout de l'entrée de création et utilisation du solde initial: ${initialBalance}`);
       } else {
         // Sinon, chercher le solde ajusté ou prévu du mois précédent
         // Calculer correctement le mois précédent en fonction du mode de mois
@@ -507,18 +519,33 @@ export class AccountingJournalService {
       }
     }
     
-    // 2. Ajouter l'entrée de solde initial
-    const initialBalanceEntry: JournalEntry = {
-      date: currentMonthStart, // Premier jour du mois (calendaire ou financier)
+  // 2. Ajouter l'entrée de création de compte si c'est le premier mois
+  if (new Date(account.createdAt).getFullYear() === year && 
+      new Date(account.createdAt).getMonth() === month - 1) {
+    const accountCreationEntry: JournalEntry = {
+      date: new Date(account.createdAt),
       category: JournalCategory.BALANCE,
-      name: JournalEntryName.INITIAL_BALANCE,
-      amount: initialBalance,
-      isCalculated: true,
+      name: "Création du compte",
+      amount: account.initialBalance,
+      isCalculated: false,
       yearMonth,
       accountId: account.id
     };
-    
-    await db.accountingJournal.add(initialBalanceEntry);
+    await db.accountingJournal.add(accountCreationEntry);
+  }
+
+  // 3. Ajouter systématiquement l'entrée de solde initial
+  const initialBalanceEntry: JournalEntry = {
+    date: currentMonthStart, // Premier jour du mois (calendaire ou financier)
+    category: JournalCategory.BALANCE,
+    name: JournalEntryName.INITIAL_BALANCE,
+    amount: initialBalance,
+    isCalculated: true,
+    yearMonth,
+    accountId: account.id
+  };
+  
+  await db.accountingJournal.add(initialBalanceEntry);
     
     // 3. Filtrer les transactions du mois pour ce compte
     const accountTransactions = allTransactions.filter(tx => {
@@ -527,23 +554,24 @@ export class AccountingJournalService {
              txDate < nextMonthStart && 
              (tx.accountId === account.id || tx.toAccountId === account.id);
     });
-    
+
+    // Trier les transactions par date croissante
+    accountTransactions.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
     console.log(`${accountTransactions.length} transactions trouvées pour ce compte et ce mois`);
-    
+
     // 4. Ajouter chaque transaction au journal
     for (const tx of accountTransactions) {
       const isSource = tx.accountId === account.id;
       const isDestination = tx.toAccountId === account.id;
-      
-      // Déterminer la catégorie en fonction du type de transaction
+
       let category: string;
       let amount: number;
-      
+
       if (tx.type === TransactionType.INCOME && isSource) {
         category = JournalCategory.INCOME;
-        amount = tx.amount; // Positif pour les revenus
+        amount = tx.amount;
       } else if (tx.type === TransactionType.EXPENSE && isSource) {
-        // Sous-catégoriser les dépenses si possible
         if (tx.category?.includes('Fixe')) {
           category = JournalCategory.FIXED_EXPENSE;
         } else if (tx.category?.includes('Exceptionnelle')) {
@@ -551,23 +579,21 @@ export class AccountingJournalService {
         } else {
           category = JournalCategory.CURRENT_EXPENSE;
         }
-        amount = -tx.amount; // Négatif pour les dépenses
+        amount = -tx.amount;
       } else if (tx.type === TransactionType.TRANSFER) {
         if (isSource) {
-          category = JournalCategory.CURRENT_EXPENSE; // Ou une catégorie spécifique pour les transferts
-          amount = -tx.amount; // Négatif pour les sorties
+          category = JournalCategory.CURRENT_EXPENSE;
+          amount = -tx.amount;
         } else if (isDestination) {
-          category = JournalCategory.INCOME; // Ou une catégorie spécifique pour les transferts
-          amount = tx.amount; // Positif pour les entrées
+          category = JournalCategory.INCOME;
+          amount = tx.amount;
         } else {
-          // Ne devrait pas arriver
           continue;
         }
       } else {
-        // Transaction qui ne concerne pas ce compte
         continue;
       }
-      
+
       const journalEntry: JournalEntry = {
         date: new Date(tx.date),
         category,
@@ -578,21 +604,44 @@ export class AccountingJournalService {
         accountId: account.id,
         transactionId: tx.id
       };
-      
+
       await db.accountingJournal.add(journalEntry);
     }
-    
-    // 5. Calculer les résumés mensuels
+
+    // 5. Calculer les totaux
     const journalEntries = await db.accountingJournal.getByMonth(yearMonth);
-    const accountEntries = journalEntries.filter(e => e.accountId === account.id && !e.isCalculated);
-    
-    // Total des revenus
-    const incomeTotal = accountEntries
-      .filter(e => e.amount > 0)
+
+    // Supprimer toutes les anciennes entrées de résumé pour ce compte et ce mois
+    const summaries = ['Total Revenus du Mois', 'Total Dépenses du Mois', 'Balance du Mois'];
+    for (const summaryName of summaries) {
+      await this.deleteSpecificEntry(yearMonth, account.id, summaryName);
+    }
+
+    // Filtrer uniquement les transactions réelles du compte courant
+    const filteredEntries = journalEntries.filter(e =>
+      e.accountId === account.id &&
+      !e.isCalculated &&
+      e.name !== 'Solde Initial' &&
+      e.name !== 'Total Revenus du Mois' &&
+      e.name !== 'Total Dépenses du Mois' &&
+      e.name !== 'Balance du Mois' &&
+      e.name !== 'Solde Prévu Fin de Mois' &&
+      e.name !== 'Solde AJUSTÉ Fin de Mois'
+    );
+
+    const incomeTotal = filteredEntries
+      .filter(e => e.amount > 0 && e.category !== 'Dépenses Exceptionnelles')
       .reduce((sum, e) => sum + e.amount, 0);
-    
+
+    const expenseTotal = filteredEntries
+      .filter(e => e.amount < 0)
+      .reduce((sum, e) => sum + e.amount, 0);
+
+    const monthlyBalance = incomeTotal + expenseTotal;
+
+    // Bloc résumé mensuel
     const incomeTotalEntry: JournalEntry = {
-      date: lastDayOfMonth, // Dernier jour du mois
+      date: lastDayOfMonth,
       category: JournalCategory.SUMMARY,
       name: JournalEntryName.MONTHLY_INCOME_TOTAL,
       amount: incomeTotal,
@@ -600,31 +649,21 @@ export class AccountingJournalService {
       yearMonth,
       accountId: account.id
     };
-    
     await db.accountingJournal.add(incomeTotalEntry);
-    
-    // Total des dépenses
-    const expenseTotal = accountEntries
-      .filter(e => e.amount < 0)
-      .reduce((sum, e) => sum + e.amount, 0);
-    
+
     const expenseTotalEntry: JournalEntry = {
-      date: lastDayOfMonth, // Dernier jour du mois
+      date: lastDayOfMonth,
       category: JournalCategory.SUMMARY,
       name: JournalEntryName.MONTHLY_EXPENSE_TOTAL,
-      amount: expenseTotal, // Déjà négatif
+      amount: expenseTotal,
       isCalculated: true,
       yearMonth,
       accountId: account.id
     };
-    
     await db.accountingJournal.add(expenseTotalEntry);
-    
-    // Balance du mois
-    const monthlyBalance = incomeTotal + expenseTotal; // expenseTotal est déjà négatif
-    
+
     const monthlyBalanceEntry: JournalEntry = {
-      date: lastDayOfMonth, // Dernier jour du mois
+      date: lastDayOfMonth,
       category: JournalCategory.SUMMARY,
       name: JournalEntryName.MONTHLY_BALANCE,
       amount: monthlyBalance,
@@ -632,14 +671,13 @@ export class AccountingJournalService {
       yearMonth,
       accountId: account.id
     };
-    
     await db.accountingJournal.add(monthlyBalanceEntry);
-    
-    // 6. Calculer le solde prévu
+
+    // 6. Solde prévu fin de mois
     const expectedBalance = initialBalance + monthlyBalance;
-    
+
     const expectedBalanceEntry: JournalEntry = {
-      date: lastDayOfMonth, // Dernier jour du mois (veille du premier jour du mois suivant)
+      date: lastDayOfMonth,
       category: JournalCategory.BALANCE,
       name: JournalEntryName.EXPECTED_BALANCE,
       amount: expectedBalance,
@@ -647,17 +685,15 @@ export class AccountingJournalService {
       yearMonth,
       accountId: account.id
     };
-    
     await db.accountingJournal.add(expectedBalanceEntry);
-    
-    // 7. Vérifier s'il y a un ajustement de solde manuel pour ce mois
+
+    // 7. Solde ajusté fin de mois (si existe)
     try {
       const balanceAdjustment = await db.balanceAdjustments.getByAccountAndMonth(account.id, yearMonth);
-      
+
       if (balanceAdjustment) {
-        // Le solde ajusté est placé le jour suivant le solde prévu (lendemain de la fin du mois)
-        const adjustedBalanceDate = addDays(lastDayOfMonth, 1); // Premier jour du mois suivant
-        
+        const adjustedBalanceDate = addDays(lastDayOfMonth, 1);
+
         const adjustedBalanceEntry: JournalEntry = {
           date: adjustedBalanceDate,
           category: JournalCategory.BALANCE,
@@ -667,14 +703,14 @@ export class AccountingJournalService {
           yearMonth,
           accountId: account.id
         };
-        
+
         await db.accountingJournal.add(adjustedBalanceEntry);
         console.log(`Ajustement de solde ajouté: ${balanceAdjustment.adjustedBalance}`);
       }
     } catch (error) {
       console.error(`Erreur lors de la recherche d'ajustement de solde: ${error}`);
     }
-    
+
     console.log(`Journal généré pour le compte #${account.id} (${account.name}) - Mois ${yearMonth}`);
   }
   
@@ -779,6 +815,11 @@ export class AccountingJournalService {
     
     // Régénérer les mois suivants car le solde initial a pu changer
     await this.regenerateFollowingMonths(yearMonth);
+
+    // Nettoyer les doublons et régénérer tout le journal
+    const { cleanupAllJournalDuplicates } = await import('@/lib/repairDB');
+    await cleanupAllJournalDuplicates();
+    await this.generateCompleteJournal();
   }
   
   /**
@@ -1178,7 +1219,7 @@ export class AccountingJournalService {
     
     // 2. Ajouter l'entrée de solde initial
     const initialBalanceEntry: JournalEntry = {
-      date: startDate,
+      date: startDate, // Date de début de la période
       category: JournalCategory.BALANCE,
       name: JournalEntryName.INITIAL_BALANCE,
       amount: initialBalance,
@@ -1729,7 +1770,7 @@ export class AccountingJournalService {
     // 5. Générer le journal pour les mois nécessaires
     if (months.length > 0) {
       console.log(`Génération du journal pour ${months.length} mois, de ${months[0]} à ${months[months.length - 1]}...`);
-      await this.generateJournalForMultipleMonths(months, accounts, allTransactions);
+      await this.generateJournalForMultipleMonths(months);
       
       // 6. Sauvegarder l'état du journal pour optimiser les futures générations
       await this.saveJournalState();

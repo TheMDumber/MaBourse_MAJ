@@ -6,6 +6,7 @@
 - [x] **Erreur CORS**: Ajout des en-têtes manquants dans la configuration CORS (`Cache-Control`, `X-Requested-With`, `Accept`, `Origin`) pour résoudre les erreurs de préflight CORS entre le frontend (localhost:5173) et le backend (localhost:3001)
 - [x] **Import manquant**: Ajout de l'import explicite de `path` dans server.js
 - [x] **Pragma header dans serverCheck.ts**: Retrait de l'en-tête 'Pragma' qui causait des erreurs CORS
+- [x] **Fonction getById manquante**: Ajout de la fonction `getById` dans l'API de transactions pour permettre la récupération d'une transaction par son ID, corrigeant l'erreur lors de l'ajout de transactions récurrentes
 
 ## Problèmes Identifiés
 
@@ -13,6 +14,7 @@
 - [ ] **Gestion des timeout**: Erreur de timeout détectée dans Auth.tsx:30 ("Timeout - La vérification auth a pris trop de temps") - problème lié aux erreurs CORS qui bloquent la vérification du serveur
 - [x] **Problème CORS dans serverCheck.ts**: Le fichier serverCheck.ts incluait l'en-tête 'Pragma' qui n'était pas autorisé dans la configuration CORS - corrigé
 - [ ] **Validation côté serveur**: Comme indiqué dans le commentaire TODO du server.js, il manque une validation et prévention des doublons côté backend
+- [x] **Fonction manquante dans l'API de transactions**: La fonction `getById` n'était pas implémentée dans transactionsAPI, causant une erreur lors de l'ajout de transactions récurrentes
 
 ## Optimisations Recommandées
 

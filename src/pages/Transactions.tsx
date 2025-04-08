@@ -336,9 +336,6 @@ const Transactions = () => {
       journalBalance={journalBalance}
       balanceSource={balanceSource}
     >
-      <h1 className="text-2xl font-bold mb-4">
-        <span>Transactions</span>
-      </h1>
       <div className="space-y-6">
         <TransactionsList 
           onAddTransaction={handleAddTransaction}

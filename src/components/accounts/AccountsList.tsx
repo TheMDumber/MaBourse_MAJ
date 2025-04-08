@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 // Fonction pour formater les dates
-const formatDate = (date: Date) => {
+const formatDate = (date: Date | string) => {
   return format(new Date(date), 'dd/MM/yyyy', { locale: fr });
 };
 

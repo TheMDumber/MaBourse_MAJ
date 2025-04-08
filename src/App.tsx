@@ -10,12 +10,13 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { DeviceProvider } from "./contexts/DeviceContext";
 import { AccountFilterProvider } from "./contexts/AccountFilterContext";
 import { FinancialMonthProvider } from "./contexts/FinancialMonthContext";
+import { MonthProvider } from "./contexts/MonthContext";
 import { AuthGuard } from "./components/auth/AuthGuard";
 import { useAuth } from "./contexts/AuthContext";
 import { DataRecoveryAlert } from "./components/ui/data-recovery-alert";
 import { SyncLoadingModal } from "./components/ui/sync-loading-modal";
 import { useDataRecovery } from "./hooks/useDataRecovery";
-import { repairDatabase } from "./lib/repairDB";
+import { repairDatabase, cleanupAllJournalDuplicates } from "./lib/repairDB";
 import { checkAndFixBalanceAdjustments } from "./lib/balanceAdjustmentFix";
 import AuthStabilityPatch from "./lib/patches/AuthStabilityPatch";
 import DBVersionPatch from "./lib/patches/DBVersionPatch";
@@ -66,6 +67,23 @@ const AppContent = () => {
         if (!balanceAdjustmentsFixed) {
           console.warn('La réparation ciblée a échoué, tentative de réparation complète...');
           await repairDatabase();
+        }
+
+        // Suppression automatique des doublons dans le journal (tous mois)
+        try {
+          console.log('Nettoyage automatique des doublons dans le journal comptable...');
+          await cleanupAllJournalDuplicates();
+        } catch (error) {
+          console.error('Erreur lors du nettoyage automatique des doublons:', error);
+        }
+
+        // Régénération complète du journal au démarrage
+        try {
+          console.log('Régénération complète du journal comptable au démarrage...');
+          await accountingJournalService.generateCompleteJournal();
+          console.log('Journal comptable régénéré avec succès au démarrage');
+        } catch (error) {
+          console.error('Erreur lors de la régénération complète du journal au démarrage:', error);
         }
         
         // Nécessaire de réinitialiser IndexedDB en cas d'erreur lors de l'initialisation
@@ -317,7 +335,9 @@ const App = () => (
         <AuthProvider>
           <FinancialMonthProvider>
             <AccountFilterProvider>
-              <AppContent />
+              <MonthProvider>
+                <AppContent />
+              </MonthProvider>
             </AccountFilterProvider>
           </FinancialMonthProvider>
         </AuthProvider>

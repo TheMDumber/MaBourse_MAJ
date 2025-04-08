@@ -165,16 +165,17 @@ export async function importData(jsonData: string, options?: ImportOptions, upda
         if (matchingAccount && importOptions.mode === 'merge') {
           // En mode fusion, on met à jour le compte existant
           await db.accounts.update(matchingAccount.id!, {
-            ...accountData,
+            ...(accountData as any),
+            createdAt: new Date(createdAt),
             updatedAt: new Date()
-          });
+          } as any);
         } else {
           // Sinon, on crée un nouveau compte
           await db.accounts.create({
-            ...accountData,
+            ...(accountData as any),
             createdAt: new Date(createdAt),
             updatedAt: new Date(updatedAt)
-          });
+          } as any);
         }
       }
     }

@@ -184,8 +184,8 @@
     --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 0 0% 100%;
     --sidebar-primary-foreground: 250 47% 56%;
-    --sidebar-accent: 243 75% 59%;
-    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-accent: 250 47% 46%; /* hover plus foncé pour contraste */
+    --sidebar-accent-foreground: 0 0% 100%; /* texte blanc */
     --sidebar-border: 243 47% 65%;
     --sidebar-ring: 0 0% 100%;
   }
@@ -233,7 +233,7 @@
     --sidebar-foreground: 0 0% 100%; /* Blanc */
     --sidebar-primary: 0 0% 100%; /* Blanc pour élément actif */
     --sidebar-primary-foreground: 0 90% 55%; /* Rouge vif pour texte sur élément actif */
-    --sidebar-accent: 0 85% 60%; /* Rouge plus clair pour hover */
+    --sidebar-accent: 0 85% 40%; /* Rouge plus foncé pour hover */
     --sidebar-accent-foreground: 0 0% 100%; /* Blanc */
     --sidebar-border: 0 80% 50%; /* Rouge plus foncé pour bordures */
     --sidebar-ring: 0 0% 100%; /* Blanc pour focus */
@@ -254,6 +254,12 @@
 @layer components {
   .glass-card {
     @apply bg-background/70 backdrop-blur-sm border rounded-lg shadow-sm;
+  }
+
+  /* Empêcher le hover d'écraser la couleur du bouton actif dans la sidebar */
+  button.bg-sidebar-primary:hover {
+    background-color: hsl(var(--sidebar-primary)) !important;
+    color: hsl(var(--sidebar-primary-foreground)) !important;
   }
   
   .amount-positive {

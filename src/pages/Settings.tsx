@@ -275,6 +275,13 @@ const Settings = () => {
       
       if (success) {
         console.log('Réinitialisation complète terminée avec succès');
+
+        try {
+          await db.accountingJournal.deleteAllEntries();
+          console.log('Journal comptable vidé suite à la réinitialisation');
+        } catch (error) {
+          console.error('Erreur lors de la suppression du journal:', error);
+        }
         
         // Fermer la boîte de dialogue
         setResetDialogOpen(false);

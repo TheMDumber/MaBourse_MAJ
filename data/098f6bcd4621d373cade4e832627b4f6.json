@@ -1,9 +1,9 @@
 {
   "username": "test",
-  "passwordHash": "6b3d805a44e412a79287b681e153025aa66e39ff7c1223694774fdff39203f00436a7c239c797f200876ec99d224439171350dfdcd1a8db23b7b0fd2ca9041b8",
-  "salt": "d8992ee1bd548b5ce6976187305e4d6d",
+  "passwordHash": "0a2c0d4b06bb1bf09c50e0b34166b015bc25133d1ac9a16a3df61abbc5d1e1a880459ae82633398d422e2449aa8a9d5b518ec8a801a168d18b7577108b9835b5",
+  "salt": "f62020190306092c98d4661910bfa6e2",
   "createdAt": "2025-04-03T15:49:35.148Z",
-  "lastLogin": "2025-04-03T16:12:58.328Z",
+  "lastLogin": "2025-04-08T12:14:39.064Z",
   "data": {
     "accounts": [
       {
@@ -12,8 +12,8 @@
         "initialBalance": 60,
         "currency": "EUR",
         "createdAt": "2025-03-27T00:00:00.000Z",
-        "updatedAt": "2025-04-01T11:48:58.816Z",
-        "id": 5
+        "updatedAt": "2025-04-08T11:30:35.469Z",
+        "id": 19
       },
       {
         "name": "Marie",
@@ -21,2797 +21,2797 @@
         "initialBalance": -750,
         "currency": "EUR",
         "createdAt": "2025-03-27T00:00:00.000Z",
-        "updatedAt": "2025-04-01T11:49:02.962Z",
-        "id": 6
+        "updatedAt": "2025-04-08T11:30:41.766Z",
+        "id": 20
       }
     ],
     "transactions": [
       {
-        "accountId": 5,
-        "amount": 2505,
+        "accountId": 19,
+        "amount": 2616,
         "type": "income",
         "description": "Salaire",
         "date": "2025-03-27T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.595Z",
-        "updatedAt": "2025-04-03T05:51:09.933Z",
-        "id": 1276
+        "createdAt": "2025-04-08T11:30:23.749Z",
+        "updatedAt": "2025-04-08T11:32:30.195Z",
+        "id": 3057
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 2646.97,
         "type": "income",
         "description": "Salaire",
         "date": "2025-04-27T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.604Z",
-        "updatedAt": "2025-04-01T06:58:03.205Z",
-        "id": 1277
+        "createdAt": "2025-04-08T11:30:23.749Z",
+        "updatedAt": "2025-04-08T11:30:23.749Z",
+        "id": 3058
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 2646.97,
         "type": "income",
         "description": "Salaire",
         "date": "2025-05-27T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.606Z",
-        "updatedAt": "2025-04-01T06:58:03.208Z",
-        "id": 1278
+        "createdAt": "2025-04-08T11:30:23.749Z",
+        "updatedAt": "2025-04-08T11:30:23.749Z",
+        "id": 3059
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 2646.97,
         "type": "income",
         "description": "Salaire",
         "date": "2025-06-27T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.607Z",
-        "updatedAt": "2025-04-01T06:58:03.209Z",
-        "id": 1279
+        "createdAt": "2025-04-08T11:30:23.750Z",
+        "updatedAt": "2025-04-08T11:30:23.750Z",
+        "id": 3060
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 2646.97,
         "type": "income",
         "description": "Salaire",
         "date": "2025-07-27T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.608Z",
-        "updatedAt": "2025-04-01T06:58:03.212Z",
-        "id": 1280
+        "createdAt": "2025-04-08T11:30:23.750Z",
+        "updatedAt": "2025-04-08T11:30:23.750Z",
+        "id": 3061
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 2646.97,
         "type": "income",
         "description": "Salaire",
         "date": "2025-08-27T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.636Z",
-        "updatedAt": "2025-04-01T06:58:03.214Z",
-        "id": 1281
+        "createdAt": "2025-04-08T11:30:23.750Z",
+        "updatedAt": "2025-04-08T11:30:23.750Z",
+        "id": 3062
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 2646.97,
         "type": "income",
         "description": "Salaire",
         "date": "2025-09-27T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.637Z",
-        "updatedAt": "2025-04-01T06:58:03.216Z",
-        "id": 1282
+        "createdAt": "2025-04-08T11:30:23.750Z",
+        "updatedAt": "2025-04-08T11:30:23.750Z",
+        "id": 3063
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 2646.97,
         "type": "income",
         "description": "Salaire",
         "date": "2025-10-27T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.638Z",
-        "updatedAt": "2025-04-01T06:58:03.218Z",
-        "id": 1283
+        "createdAt": "2025-04-08T11:30:23.751Z",
+        "updatedAt": "2025-04-08T11:30:23.751Z",
+        "id": 3064
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 2646.97,
         "type": "income",
         "description": "Salaire",
         "date": "2025-11-27T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.639Z",
-        "updatedAt": "2025-04-01T06:58:03.220Z",
-        "id": 1284
+        "createdAt": "2025-04-08T11:30:23.751Z",
+        "updatedAt": "2025-04-08T11:30:23.751Z",
+        "id": 3065
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 2646.97,
         "type": "income",
         "description": "Salaire",
         "date": "2025-12-27T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.640Z",
-        "updatedAt": "2025-04-01T06:58:03.222Z",
-        "id": 1285
+        "createdAt": "2025-04-08T11:30:23.751Z",
+        "updatedAt": "2025-04-08T11:30:23.751Z",
+        "id": 3066
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 2646.97,
         "type": "income",
         "description": "Salaire",
         "date": "2026-01-27T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.640Z",
-        "updatedAt": "2025-04-01T06:58:03.224Z",
-        "id": 1286
+        "createdAt": "2025-04-08T11:30:23.751Z",
+        "updatedAt": "2025-04-08T11:30:23.751Z",
+        "id": 3067
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 2646.97,
         "type": "income",
         "description": "Salaire",
         "date": "2026-02-27T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.641Z",
-        "updatedAt": "2025-04-01T06:58:03.226Z",
-        "id": 1287
+        "createdAt": "2025-04-08T11:30:23.752Z",
+        "updatedAt": "2025-04-08T11:30:23.752Z",
+        "id": 3068
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 1556.37,
         "type": "income",
         "description": "Salaire",
         "date": "2025-03-27T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.642Z",
-        "updatedAt": "2025-03-31T11:23:38.718Z",
-        "id": 1288
+        "createdAt": "2025-04-08T11:30:23.752Z",
+        "updatedAt": "2025-04-08T11:30:23.752Z",
+        "id": 3069
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 1556.37,
         "type": "income",
         "description": "Salaire",
         "date": "2025-04-27T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.644Z",
-        "updatedAt": "2025-03-31T11:23:38.719Z",
-        "id": 1289
+        "createdAt": "2025-04-08T11:30:23.752Z",
+        "updatedAt": "2025-04-08T11:30:23.752Z",
+        "id": 3070
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 1556.37,
         "type": "income",
         "description": "Salaire",
         "date": "2025-05-27T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.646Z",
-        "updatedAt": "2025-03-31T11:23:38.720Z",
-        "id": 1290
+        "createdAt": "2025-04-08T11:30:23.753Z",
+        "updatedAt": "2025-04-08T11:30:23.753Z",
+        "id": 3071
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 1585,
         "type": "income",
         "description": "Salaire",
         "date": "2025-06-27T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.647Z",
-        "updatedAt": "2025-03-31T11:23:38.720Z",
-        "id": 1291
+        "createdAt": "2025-04-08T11:30:23.753Z",
+        "updatedAt": "2025-04-08T11:30:23.753Z",
+        "id": 3072
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 1585,
         "type": "income",
         "description": "Salaire",
         "date": "2025-07-27T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.647Z",
-        "updatedAt": "2025-03-31T11:23:38.721Z",
-        "id": 1292
+        "createdAt": "2025-04-08T11:30:23.753Z",
+        "updatedAt": "2025-04-08T11:30:23.753Z",
+        "id": 3073
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 1585,
         "type": "income",
         "description": "Salaire",
         "date": "2025-08-27T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.648Z",
-        "updatedAt": "2025-03-31T11:23:38.722Z",
-        "id": 1293
+        "createdAt": "2025-04-08T11:30:23.754Z",
+        "updatedAt": "2025-04-08T11:30:23.754Z",
+        "id": 3074
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 1585,
         "type": "income",
         "description": "Salaire",
         "date": "2025-09-27T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.648Z",
-        "updatedAt": "2025-03-31T11:23:38.722Z",
-        "id": 1294
+        "createdAt": "2025-04-08T11:30:23.754Z",
+        "updatedAt": "2025-04-08T11:30:23.754Z",
+        "id": 3075
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 1585,
         "type": "income",
         "description": "Salaire",
         "date": "2025-10-27T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.649Z",
-        "updatedAt": "2025-03-31T11:23:38.723Z",
-        "id": 1295
+        "createdAt": "2025-04-08T11:30:23.755Z",
+        "updatedAt": "2025-04-08T11:30:23.755Z",
+        "id": 3076
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 1585,
         "type": "income",
         "description": "Salaire",
         "date": "2025-11-27T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.649Z",
-        "updatedAt": "2025-03-31T11:23:38.724Z",
-        "id": 1296
+        "createdAt": "2025-04-08T11:30:23.755Z",
+        "updatedAt": "2025-04-08T11:30:23.755Z",
+        "id": 3077
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 1585,
         "type": "income",
         "description": "Salaire",
         "date": "2025-12-27T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.650Z",
-        "updatedAt": "2025-03-31T11:23:38.725Z",
-        "id": 1297
+        "createdAt": "2025-04-08T11:30:23.755Z",
+        "updatedAt": "2025-04-08T11:30:23.755Z",
+        "id": 3078
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 1585,
         "type": "income",
         "description": "Salaire",
         "date": "2026-01-27T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.652Z",
-        "updatedAt": "2025-03-31T11:23:38.725Z",
-        "id": 1298
+        "createdAt": "2025-04-08T11:30:23.756Z",
+        "updatedAt": "2025-04-08T11:30:23.756Z",
+        "id": 3079
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 1585,
         "type": "income",
         "description": "Salaire",
         "date": "2026-02-27T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.653Z",
-        "updatedAt": "2025-03-31T11:23:38.726Z",
-        "id": 1299
+        "createdAt": "2025-04-08T11:30:23.756Z",
+        "updatedAt": "2025-04-08T11:30:23.756Z",
+        "id": 3080
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Frais bancaires",
         "date": "2025-03-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.654Z",
-        "updatedAt": "2025-03-31T11:23:38.727Z",
-        "id": 1300
+        "createdAt": "2025-04-08T11:30:23.756Z",
+        "updatedAt": "2025-04-08T11:30:23.756Z",
+        "id": 3081
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Frais bancaires",
         "date": "2025-04-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.655Z",
-        "updatedAt": "2025-03-31T11:23:38.727Z",
-        "id": 1301
+        "createdAt": "2025-04-08T11:30:23.756Z",
+        "updatedAt": "2025-04-08T11:30:23.756Z",
+        "id": 3082
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Frais bancaires",
         "date": "2025-05-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.656Z",
-        "updatedAt": "2025-03-31T11:23:38.728Z",
-        "id": 1302
+        "createdAt": "2025-04-08T11:30:23.757Z",
+        "updatedAt": "2025-04-08T11:30:23.757Z",
+        "id": 3083
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Frais bancaires",
         "date": "2025-06-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.656Z",
-        "updatedAt": "2025-03-31T11:23:38.729Z",
-        "id": 1303
+        "createdAt": "2025-04-08T11:30:23.757Z",
+        "updatedAt": "2025-04-08T11:30:23.757Z",
+        "id": 3084
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Frais bancaires",
         "date": "2025-07-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.657Z",
-        "updatedAt": "2025-03-31T11:23:38.729Z",
-        "id": 1304
+        "createdAt": "2025-04-08T11:30:23.757Z",
+        "updatedAt": "2025-04-08T11:30:23.757Z",
+        "id": 3085
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Frais bancaires",
         "date": "2025-08-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.658Z",
-        "updatedAt": "2025-03-31T11:23:38.730Z",
-        "id": 1305
+        "createdAt": "2025-04-08T11:30:23.757Z",
+        "updatedAt": "2025-04-08T11:30:23.757Z",
+        "id": 3086
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Frais bancaires",
         "date": "2025-09-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.658Z",
-        "updatedAt": "2025-03-31T11:23:38.730Z",
-        "id": 1306
+        "createdAt": "2025-04-08T11:30:23.758Z",
+        "updatedAt": "2025-04-08T11:30:23.758Z",
+        "id": 3087
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Frais bancaires",
         "date": "2025-10-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.659Z",
-        "updatedAt": "2025-03-31T11:23:38.731Z",
-        "id": 1307
+        "createdAt": "2025-04-08T11:30:23.758Z",
+        "updatedAt": "2025-04-08T11:30:23.758Z",
+        "id": 3088
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Frais bancaires",
         "date": "2025-11-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.660Z",
-        "updatedAt": "2025-03-31T11:23:38.732Z",
-        "id": 1308
+        "createdAt": "2025-04-08T11:30:23.758Z",
+        "updatedAt": "2025-04-08T11:30:23.758Z",
+        "id": 3089
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Frais bancaires",
         "date": "2025-12-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.661Z",
-        "updatedAt": "2025-03-31T11:23:38.732Z",
-        "id": 1309
+        "createdAt": "2025-04-08T11:30:23.759Z",
+        "updatedAt": "2025-04-08T11:30:23.759Z",
+        "id": 3090
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Frais bancaires",
         "date": "2026-01-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.662Z",
-        "updatedAt": "2025-03-31T11:23:38.733Z",
-        "id": 1310
+        "createdAt": "2025-04-08T11:30:23.759Z",
+        "updatedAt": "2025-04-08T11:30:23.759Z",
+        "id": 3091
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Frais bancaires",
         "date": "2026-02-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.663Z",
-        "updatedAt": "2025-03-31T11:23:38.734Z",
-        "id": 1311
+        "createdAt": "2025-04-08T11:30:23.759Z",
+        "updatedAt": "2025-04-08T11:30:23.759Z",
+        "id": 3092
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-03-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.663Z",
-        "updatedAt": "2025-03-31T11:23:38.735Z",
-        "id": 1312
+        "createdAt": "2025-04-08T11:30:23.759Z",
+        "updatedAt": "2025-04-08T11:30:23.759Z",
+        "id": 3093
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-04-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.664Z",
-        "updatedAt": "2025-03-31T11:23:38.736Z",
-        "id": 1313
+        "createdAt": "2025-04-08T11:30:23.759Z",
+        "updatedAt": "2025-04-08T11:30:23.759Z",
+        "id": 3094
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-05-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.665Z",
-        "updatedAt": "2025-03-31T11:23:38.737Z",
-        "id": 1314
+        "createdAt": "2025-04-08T11:30:23.760Z",
+        "updatedAt": "2025-04-08T11:30:23.760Z",
+        "id": 3095
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-06-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.666Z",
-        "updatedAt": "2025-03-31T11:23:38.737Z",
-        "id": 1315
+        "createdAt": "2025-04-08T11:30:23.760Z",
+        "updatedAt": "2025-04-08T11:30:23.760Z",
+        "id": 3096
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-07-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.667Z",
-        "updatedAt": "2025-03-31T11:23:38.738Z",
-        "id": 1316
+        "createdAt": "2025-04-08T11:30:23.760Z",
+        "updatedAt": "2025-04-08T11:30:23.760Z",
+        "id": 3097
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-08-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.667Z",
-        "updatedAt": "2025-03-31T11:23:38.738Z",
-        "id": 1317
+        "createdAt": "2025-04-08T11:30:23.760Z",
+        "updatedAt": "2025-04-08T11:30:23.760Z",
+        "id": 3098
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-09-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.669Z",
-        "updatedAt": "2025-03-31T11:23:38.739Z",
-        "id": 1318
+        "createdAt": "2025-04-08T11:30:23.761Z",
+        "updatedAt": "2025-04-08T11:30:23.761Z",
+        "id": 3099
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-10-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.670Z",
-        "updatedAt": "2025-03-31T11:23:38.740Z",
-        "id": 1319
+        "createdAt": "2025-04-08T11:30:23.761Z",
+        "updatedAt": "2025-04-08T11:30:23.761Z",
+        "id": 3100
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-11-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.671Z",
-        "updatedAt": "2025-03-31T11:23:38.740Z",
-        "id": 1320
+        "createdAt": "2025-04-08T11:30:23.761Z",
+        "updatedAt": "2025-04-08T11:30:23.761Z",
+        "id": 3101
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-12-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.671Z",
-        "updatedAt": "2025-03-31T11:23:38.741Z",
-        "id": 1321
+        "createdAt": "2025-04-08T11:30:23.761Z",
+        "updatedAt": "2025-04-08T11:30:23.761Z",
+        "id": 3102
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2026-01-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.671Z",
-        "updatedAt": "2025-03-31T11:23:38.742Z",
-        "id": 1322
+        "createdAt": "2025-04-08T11:30:23.762Z",
+        "updatedAt": "2025-04-08T11:30:23.762Z",
+        "id": 3103
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 20,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2026-02-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.672Z",
-        "updatedAt": "2025-03-31T11:23:38.742Z",
-        "id": 1323
+        "createdAt": "2025-04-08T11:30:23.762Z",
+        "updatedAt": "2025-04-08T11:30:23.762Z",
+        "id": 3104
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 35,
         "type": "expense",
         "category": "fixed",
         "description": "Argent de Poche",
         "date": "2025-03-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.673Z",
-        "updatedAt": "2025-03-31T11:23:38.743Z",
-        "id": 1324
+        "createdAt": "2025-04-08T11:30:23.762Z",
+        "updatedAt": "2025-04-08T11:30:23.762Z",
+        "id": 3105
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "fixed",
         "description": "Argent de Poche",
         "date": "2025-04-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.673Z",
-        "updatedAt": "2025-03-31T11:23:38.744Z",
-        "id": 1325
+        "createdAt": "2025-04-08T11:30:23.762Z",
+        "updatedAt": "2025-04-08T11:30:23.762Z",
+        "id": 3106
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "fixed",
         "description": "Argent de Poche",
         "date": "2025-05-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.674Z",
-        "updatedAt": "2025-03-31T11:23:38.744Z",
-        "id": 1326
+        "createdAt": "2025-04-08T11:30:23.763Z",
+        "updatedAt": "2025-04-08T11:30:23.763Z",
+        "id": 3107
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "fixed",
         "description": "Argent de Poche",
         "date": "2025-06-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.675Z",
-        "updatedAt": "2025-03-31T11:23:38.745Z",
-        "id": 1327
+        "createdAt": "2025-04-08T11:30:23.763Z",
+        "updatedAt": "2025-04-08T11:30:23.763Z",
+        "id": 3108
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "fixed",
         "description": "Argent de Poche",
         "date": "2025-07-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.675Z",
-        "updatedAt": "2025-03-31T11:23:38.746Z",
-        "id": 1328
+        "createdAt": "2025-04-08T11:30:23.763Z",
+        "updatedAt": "2025-04-08T11:30:23.763Z",
+        "id": 3109
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "fixed",
         "description": "Argent de Poche",
         "date": "2025-08-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.677Z",
-        "updatedAt": "2025-03-31T11:23:38.746Z",
-        "id": 1329
+        "createdAt": "2025-04-08T11:30:23.764Z",
+        "updatedAt": "2025-04-08T11:30:23.764Z",
+        "id": 3110
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "fixed",
         "description": "Argent de Poche",
         "date": "2025-09-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.678Z",
-        "updatedAt": "2025-03-31T11:23:38.747Z",
-        "id": 1330
+        "createdAt": "2025-04-08T11:30:23.764Z",
+        "updatedAt": "2025-04-08T11:30:23.764Z",
+        "id": 3111
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "fixed",
         "description": "Argent de Poche",
         "date": "2025-10-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.679Z",
-        "updatedAt": "2025-03-31T11:23:38.748Z",
-        "id": 1331
+        "createdAt": "2025-04-08T11:30:23.764Z",
+        "updatedAt": "2025-04-08T11:30:23.764Z",
+        "id": 3112
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "fixed",
         "description": "Argent de Poche",
         "date": "2025-11-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.680Z",
-        "updatedAt": "2025-03-31T11:23:38.748Z",
-        "id": 1332
+        "createdAt": "2025-04-08T11:30:23.764Z",
+        "updatedAt": "2025-04-08T11:30:23.764Z",
+        "id": 3113
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "fixed",
         "description": "Argent de Poche",
         "date": "2025-12-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.680Z",
-        "updatedAt": "2025-03-31T11:23:38.749Z",
-        "id": 1333
+        "createdAt": "2025-04-08T11:30:23.765Z",
+        "updatedAt": "2025-04-08T11:30:23.765Z",
+        "id": 3114
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "fixed",
         "description": "Argent de Poche",
         "date": "2026-01-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.681Z",
-        "updatedAt": "2025-03-31T11:23:38.750Z",
-        "id": 1334
+        "createdAt": "2025-04-08T11:30:23.765Z",
+        "updatedAt": "2025-04-08T11:30:23.765Z",
+        "id": 3115
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "fixed",
         "description": "Argent de Poche",
         "date": "2026-02-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.682Z",
-        "updatedAt": "2025-03-31T11:23:38.751Z",
-        "id": 1335
+        "createdAt": "2025-04-08T11:30:23.765Z",
+        "updatedAt": "2025-04-08T11:30:23.765Z",
+        "id": 3116
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 650,
         "type": "expense",
         "category": "recurring",
         "description": "Alimentation",
         "date": "2025-03-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.683Z",
-        "updatedAt": "2025-03-31T11:23:38.752Z",
-        "id": 1336
+        "createdAt": "2025-04-08T11:30:23.765Z",
+        "updatedAt": "2025-04-08T11:30:23.765Z",
+        "id": 3117
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 750,
         "type": "expense",
         "category": "recurring",
         "description": "Alimentation",
         "date": "2025-04-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.683Z",
-        "updatedAt": "2025-03-31T11:23:38.752Z",
-        "id": 1337
+        "createdAt": "2025-04-08T11:30:23.766Z",
+        "updatedAt": "2025-04-08T11:30:23.766Z",
+        "id": 3118
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 750,
         "type": "expense",
         "category": "recurring",
         "description": "Alimentation",
         "date": "2025-05-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.684Z",
-        "updatedAt": "2025-03-31T11:23:38.753Z",
-        "id": 1338
+        "createdAt": "2025-04-08T11:30:23.766Z",
+        "updatedAt": "2025-04-08T11:30:23.766Z",
+        "id": 3119
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 750,
         "type": "expense",
         "category": "recurring",
         "description": "Alimentation",
         "date": "2025-06-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.686Z",
-        "updatedAt": "2025-03-31T11:23:38.754Z",
-        "id": 1339
+        "createdAt": "2025-04-08T11:30:23.766Z",
+        "updatedAt": "2025-04-08T11:30:23.766Z",
+        "id": 3120
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 750,
         "type": "expense",
         "category": "recurring",
         "description": "Alimentation",
         "date": "2025-07-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.687Z",
-        "updatedAt": "2025-03-31T11:23:38.754Z",
-        "id": 1340
+        "createdAt": "2025-04-08T11:30:23.766Z",
+        "updatedAt": "2025-04-08T11:30:23.766Z",
+        "id": 3121
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 750,
         "type": "expense",
         "category": "recurring",
         "description": "Alimentation",
         "date": "2025-08-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.687Z",
-        "updatedAt": "2025-03-31T11:23:38.755Z",
-        "id": 1341
+        "createdAt": "2025-04-08T11:30:23.767Z",
+        "updatedAt": "2025-04-08T11:30:23.767Z",
+        "id": 3122
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 750,
         "type": "expense",
         "category": "recurring",
         "description": "Alimentation",
         "date": "2025-09-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.688Z",
-        "updatedAt": "2025-03-31T11:23:38.756Z",
-        "id": 1342
+        "createdAt": "2025-04-08T11:30:23.767Z",
+        "updatedAt": "2025-04-08T11:30:23.767Z",
+        "id": 3123
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 750,
         "type": "expense",
         "category": "recurring",
         "description": "Alimentation",
         "date": "2025-10-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.689Z",
-        "updatedAt": "2025-03-31T11:23:38.757Z",
-        "id": 1343
+        "createdAt": "2025-04-08T11:30:23.767Z",
+        "updatedAt": "2025-04-08T11:30:23.767Z",
+        "id": 3124
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 750,
         "type": "expense",
         "category": "recurring",
         "description": "Alimentation",
         "date": "2025-11-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.689Z",
-        "updatedAt": "2025-03-31T11:23:38.757Z",
-        "id": 1344
+        "createdAt": "2025-04-08T11:30:23.768Z",
+        "updatedAt": "2025-04-08T11:30:23.768Z",
+        "id": 3125
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 750,
         "type": "expense",
         "category": "recurring",
         "description": "Alimentation",
         "date": "2025-12-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.690Z",
-        "updatedAt": "2025-03-31T11:23:38.758Z",
-        "id": 1345
+        "createdAt": "2025-04-08T11:30:23.768Z",
+        "updatedAt": "2025-04-08T11:30:23.768Z",
+        "id": 3126
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 750,
         "type": "expense",
         "category": "recurring",
         "description": "Alimentation",
         "date": "2026-01-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.690Z",
-        "updatedAt": "2025-03-31T11:23:38.758Z",
-        "id": 1346
+        "createdAt": "2025-04-08T11:30:23.768Z",
+        "updatedAt": "2025-04-08T11:30:23.768Z",
+        "id": 3127
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 750,
         "type": "expense",
         "category": "recurring",
         "description": "Alimentation",
         "date": "2026-02-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.691Z",
-        "updatedAt": "2025-03-31T11:23:38.759Z",
-        "id": 1347
+        "createdAt": "2025-04-08T11:30:23.769Z",
+        "updatedAt": "2025-04-08T11:30:23.769Z",
+        "id": 3128
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 80,
         "type": "expense",
         "category": "recurring",
         "description": "Essence",
         "date": "2025-03-09T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.692Z",
-        "updatedAt": "2025-03-31T11:23:38.760Z",
-        "id": 1348
+        "createdAt": "2025-04-08T11:30:23.769Z",
+        "updatedAt": "2025-04-08T11:30:23.769Z",
+        "id": 3129
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Essence",
         "date": "2025-04-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.694Z",
-        "updatedAt": "2025-03-31T11:23:38.760Z",
-        "id": 1349
+        "createdAt": "2025-04-08T11:30:23.769Z",
+        "updatedAt": "2025-04-08T11:30:23.769Z",
+        "id": 3130
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Essence",
         "date": "2025-05-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.695Z",
-        "updatedAt": "2025-03-31T11:23:38.761Z",
-        "id": 1350
+        "createdAt": "2025-04-08T11:30:23.769Z",
+        "updatedAt": "2025-04-08T11:30:23.769Z",
+        "id": 3131
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Essence",
         "date": "2025-06-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.695Z",
-        "updatedAt": "2025-03-31T11:23:38.762Z",
-        "id": 1351
+        "createdAt": "2025-04-08T11:30:23.770Z",
+        "updatedAt": "2025-04-08T11:30:23.770Z",
+        "id": 3132
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Essence",
         "date": "2025-07-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.696Z",
-        "updatedAt": "2025-03-31T11:23:38.762Z",
-        "id": 1352
+        "createdAt": "2025-04-08T11:30:23.770Z",
+        "updatedAt": "2025-04-08T11:30:23.770Z",
+        "id": 3133
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Essence",
         "date": "2025-08-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.697Z",
-        "updatedAt": "2025-03-31T11:23:38.763Z",
-        "id": 1353
+        "createdAt": "2025-04-08T11:30:23.771Z",
+        "updatedAt": "2025-04-08T11:30:23.771Z",
+        "id": 3134
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Essence",
         "date": "2025-09-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.698Z",
-        "updatedAt": "2025-03-31T11:23:38.764Z",
-        "id": 1354
+        "createdAt": "2025-04-08T11:30:23.771Z",
+        "updatedAt": "2025-04-08T11:30:23.771Z",
+        "id": 3135
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Essence",
         "date": "2025-10-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.698Z",
-        "updatedAt": "2025-03-31T11:23:38.764Z",
-        "id": 1355
+        "createdAt": "2025-04-08T11:30:23.772Z",
+        "updatedAt": "2025-04-08T11:30:23.772Z",
+        "id": 3136
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Essence",
         "date": "2025-11-09T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.699Z",
-        "updatedAt": "2025-03-31T11:23:38.765Z",
-        "id": 1356
+        "createdAt": "2025-04-08T11:30:23.772Z",
+        "updatedAt": "2025-04-08T11:30:23.772Z",
+        "id": 3137
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Essence",
         "date": "2025-12-09T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.700Z",
-        "updatedAt": "2025-03-31T11:23:38.766Z",
-        "id": 1357
+        "createdAt": "2025-04-08T11:30:23.772Z",
+        "updatedAt": "2025-04-08T11:30:23.772Z",
+        "id": 3138
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Essence",
         "date": "2026-01-09T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.700Z",
-        "updatedAt": "2025-03-31T11:23:38.766Z",
-        "id": 1358
+        "createdAt": "2025-04-08T11:30:23.772Z",
+        "updatedAt": "2025-04-08T11:30:23.772Z",
+        "id": 3139
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Essence",
         "date": "2026-02-09T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.702Z",
-        "updatedAt": "2025-03-31T11:23:38.767Z",
-        "id": 1359
+        "createdAt": "2025-04-08T11:30:23.773Z",
+        "updatedAt": "2025-04-08T11:30:23.773Z",
+        "id": 3140
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 45,
         "type": "expense",
         "category": "recurring",
         "description": "Cantine Lisa",
         "date": "2025-03-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.703Z",
-        "updatedAt": "2025-03-31T11:23:38.768Z",
-        "id": 1360
+        "createdAt": "2025-04-08T11:30:23.773Z",
+        "updatedAt": "2025-04-08T11:30:23.773Z",
+        "id": 3141
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "recurring",
         "description": "Cantine Lisa",
         "date": "2025-04-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.704Z",
-        "updatedAt": "2025-03-31T11:23:38.769Z",
-        "id": 1361
+        "createdAt": "2025-04-08T11:30:23.773Z",
+        "updatedAt": "2025-04-08T11:30:23.773Z",
+        "id": 3142
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "recurring",
         "description": "Cantine Lisa",
         "date": "2025-05-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.705Z",
-        "updatedAt": "2025-03-31T11:23:38.770Z",
-        "id": 1362
+        "createdAt": "2025-04-08T11:30:23.773Z",
+        "updatedAt": "2025-04-08T11:30:23.773Z",
+        "id": 3143
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "recurring",
         "description": "Cantine Lisa",
         "date": "2025-06-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.706Z",
-        "updatedAt": "2025-03-31T11:23:38.770Z",
-        "id": 1363
+        "createdAt": "2025-04-08T11:30:23.774Z",
+        "updatedAt": "2025-04-08T11:30:23.774Z",
+        "id": 3144
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "recurring",
         "description": "Cantine Lisa",
         "date": "2025-07-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.706Z",
-        "updatedAt": "2025-03-31T11:23:38.771Z",
-        "id": 1364
+        "createdAt": "2025-04-08T11:30:23.774Z",
+        "updatedAt": "2025-04-08T11:30:23.774Z",
+        "id": 3145
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "recurring",
         "description": "Cantine Lisa",
         "date": "2025-09-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.708Z",
-        "updatedAt": "2025-03-31T11:23:38.772Z",
-        "id": 1366
+        "createdAt": "2025-04-08T11:30:23.774Z",
+        "updatedAt": "2025-04-08T11:30:23.774Z",
+        "id": 3146
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "recurring",
         "description": "Cantine Lisa",
         "date": "2025-10-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.708Z",
-        "updatedAt": "2025-03-31T11:23:38.773Z",
-        "id": 1367
+        "createdAt": "2025-04-08T11:30:23.774Z",
+        "updatedAt": "2025-04-08T11:30:23.774Z",
+        "id": 3147
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "recurring",
         "description": "Cantine Lisa",
         "date": "2025-11-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.709Z",
-        "updatedAt": "2025-03-31T11:23:38.773Z",
-        "id": 1368
+        "createdAt": "2025-04-08T11:30:23.775Z",
+        "updatedAt": "2025-04-08T11:30:23.775Z",
+        "id": 3148
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "recurring",
         "description": "Cantine Lisa",
         "date": "2025-12-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.709Z",
-        "updatedAt": "2025-03-31T11:23:38.774Z",
-        "id": 1369
+        "createdAt": "2025-04-08T11:30:23.775Z",
+        "updatedAt": "2025-04-08T11:30:23.775Z",
+        "id": 3149
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "recurring",
         "description": "Cantine Lisa",
         "date": "2026-01-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.711Z",
-        "updatedAt": "2025-03-31T11:23:38.775Z",
-        "id": 1370
+        "createdAt": "2025-04-08T11:30:23.775Z",
+        "updatedAt": "2025-04-08T11:30:23.775Z",
+        "id": 3150
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "recurring",
         "description": "Cantine Lisa",
         "date": "2026-02-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.712Z",
-        "updatedAt": "2025-03-31T11:23:38.776Z",
-        "id": 1371
+        "createdAt": "2025-04-08T11:30:23.775Z",
+        "updatedAt": "2025-04-08T11:30:23.775Z",
+        "id": 3151
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 130,
         "type": "expense",
         "category": "recurring",
         "description": "Loisirs",
         "date": "2025-03-09T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.712Z",
-        "updatedAt": "2025-03-31T11:23:38.776Z",
-        "id": 1372
+        "createdAt": "2025-04-08T11:30:23.776Z",
+        "updatedAt": "2025-04-08T11:30:23.776Z",
+        "id": 3152
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 130,
         "type": "expense",
         "category": "recurring",
         "description": "Loisirs",
         "date": "2025-04-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.713Z",
-        "updatedAt": "2025-03-31T11:23:38.777Z",
-        "id": 1373
+        "createdAt": "2025-04-08T11:30:23.776Z",
+        "updatedAt": "2025-04-08T11:30:23.776Z",
+        "id": 3153
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 130,
         "type": "expense",
         "category": "recurring",
         "description": "Loisirs",
         "date": "2025-05-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.714Z",
-        "updatedAt": "2025-03-31T11:23:38.778Z",
-        "id": 1374
+        "createdAt": "2025-04-08T11:30:23.776Z",
+        "updatedAt": "2025-04-08T11:30:23.776Z",
+        "id": 3154
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 130,
         "type": "expense",
         "category": "recurring",
         "description": "Loisirs",
         "date": "2025-06-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.714Z",
-        "updatedAt": "2025-03-31T11:23:38.778Z",
-        "id": 1375
+        "createdAt": "2025-04-08T11:30:23.776Z",
+        "updatedAt": "2025-04-08T11:30:23.776Z",
+        "id": 3155
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 130,
         "type": "expense",
         "category": "recurring",
         "description": "Loisirs",
         "date": "2025-07-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.715Z",
-        "updatedAt": "2025-03-31T11:23:38.779Z",
-        "id": 1376
+        "createdAt": "2025-04-08T11:30:23.777Z",
+        "updatedAt": "2025-04-08T11:30:23.777Z",
+        "id": 3156
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 130,
         "type": "expense",
         "category": "recurring",
         "description": "Loisirs",
         "date": "2025-08-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.715Z",
-        "updatedAt": "2025-03-31T11:23:38.780Z",
-        "id": 1377
+        "createdAt": "2025-04-08T11:30:23.777Z",
+        "updatedAt": "2025-04-08T11:30:23.777Z",
+        "id": 3157
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 130,
         "type": "expense",
         "category": "recurring",
         "description": "Loisirs",
         "date": "2025-09-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.716Z",
-        "updatedAt": "2025-03-31T11:23:38.780Z",
-        "id": 1378
+        "createdAt": "2025-04-08T11:30:23.777Z",
+        "updatedAt": "2025-04-08T11:30:23.777Z",
+        "id": 3158
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 130,
         "type": "expense",
         "category": "recurring",
         "description": "Loisirs",
         "date": "2025-10-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.716Z",
-        "updatedAt": "2025-03-31T11:23:38.781Z",
-        "id": 1379
+        "createdAt": "2025-04-08T11:30:23.777Z",
+        "updatedAt": "2025-04-08T11:30:23.777Z",
+        "id": 3159
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 130,
         "type": "expense",
         "category": "recurring",
         "description": "Loisirs",
         "date": "2025-11-09T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.717Z",
-        "updatedAt": "2025-03-31T11:23:38.782Z",
-        "id": 1380
+        "createdAt": "2025-04-08T11:30:23.778Z",
+        "updatedAt": "2025-04-08T11:30:23.778Z",
+        "id": 3160
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 130,
         "type": "expense",
         "category": "recurring",
         "description": "Loisirs",
         "date": "2025-12-09T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.717Z",
-        "updatedAt": "2025-03-31T11:23:38.782Z",
-        "id": 1381
+        "createdAt": "2025-04-08T11:30:23.778Z",
+        "updatedAt": "2025-04-08T11:30:23.778Z",
+        "id": 3161
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 130,
         "type": "expense",
         "category": "recurring",
         "description": "Loisirs",
         "date": "2026-01-09T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.720Z",
-        "updatedAt": "2025-03-31T11:23:38.783Z",
-        "id": 1382
+        "createdAt": "2025-04-08T11:30:23.778Z",
+        "updatedAt": "2025-04-08T11:30:23.778Z",
+        "id": 3162
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 130,
         "type": "expense",
         "category": "recurring",
         "description": "Loisirs",
         "date": "2026-02-09T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.720Z",
-        "updatedAt": "2025-03-31T11:23:38.784Z",
-        "id": 1383
+        "createdAt": "2025-04-08T11:30:23.779Z",
+        "updatedAt": "2025-04-08T11:30:23.779Z",
+        "id": 3163
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "exceptional",
         "description": "Croisière",
         "date": "2025-04-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.721Z",
-        "updatedAt": "2025-03-31T11:23:38.785Z",
-        "id": 1384
+        "createdAt": "2025-04-08T11:30:23.779Z",
+        "updatedAt": "2025-04-08T11:30:23.779Z",
+        "id": 3164
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "exceptional",
         "description": "Croisière",
         "date": "2025-05-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.722Z",
-        "updatedAt": "2025-03-31T11:23:38.786Z",
-        "id": 1385
+        "createdAt": "2025-04-08T11:30:23.779Z",
+        "updatedAt": "2025-04-08T11:30:23.779Z",
+        "id": 3165
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "exceptional",
         "description": "Croisière",
         "date": "2025-06-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.722Z",
-        "updatedAt": "2025-03-31T11:23:38.786Z",
-        "id": 1386
+        "createdAt": "2025-04-08T11:30:23.779Z",
+        "updatedAt": "2025-04-08T11:30:23.779Z",
+        "id": 3166
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "exceptional",
         "description": "Croisière",
         "date": "2025-07-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.723Z",
-        "updatedAt": "2025-03-31T11:23:38.787Z",
-        "id": 1387
+        "createdAt": "2025-04-08T11:30:23.780Z",
+        "updatedAt": "2025-04-08T11:30:23.780Z",
+        "id": 3167
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "exceptional",
         "description": "Croisière",
         "date": "2025-08-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.723Z",
-        "updatedAt": "2025-03-31T11:23:38.788Z",
-        "id": 1388
+        "createdAt": "2025-04-08T11:30:23.780Z",
+        "updatedAt": "2025-04-08T11:30:23.780Z",
+        "id": 3168
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "exceptional",
         "description": "Croisière",
         "date": "2025-09-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.724Z",
-        "updatedAt": "2025-03-31T11:23:38.788Z",
-        "id": 1389
+        "createdAt": "2025-04-08T11:30:23.780Z",
+        "updatedAt": "2025-04-08T11:30:23.780Z",
+        "id": 3169
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 50,
         "type": "expense",
         "category": "exceptional",
         "description": "Croisière",
         "date": "2025-10-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.725Z",
-        "updatedAt": "2025-03-31T11:23:38.789Z",
-        "id": 1390
+        "createdAt": "2025-04-08T11:30:23.781Z",
+        "updatedAt": "2025-04-08T11:30:23.781Z",
+        "id": 3170
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 150,
         "type": "expense",
         "category": "exceptional",
         "description": "Anniversaire Lisa",
         "date": "2025-06-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.725Z",
-        "updatedAt": "2025-03-31T11:23:38.790Z",
-        "id": 1391
+        "createdAt": "2025-04-08T11:30:23.781Z",
+        "updatedAt": "2025-04-08T11:30:23.781Z",
+        "id": 3171
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 150,
         "type": "expense",
         "category": "exceptional",
         "description": "Anniversaire Lisa",
         "date": "2025-07-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.726Z",
-        "updatedAt": "2025-03-31T11:23:38.790Z",
-        "id": 1392
+        "createdAt": "2025-04-08T11:30:23.781Z",
+        "updatedAt": "2025-04-08T11:30:23.781Z",
+        "id": 3172
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 150,
         "type": "expense",
         "category": "exceptional",
         "description": "Anniversaire Lisa",
         "date": "2025-08-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.728Z",
-        "updatedAt": "2025-03-31T11:23:38.791Z",
-        "id": 1393
+        "createdAt": "2025-04-08T11:30:23.781Z",
+        "updatedAt": "2025-04-08T11:30:23.781Z",
+        "id": 3173
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 150,
         "type": "expense",
         "category": "exceptional",
         "description": "Anniversaire Lisa",
         "date": "2025-09-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.728Z",
-        "updatedAt": "2025-03-31T11:23:38.792Z",
-        "id": 1394
+        "createdAt": "2025-04-08T11:30:23.782Z",
+        "updatedAt": "2025-04-08T11:30:23.782Z",
+        "id": 3174
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 150,
         "type": "expense",
         "category": "exceptional",
         "description": "Anniversaire Lisa",
         "date": "2025-10-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.729Z",
-        "updatedAt": "2025-03-31T11:23:38.792Z",
-        "id": 1395
+        "createdAt": "2025-04-08T11:30:23.782Z",
+        "updatedAt": "2025-04-08T11:30:23.782Z",
+        "id": 3175
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 150,
         "type": "expense",
         "category": "exceptional",
         "description": "Anniversaire Lisa",
         "date": "2025-11-09T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.730Z",
-        "updatedAt": "2025-03-31T11:23:38.793Z",
-        "id": 1396
+        "createdAt": "2025-04-08T11:30:23.782Z",
+        "updatedAt": "2025-04-08T11:30:23.782Z",
+        "id": 3176
       },
       {
-        "accountId": 6,
+        "accountId": 20,
         "amount": 120,
         "type": "expense",
         "category": "exceptional",
         "description": "Vacances Pâques",
         "date": "2025-04-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.730Z",
-        "updatedAt": "2025-03-31T11:23:38.794Z",
-        "id": 1397
+        "createdAt": "2025-04-08T11:30:23.782Z",
+        "updatedAt": "2025-04-08T11:30:23.782Z",
+        "id": 3177
       },
       {
-        "accountId": 6,
-        "toAccountId": 5,
+        "accountId": 20,
+        "toAccountId": 19,
         "amount": 170,
         "type": "transfer",
         "description": "Rembours Permis Lisa",
         "date": "2025-03-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.731Z",
-        "updatedAt": "2025-03-31T11:23:38.794Z",
-        "id": 1398
+        "createdAt": "2025-04-08T11:30:23.783Z",
+        "updatedAt": "2025-04-08T11:30:23.783Z",
+        "id": 3178
       },
       {
-        "accountId": 6,
-        "toAccountId": 5,
+        "accountId": 20,
+        "toAccountId": 19,
         "amount": 170,
         "type": "transfer",
         "description": "Rembours Permis Lisa",
         "date": "2025-04-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.731Z",
-        "updatedAt": "2025-03-31T11:23:38.795Z",
-        "id": 1399
+        "createdAt": "2025-04-08T11:30:23.783Z",
+        "updatedAt": "2025-04-08T11:30:23.783Z",
+        "id": 3179
       },
       {
-        "accountId": 6,
-        "toAccountId": 5,
+        "accountId": 20,
+        "toAccountId": 19,
         "amount": 170,
         "type": "transfer",
         "description": "Rembours Permis Lisa",
         "date": "2025-05-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.732Z",
-        "updatedAt": "2025-03-31T11:23:38.795Z",
-        "id": 1400
+        "createdAt": "2025-04-08T11:30:23.783Z",
+        "updatedAt": "2025-04-08T11:30:23.783Z",
+        "id": 3180
       },
       {
-        "accountId": 6,
-        "toAccountId": 5,
+        "accountId": 20,
+        "toAccountId": 19,
         "amount": 170,
         "type": "transfer",
         "description": "Rembours Permis Lisa",
         "date": "2025-06-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.733Z",
-        "updatedAt": "2025-03-31T11:23:38.796Z",
-        "id": 1401
+        "createdAt": "2025-04-08T11:30:23.783Z",
+        "updatedAt": "2025-04-08T11:30:23.783Z",
+        "id": 3181
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 222.78,
         "type": "income",
         "description": "CAF",
         "date": "2025-03-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.734Z",
-        "updatedAt": "2025-03-31T11:23:38.797Z",
-        "id": 1402
+        "createdAt": "2025-04-08T11:30:23.784Z",
+        "updatedAt": "2025-04-08T11:30:23.784Z",
+        "id": 3182
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 222.78,
         "type": "income",
         "description": "CAF",
         "date": "2025-04-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.736Z",
-        "updatedAt": "2025-03-31T11:23:38.797Z",
-        "id": 1403
+        "createdAt": "2025-04-08T11:30:23.784Z",
+        "updatedAt": "2025-04-08T11:30:23.784Z",
+        "id": 3183
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 222.78,
         "type": "income",
         "description": "CAF",
         "date": "2025-05-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.737Z",
-        "updatedAt": "2025-03-31T11:23:38.798Z",
-        "id": 1404
+        "createdAt": "2025-04-08T11:30:23.784Z",
+        "updatedAt": "2025-04-08T11:30:23.784Z",
+        "id": 3184
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 222.78,
         "type": "income",
         "description": "CAF",
         "date": "2025-06-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.737Z",
-        "updatedAt": "2025-03-31T11:23:38.799Z",
-        "id": 1405
+        "createdAt": "2025-04-08T11:30:23.785Z",
+        "updatedAt": "2025-04-08T11:30:23.785Z",
+        "id": 3185
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 222.78,
         "type": "income",
         "description": "CAF",
         "date": "2025-07-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.738Z",
-        "updatedAt": "2025-03-31T11:23:38.799Z",
-        "id": 1406
+        "createdAt": "2025-04-08T11:30:23.785Z",
+        "updatedAt": "2025-04-08T11:30:23.785Z",
+        "id": 3186
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 222.78,
         "type": "income",
         "description": "CAF",
         "date": "2025-08-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.739Z",
-        "updatedAt": "2025-03-31T11:23:38.800Z",
-        "id": 1407
+        "createdAt": "2025-04-08T11:30:23.785Z",
+        "updatedAt": "2025-04-08T11:30:23.785Z",
+        "id": 3187
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 222.78,
         "type": "income",
         "description": "CAF",
         "date": "2025-09-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.739Z",
-        "updatedAt": "2025-03-31T11:23:38.801Z",
-        "id": 1408
+        "createdAt": "2025-04-08T11:30:23.785Z",
+        "updatedAt": "2025-04-08T11:30:23.785Z",
+        "id": 3188
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 222.78,
         "type": "income",
         "description": "CAF",
         "date": "2025-10-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.740Z",
-        "updatedAt": "2025-03-31T11:23:38.802Z",
-        "id": 1409
+        "createdAt": "2025-04-08T11:30:23.786Z",
+        "updatedAt": "2025-04-08T11:30:23.786Z",
+        "id": 3189
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 222.78,
         "type": "income",
         "description": "CAF",
         "date": "2025-11-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.741Z",
-        "updatedAt": "2025-03-31T11:23:38.802Z",
-        "id": 1410
+        "createdAt": "2025-04-08T11:30:23.786Z",
+        "updatedAt": "2025-04-08T11:30:23.786Z",
+        "id": 3190
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 222.78,
         "type": "income",
         "description": "CAF",
         "date": "2025-12-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.741Z",
-        "updatedAt": "2025-03-31T11:23:38.803Z",
-        "id": 1411
+        "createdAt": "2025-04-08T11:30:23.786Z",
+        "updatedAt": "2025-04-08T11:30:23.786Z",
+        "id": 3191
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 222.78,
         "type": "income",
         "description": "CAF",
         "date": "2026-01-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.742Z",
-        "updatedAt": "2025-03-31T11:23:38.804Z",
-        "id": 1412
+        "createdAt": "2025-04-08T11:30:23.787Z",
+        "updatedAt": "2025-04-08T11:30:23.787Z",
+        "id": 3192
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 222.78,
         "type": "income",
         "description": "CAF",
         "date": "2026-02-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.743Z",
-        "updatedAt": "2025-03-31T11:23:38.805Z",
-        "id": 1413
+        "createdAt": "2025-04-08T11:30:23.787Z",
+        "updatedAt": "2025-04-08T11:30:23.787Z",
+        "id": 3193
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 40,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-03-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.744Z",
-        "updatedAt": "2025-03-31T11:23:38.805Z",
-        "id": 1414
+        "createdAt": "2025-04-08T11:30:23.788Z",
+        "updatedAt": "2025-04-08T11:30:23.788Z",
+        "id": 3194
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 40,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-04-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.745Z",
-        "updatedAt": "2025-03-31T11:23:38.806Z",
-        "id": 1415
+        "createdAt": "2025-04-08T11:30:23.788Z",
+        "updatedAt": "2025-04-08T11:30:23.788Z",
+        "id": 3195
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 40,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-05-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.746Z",
-        "updatedAt": "2025-03-31T11:23:38.807Z",
-        "id": 1416
+        "createdAt": "2025-04-08T11:30:23.789Z",
+        "updatedAt": "2025-04-08T11:30:23.789Z",
+        "id": 3196
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 40,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-06-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.746Z",
-        "updatedAt": "2025-03-31T11:23:38.807Z",
-        "id": 1417
+        "createdAt": "2025-04-08T11:30:23.789Z",
+        "updatedAt": "2025-04-08T11:30:23.789Z",
+        "id": 3197
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 40,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-07-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.747Z",
-        "updatedAt": "2025-03-31T11:23:38.808Z",
-        "id": 1418
+        "createdAt": "2025-04-08T11:30:23.789Z",
+        "updatedAt": "2025-04-08T11:30:23.789Z",
+        "id": 3198
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 40,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-08-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.748Z",
-        "updatedAt": "2025-03-31T11:23:38.809Z",
-        "id": 1419
+        "createdAt": "2025-04-08T11:30:23.789Z",
+        "updatedAt": "2025-04-08T11:30:23.789Z",
+        "id": 3199
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 40,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-09-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.748Z",
-        "updatedAt": "2025-03-31T11:23:38.809Z",
-        "id": 1420
+        "createdAt": "2025-04-08T11:30:23.790Z",
+        "updatedAt": "2025-04-08T11:30:23.790Z",
+        "id": 3200
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 40,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-10-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.749Z",
-        "updatedAt": "2025-03-31T11:23:38.810Z",
-        "id": 1421
+        "createdAt": "2025-04-08T11:30:23.790Z",
+        "updatedAt": "2025-04-08T11:30:23.790Z",
+        "id": 3201
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 40,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-11-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.749Z",
-        "updatedAt": "2025-03-31T11:23:38.811Z",
-        "id": 1422
+        "createdAt": "2025-04-08T11:30:23.790Z",
+        "updatedAt": "2025-04-08T11:30:23.790Z",
+        "id": 3202
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 40,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2025-12-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.750Z",
-        "updatedAt": "2025-03-31T11:23:38.811Z",
-        "id": 1423
+        "createdAt": "2025-04-08T11:30:23.790Z",
+        "updatedAt": "2025-04-08T11:30:23.790Z",
+        "id": 3203
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 40,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2026-01-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.750Z",
-        "updatedAt": "2025-03-31T11:23:38.812Z",
-        "id": 1424
+        "createdAt": "2025-04-08T11:30:23.791Z",
+        "updatedAt": "2025-04-08T11:30:23.791Z",
+        "id": 3204
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 40,
         "type": "expense",
         "category": "fixed",
         "description": "Services numériques",
         "date": "2026-02-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.751Z",
-        "updatedAt": "2025-03-31T11:23:38.813Z",
-        "id": 1425
+        "createdAt": "2025-04-08T11:30:23.791Z",
+        "updatedAt": "2025-04-08T11:30:23.791Z",
+        "id": 3205
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 170,
         "type": "expense",
         "category": "fixed",
         "description": "Assurances",
         "date": "2025-03-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.753Z",
-        "updatedAt": "2025-03-31T11:23:38.813Z",
-        "id": 1426
+        "createdAt": "2025-04-08T11:30:23.791Z",
+        "updatedAt": "2025-04-08T11:30:23.791Z",
+        "id": 3206
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 170,
         "type": "expense",
         "category": "fixed",
         "description": "Assurances",
         "date": "2025-04-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.754Z",
-        "updatedAt": "2025-03-31T11:23:38.815Z",
-        "id": 1427
+        "createdAt": "2025-04-08T11:30:23.791Z",
+        "updatedAt": "2025-04-08T11:30:23.791Z",
+        "id": 3207
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 170,
         "type": "expense",
         "category": "fixed",
         "description": "Assurances",
         "date": "2025-05-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.755Z",
-        "updatedAt": "2025-03-31T11:23:38.817Z",
-        "id": 1428
+        "createdAt": "2025-04-08T11:30:23.792Z",
+        "updatedAt": "2025-04-08T11:30:23.792Z",
+        "id": 3208
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 170,
         "type": "expense",
         "category": "fixed",
         "description": "Assurances",
         "date": "2025-06-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.755Z",
-        "updatedAt": "2025-03-31T11:23:38.824Z",
-        "id": 1429
+        "createdAt": "2025-04-08T11:30:23.792Z",
+        "updatedAt": "2025-04-08T11:30:23.792Z",
+        "id": 3209
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 170,
         "type": "expense",
         "category": "fixed",
         "description": "Assurances",
         "date": "2025-07-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.756Z",
-        "updatedAt": "2025-03-31T11:23:38.825Z",
-        "id": 1430
+        "createdAt": "2025-04-08T11:30:23.792Z",
+        "updatedAt": "2025-04-08T11:30:23.792Z",
+        "id": 3210
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 170,
         "type": "expense",
         "category": "fixed",
         "description": "Assurances",
         "date": "2025-08-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.756Z",
-        "updatedAt": "2025-03-31T11:23:38.826Z",
-        "id": 1431
+        "createdAt": "2025-04-08T11:30:23.792Z",
+        "updatedAt": "2025-04-08T11:30:23.792Z",
+        "id": 3211
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 170,
         "type": "expense",
         "category": "fixed",
         "description": "Assurances",
         "date": "2025-09-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.757Z",
-        "updatedAt": "2025-03-31T11:23:38.826Z",
-        "id": 1432
+        "createdAt": "2025-04-08T11:30:23.793Z",
+        "updatedAt": "2025-04-08T11:30:23.793Z",
+        "id": 3212
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 170,
         "type": "expense",
         "category": "fixed",
         "description": "Assurances",
         "date": "2025-10-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.758Z",
-        "updatedAt": "2025-03-31T11:23:38.827Z",
-        "id": 1433
+        "createdAt": "2025-04-08T11:30:23.793Z",
+        "updatedAt": "2025-04-08T11:30:23.793Z",
+        "id": 3213
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 170,
         "type": "expense",
         "category": "fixed",
         "description": "Assurances",
         "date": "2025-11-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.758Z",
-        "updatedAt": "2025-03-31T11:23:38.828Z",
-        "id": 1434
+        "createdAt": "2025-04-08T11:30:23.793Z",
+        "updatedAt": "2025-04-08T11:30:23.793Z",
+        "id": 3214
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 170,
         "type": "expense",
         "category": "fixed",
         "description": "Assurances",
         "date": "2025-12-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.759Z",
-        "updatedAt": "2025-03-31T11:23:38.829Z",
-        "id": 1435
+        "createdAt": "2025-04-08T11:30:23.793Z",
+        "updatedAt": "2025-04-08T11:30:23.793Z",
+        "id": 3215
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 170,
         "type": "expense",
         "category": "fixed",
         "description": "Assurances",
         "date": "2026-01-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.759Z",
-        "updatedAt": "2025-03-31T11:23:38.829Z",
-        "id": 1436
+        "createdAt": "2025-04-08T11:30:23.794Z",
+        "updatedAt": "2025-04-08T11:30:23.794Z",
+        "id": 3216
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 170,
         "type": "expense",
         "category": "fixed",
         "description": "Assurances",
         "date": "2026-02-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.762Z",
-        "updatedAt": "2025-03-31T11:23:38.830Z",
-        "id": 1437
+        "createdAt": "2025-04-08T11:30:23.794Z",
+        "updatedAt": "2025-04-08T11:30:23.794Z",
+        "id": 3217
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 818,
         "type": "expense",
         "category": "fixed",
         "description": "Prêt Maison",
         "date": "2025-06-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.763Z",
-        "updatedAt": "2025-03-31T11:23:38.831Z",
-        "id": 1438
+        "createdAt": "2025-04-08T11:30:23.794Z",
+        "updatedAt": "2025-04-08T11:30:23.794Z",
+        "id": 3218
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 818,
         "type": "expense",
         "category": "fixed",
         "description": "Prêt Maison",
         "date": "2025-07-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.763Z",
-        "updatedAt": "2025-03-31T11:23:38.831Z",
-        "id": 1439
+        "createdAt": "2025-04-08T11:30:23.794Z",
+        "updatedAt": "2025-04-08T11:30:23.794Z",
+        "id": 3219
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 818,
         "type": "expense",
         "category": "fixed",
         "description": "Prêt Maison",
         "date": "2025-08-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.764Z",
-        "updatedAt": "2025-03-31T11:23:38.832Z",
-        "id": 1440
+        "createdAt": "2025-04-08T11:30:23.795Z",
+        "updatedAt": "2025-04-08T11:30:23.795Z",
+        "id": 3220
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 818,
         "type": "expense",
         "category": "fixed",
         "description": "Prêt Maison",
         "date": "2025-09-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.765Z",
-        "updatedAt": "2025-03-31T11:23:38.832Z",
-        "id": 1441
+        "createdAt": "2025-04-08T11:30:23.795Z",
+        "updatedAt": "2025-04-08T11:30:23.795Z",
+        "id": 3221
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 818,
         "type": "expense",
         "category": "fixed",
         "description": "Prêt Maison",
         "date": "2025-10-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.765Z",
-        "updatedAt": "2025-03-31T11:23:38.833Z",
-        "id": 1442
+        "createdAt": "2025-04-08T11:30:23.795Z",
+        "updatedAt": "2025-04-08T11:30:23.795Z",
+        "id": 3222
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 818,
         "type": "expense",
         "category": "fixed",
         "description": "Prêt Maison",
         "date": "2025-11-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.766Z",
-        "updatedAt": "2025-03-31T11:23:38.834Z",
-        "id": 1443
+        "createdAt": "2025-04-08T11:30:23.795Z",
+        "updatedAt": "2025-04-08T11:30:23.795Z",
+        "id": 3223
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 818,
         "type": "expense",
         "category": "fixed",
         "description": "Prêt Maison",
         "date": "2025-12-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.767Z",
-        "updatedAt": "2025-03-31T11:23:38.835Z",
-        "id": 1444
+        "createdAt": "2025-04-08T11:30:23.796Z",
+        "updatedAt": "2025-04-08T11:30:23.796Z",
+        "id": 3224
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 818,
         "type": "expense",
         "category": "fixed",
         "description": "Prêt Maison",
         "date": "2026-01-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.767Z",
-        "updatedAt": "2025-03-31T11:23:38.836Z",
-        "id": 1445
+        "createdAt": "2025-04-08T11:30:23.796Z",
+        "updatedAt": "2025-04-08T11:30:23.796Z",
+        "id": 3225
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 818,
         "type": "expense",
         "category": "fixed",
         "description": "Prêt Maison",
         "date": "2026-02-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.769Z",
-        "updatedAt": "2025-03-31T11:23:38.837Z",
-        "id": 1446
+        "createdAt": "2025-04-08T11:30:23.796Z",
+        "updatedAt": "2025-04-08T11:30:23.796Z",
+        "id": 3226
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 818,
         "type": "expense",
         "category": "fixed",
         "description": "Prêt Maison",
         "date": "2026-03-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.770Z",
-        "updatedAt": "2025-03-31T11:23:38.837Z",
-        "id": 1447
+        "createdAt": "2025-04-08T11:30:23.797Z",
+        "updatedAt": "2025-04-08T11:30:23.797Z",
+        "id": 3227
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 818,
         "type": "expense",
         "category": "fixed",
         "description": "Prêt Maison",
         "date": "2026-04-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.771Z",
-        "updatedAt": "2025-03-31T11:23:38.838Z",
-        "id": 1448
+        "createdAt": "2025-04-08T11:30:23.797Z",
+        "updatedAt": "2025-04-08T11:30:23.797Z",
+        "id": 3228
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 818,
         "type": "expense",
         "category": "fixed",
         "description": "Prêt Maison",
         "date": "2026-05-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.771Z",
-        "updatedAt": "2025-03-31T11:23:38.839Z",
-        "id": 1449
+        "createdAt": "2025-04-08T11:30:23.797Z",
+        "updatedAt": "2025-04-08T11:30:23.797Z",
+        "id": 3229
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 761.76,
         "type": "expense",
         "category": "fixed",
         "description": "Crédit",
         "date": "2025-03-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.772Z",
-        "updatedAt": "2025-03-31T11:23:38.839Z",
-        "id": 1450
+        "createdAt": "2025-04-08T11:30:23.797Z",
+        "updatedAt": "2025-04-08T11:30:23.797Z",
+        "id": 3230
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 761.76,
         "type": "expense",
         "category": "fixed",
         "description": "Crédit",
         "date": "2025-04-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.773Z",
-        "updatedAt": "2025-03-31T11:23:38.840Z",
-        "id": 1451
+        "createdAt": "2025-04-08T11:30:23.797Z",
+        "updatedAt": "2025-04-08T11:30:23.797Z",
+        "id": 3231
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 761.76,
         "type": "expense",
         "category": "fixed",
         "description": "Crédit",
         "date": "2025-05-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.774Z",
-        "updatedAt": "2025-03-31T11:23:38.841Z",
-        "id": 1452
+        "createdAt": "2025-04-08T11:30:23.798Z",
+        "updatedAt": "2025-04-08T11:30:23.798Z",
+        "id": 3232
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 761.76,
         "type": "expense",
         "category": "fixed",
         "description": "Crédit",
         "date": "2025-06-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.774Z",
-        "updatedAt": "2025-03-31T11:23:38.842Z",
-        "id": 1453
+        "createdAt": "2025-04-08T11:30:23.798Z",
+        "updatedAt": "2025-04-08T11:30:23.798Z",
+        "id": 3233
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 761.76,
         "type": "expense",
         "category": "fixed",
         "description": "Crédit",
         "date": "2025-07-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.775Z",
-        "updatedAt": "2025-03-31T11:23:38.842Z",
-        "id": 1454
+        "createdAt": "2025-04-08T11:30:23.798Z",
+        "updatedAt": "2025-04-08T11:30:23.798Z",
+        "id": 3234
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 761.76,
         "type": "expense",
         "category": "fixed",
         "description": "Crédit",
         "date": "2025-08-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.775Z",
-        "updatedAt": "2025-03-31T11:23:38.843Z",
-        "id": 1455
+        "createdAt": "2025-04-08T11:30:23.799Z",
+        "updatedAt": "2025-04-08T11:30:23.799Z",
+        "id": 3235
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 761.76,
         "type": "expense",
         "category": "fixed",
         "description": "Crédit",
         "date": "2025-09-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.776Z",
-        "updatedAt": "2025-03-31T11:23:38.844Z",
-        "id": 1456
+        "createdAt": "2025-04-08T11:30:23.799Z",
+        "updatedAt": "2025-04-08T11:30:23.799Z",
+        "id": 3236
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 761.76,
         "type": "expense",
         "category": "fixed",
         "description": "Crédit",
         "date": "2025-10-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.778Z",
-        "updatedAt": "2025-03-31T11:23:38.845Z",
-        "id": 1457
+        "createdAt": "2025-04-08T11:30:23.799Z",
+        "updatedAt": "2025-04-08T11:30:23.799Z",
+        "id": 3237
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 761.76,
         "type": "expense",
         "category": "fixed",
         "description": "Crédit",
         "date": "2025-11-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.779Z",
-        "updatedAt": "2025-03-31T11:23:38.845Z",
-        "id": 1458
+        "createdAt": "2025-04-08T11:30:23.799Z",
+        "updatedAt": "2025-04-08T11:30:23.799Z",
+        "id": 3238
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 761.76,
         "type": "expense",
         "category": "fixed",
         "description": "Crédit",
         "date": "2025-12-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.780Z",
-        "updatedAt": "2025-03-31T11:23:38.846Z",
-        "id": 1459
+        "createdAt": "2025-04-08T11:30:23.800Z",
+        "updatedAt": "2025-04-08T11:30:23.800Z",
+        "id": 3239
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 761.76,
         "type": "expense",
         "category": "fixed",
         "description": "Crédit",
         "date": "2026-01-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.780Z",
-        "updatedAt": "2025-03-31T11:23:38.847Z",
-        "id": 1460
+        "createdAt": "2025-04-08T11:30:23.800Z",
+        "updatedAt": "2025-04-08T11:30:23.800Z",
+        "id": 3240
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 761.76,
         "type": "expense",
         "category": "fixed",
         "description": "Crédit",
         "date": "2026-02-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.781Z",
-        "updatedAt": "2025-03-31T11:23:38.847Z",
-        "id": 1461
+        "createdAt": "2025-04-08T11:30:23.800Z",
+        "updatedAt": "2025-04-08T11:30:23.800Z",
+        "id": 3241
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 80,
         "type": "expense",
         "category": "exceptional",
         "description": "CNAS",
         "date": "2025-03-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.781Z",
-        "updatedAt": "2025-03-31T11:23:38.848Z",
-        "id": 1462
+        "createdAt": "2025-04-08T11:30:23.800Z",
+        "updatedAt": "2025-04-08T11:30:23.800Z",
+        "id": 3242
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 440,
         "type": "expense",
         "category": "recurring",
         "description": "Energie (Total)",
         "date": "2025-03-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.782Z",
-        "updatedAt": "2025-03-31T11:23:38.849Z",
-        "id": 1463
+        "createdAt": "2025-04-08T11:30:23.801Z",
+        "updatedAt": "2025-04-08T11:30:23.801Z",
+        "id": 3243
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 440,
         "type": "expense",
         "category": "recurring",
         "description": "Energie (Total)",
         "date": "2025-04-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.782Z",
-        "updatedAt": "2025-03-31T11:23:38.849Z",
-        "id": 1464
+        "createdAt": "2025-04-08T11:30:23.801Z",
+        "updatedAt": "2025-04-08T11:30:23.801Z",
+        "id": 3244
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 440,
         "type": "expense",
         "category": "recurring",
         "description": "Energie (Total)",
         "date": "2025-05-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.783Z",
-        "updatedAt": "2025-03-31T11:23:38.850Z",
-        "id": 1465
+        "createdAt": "2025-04-08T11:30:23.801Z",
+        "updatedAt": "2025-04-08T11:30:23.801Z",
+        "id": 3245
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 440,
         "type": "expense",
         "category": "recurring",
         "description": "Energie (Total)",
         "date": "2025-06-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.784Z",
-        "updatedAt": "2025-03-31T11:23:38.851Z",
-        "id": 1466
+        "createdAt": "2025-04-08T11:30:23.801Z",
+        "updatedAt": "2025-04-08T11:30:23.801Z",
+        "id": 3246
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 440,
         "type": "expense",
         "category": "recurring",
         "description": "Energie (Total)",
         "date": "2025-07-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.784Z",
-        "updatedAt": "2025-03-31T11:23:38.852Z",
-        "id": 1467
+        "createdAt": "2025-04-08T11:30:23.802Z",
+        "updatedAt": "2025-04-08T11:30:23.802Z",
+        "id": 3247
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 440,
         "type": "expense",
         "category": "recurring",
         "description": "Energie (Total)",
         "date": "2025-08-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.786Z",
-        "updatedAt": "2025-03-31T11:23:38.853Z",
-        "id": 1468
+        "createdAt": "2025-04-08T11:30:23.802Z",
+        "updatedAt": "2025-04-08T11:30:23.802Z",
+        "id": 3248
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 440,
         "type": "expense",
         "category": "recurring",
         "description": "Energie (Total)",
         "date": "2025-09-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.787Z",
-        "updatedAt": "2025-03-31T11:23:38.853Z",
-        "id": 1469
+        "createdAt": "2025-04-08T11:30:23.802Z",
+        "updatedAt": "2025-04-08T11:30:23.802Z",
+        "id": 3249
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 440,
         "type": "expense",
         "category": "recurring",
         "description": "Energie (Total)",
         "date": "2025-10-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.788Z",
-        "updatedAt": "2025-03-31T11:23:38.854Z",
-        "id": 1470
+        "createdAt": "2025-04-08T11:30:23.802Z",
+        "updatedAt": "2025-04-08T11:30:23.802Z",
+        "id": 3250
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 440,
         "type": "expense",
         "category": "recurring",
         "description": "Energie (Total)",
         "date": "2025-11-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.788Z",
-        "updatedAt": "2025-03-31T11:23:38.855Z",
-        "id": 1471
+        "createdAt": "2025-04-08T11:30:23.803Z",
+        "updatedAt": "2025-04-08T11:30:23.803Z",
+        "id": 3251
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 440,
         "type": "expense",
         "category": "recurring",
         "description": "Energie (Total)",
         "date": "2025-12-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.789Z",
-        "updatedAt": "2025-03-31T11:23:38.855Z",
-        "id": 1472
+        "createdAt": "2025-04-08T11:30:23.803Z",
+        "updatedAt": "2025-04-08T11:30:23.803Z",
+        "id": 3252
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 440,
         "type": "expense",
         "category": "recurring",
         "description": "Energie (Total)",
         "date": "2026-01-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.790Z",
-        "updatedAt": "2025-03-31T11:23:38.856Z",
-        "id": 1473
+        "createdAt": "2025-04-08T11:30:23.804Z",
+        "updatedAt": "2025-04-08T11:30:23.804Z",
+        "id": 3253
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 440,
         "type": "expense",
         "category": "recurring",
         "description": "Energie (Total)",
         "date": "2026-02-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.790Z",
-        "updatedAt": "2025-03-31T11:23:38.857Z",
-        "id": 1474
+        "createdAt": "2025-04-08T11:30:23.804Z",
+        "updatedAt": "2025-04-08T11:30:23.804Z",
+        "id": 3254
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 61.04,
         "type": "expense",
         "category": "recurring",
         "description": "Eau",
         "date": "2025-03-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.791Z",
-        "updatedAt": "2025-03-31T11:23:38.857Z",
-        "id": 1475
+        "createdAt": "2025-04-08T11:30:23.805Z",
+        "updatedAt": "2025-04-08T11:30:23.805Z",
+        "id": 3255
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 61.04,
         "type": "expense",
         "category": "recurring",
         "description": "Eau",
         "date": "2025-04-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.791Z",
-        "updatedAt": "2025-03-31T11:23:38.858Z",
-        "id": 1476
+        "createdAt": "2025-04-08T11:30:23.805Z",
+        "updatedAt": "2025-04-08T11:30:23.805Z",
+        "id": 3256
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 61.04,
         "type": "expense",
         "category": "recurring",
         "description": "Eau",
         "date": "2025-05-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.792Z",
-        "updatedAt": "2025-03-31T11:23:38.859Z",
-        "id": 1477
+        "createdAt": "2025-04-08T11:30:23.806Z",
+        "updatedAt": "2025-04-08T11:30:23.806Z",
+        "id": 3257
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 61.04,
         "type": "expense",
         "category": "recurring",
         "description": "Eau",
         "date": "2025-06-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.793Z",
-        "updatedAt": "2025-03-31T11:23:38.859Z",
-        "id": 1478
+        "createdAt": "2025-04-08T11:30:23.806Z",
+        "updatedAt": "2025-04-08T11:30:23.806Z",
+        "id": 3258
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 61.04,
         "type": "expense",
         "category": "recurring",
         "description": "Eau",
         "date": "2025-07-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.795Z",
-        "updatedAt": "2025-03-31T11:23:38.860Z",
-        "id": 1479
+        "createdAt": "2025-04-08T11:30:23.806Z",
+        "updatedAt": "2025-04-08T11:30:23.806Z",
+        "id": 3259
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 61.04,
         "type": "expense",
         "category": "recurring",
         "description": "Eau",
         "date": "2025-08-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.796Z",
-        "updatedAt": "2025-03-31T11:23:38.861Z",
-        "id": 1480
+        "createdAt": "2025-04-08T11:30:23.806Z",
+        "updatedAt": "2025-04-08T11:30:23.806Z",
+        "id": 3260
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 61.04,
         "type": "expense",
         "category": "recurring",
         "description": "Eau",
         "date": "2025-09-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.797Z",
-        "updatedAt": "2025-03-31T11:23:38.861Z",
-        "id": 1481
+        "createdAt": "2025-04-08T11:30:23.807Z",
+        "updatedAt": "2025-04-08T11:30:23.807Z",
+        "id": 3261
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 61.04,
         "type": "expense",
         "category": "recurring",
         "description": "Eau",
         "date": "2025-10-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.797Z",
-        "updatedAt": "2025-03-31T11:23:38.862Z",
-        "id": 1482
+        "createdAt": "2025-04-08T11:30:23.807Z",
+        "updatedAt": "2025-04-08T11:30:23.807Z",
+        "id": 3262
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 61.04,
         "type": "expense",
         "category": "recurring",
         "description": "Eau",
         "date": "2025-11-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.798Z",
-        "updatedAt": "2025-03-31T11:23:38.863Z",
-        "id": 1483
+        "createdAt": "2025-04-08T11:30:23.807Z",
+        "updatedAt": "2025-04-08T11:30:23.807Z",
+        "id": 3263
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 61.04,
         "type": "expense",
         "category": "recurring",
         "description": "Eau",
         "date": "2025-12-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.799Z",
-        "updatedAt": "2025-03-31T11:23:38.863Z",
-        "id": 1484
+        "createdAt": "2025-04-08T11:30:23.808Z",
+        "updatedAt": "2025-04-08T11:30:23.808Z",
+        "id": 3264
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 61.04,
         "type": "expense",
         "category": "recurring",
         "description": "Eau",
         "date": "2026-01-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.799Z",
-        "updatedAt": "2025-03-31T11:23:38.864Z",
-        "id": 1485
+        "createdAt": "2025-04-08T11:30:23.808Z",
+        "updatedAt": "2025-04-08T11:30:23.808Z",
+        "id": 3265
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 61.04,
         "type": "expense",
         "category": "recurring",
         "description": "Eau",
         "date": "2026-02-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.800Z",
-        "updatedAt": "2025-03-31T11:23:38.865Z",
-        "id": 1486
+        "createdAt": "2025-04-08T11:30:23.808Z",
+        "updatedAt": "2025-04-08T11:30:23.808Z",
+        "id": 3266
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 130.95,
         "type": "expense",
         "category": "recurring",
         "description": "Télécom (Free)",
         "date": "2025-03-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.801Z",
-        "updatedAt": "2025-03-31T11:23:38.865Z",
-        "id": 1487
+        "createdAt": "2025-04-08T11:30:23.809Z",
+        "updatedAt": "2025-04-08T11:30:23.809Z",
+        "id": 3267
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 130.95,
         "type": "expense",
         "category": "recurring",
         "description": "Télécom (Free)",
         "date": "2025-04-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.801Z",
-        "updatedAt": "2025-03-31T11:23:38.866Z",
-        "id": 1488
+        "createdAt": "2025-04-08T11:30:23.809Z",
+        "updatedAt": "2025-04-08T11:30:23.809Z",
+        "id": 3268
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 130.95,
         "type": "expense",
         "category": "recurring",
         "description": "Télécom (Free)",
         "date": "2025-05-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.803Z",
-        "updatedAt": "2025-03-31T11:23:38.867Z",
-        "id": 1489
+        "createdAt": "2025-04-08T11:30:23.809Z",
+        "updatedAt": "2025-04-08T11:30:23.809Z",
+        "id": 3269
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 130.95,
         "type": "expense",
         "category": "recurring",
         "description": "Télécom (Free)",
         "date": "2025-06-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.804Z",
-        "updatedAt": "2025-03-31T11:23:38.868Z",
-        "id": 1490
+        "createdAt": "2025-04-08T11:30:23.809Z",
+        "updatedAt": "2025-04-08T11:30:23.809Z",
+        "id": 3270
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 130.95,
         "type": "expense",
         "category": "recurring",
         "description": "Télécom (Free)",
         "date": "2025-07-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.805Z",
-        "updatedAt": "2025-03-31T11:23:38.868Z",
-        "id": 1491
+        "createdAt": "2025-04-08T11:30:23.810Z",
+        "updatedAt": "2025-04-08T11:30:23.810Z",
+        "id": 3271
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 130.95,
         "type": "expense",
         "category": "recurring",
         "description": "Télécom (Free)",
         "date": "2025-08-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.806Z",
-        "updatedAt": "2025-03-31T11:23:38.869Z",
-        "id": 1492
+        "createdAt": "2025-04-08T11:30:23.810Z",
+        "updatedAt": "2025-04-08T11:30:23.810Z",
+        "id": 3272
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 130.95,
         "type": "expense",
         "category": "recurring",
         "description": "Télécom (Free)",
         "date": "2025-09-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.806Z",
-        "updatedAt": "2025-03-31T11:23:38.870Z",
-        "id": 1493
+        "createdAt": "2025-04-08T11:30:23.810Z",
+        "updatedAt": "2025-04-08T11:30:23.810Z",
+        "id": 3273
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 130.95,
         "type": "expense",
         "category": "recurring",
         "description": "Télécom (Free)",
         "date": "2025-10-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.807Z",
-        "updatedAt": "2025-03-31T11:23:38.870Z",
-        "id": 1494
+        "createdAt": "2025-04-08T11:30:23.810Z",
+        "updatedAt": "2025-04-08T11:30:23.810Z",
+        "id": 3274
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 130.95,
         "type": "expense",
         "category": "recurring",
         "description": "Télécom (Free)",
         "date": "2025-11-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.808Z",
-        "updatedAt": "2025-03-31T11:23:38.871Z",
-        "id": 1495
+        "createdAt": "2025-04-08T11:30:23.811Z",
+        "updatedAt": "2025-04-08T11:30:23.811Z",
+        "id": 3275
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 130.95,
         "type": "expense",
         "category": "recurring",
         "description": "Télécom (Free)",
         "date": "2025-12-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.809Z",
-        "updatedAt": "2025-03-31T11:23:38.872Z",
-        "id": 1496
+        "createdAt": "2025-04-08T11:30:23.811Z",
+        "updatedAt": "2025-04-08T11:30:23.811Z",
+        "id": 3276
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 130.95,
         "type": "expense",
         "category": "recurring",
         "description": "Télécom (Free)",
         "date": "2026-01-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.809Z",
-        "updatedAt": "2025-03-31T11:23:38.872Z",
-        "id": 1497
+        "createdAt": "2025-04-08T11:30:23.811Z",
+        "updatedAt": "2025-04-08T11:30:23.811Z",
+        "id": 3277
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 130.95,
         "type": "expense",
         "category": "recurring",
         "description": "Télécom (Free)",
         "date": "2026-02-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.811Z",
-        "updatedAt": "2025-03-31T11:23:38.873Z",
-        "id": 1498
+        "createdAt": "2025-04-08T11:30:23.812Z",
+        "updatedAt": "2025-04-08T11:30:23.812Z",
+        "id": 3278
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 120,
         "type": "expense",
         "category": "recurring",
         "description": "Impôts",
         "date": "2025-03-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.813Z",
-        "updatedAt": "2025-03-31T11:23:38.874Z",
-        "id": 1499
+        "createdAt": "2025-04-08T11:30:23.812Z",
+        "updatedAt": "2025-04-08T11:30:23.812Z",
+        "id": 3279
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 120,
         "type": "expense",
         "category": "recurring",
         "description": "Impôts",
         "date": "2025-04-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.813Z",
-        "updatedAt": "2025-03-31T11:23:38.874Z",
-        "id": 1500
+        "createdAt": "2025-04-08T11:30:23.812Z",
+        "updatedAt": "2025-04-08T11:30:23.812Z",
+        "id": 3280
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 120,
         "type": "expense",
         "category": "recurring",
         "description": "Impôts",
         "date": "2025-05-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.814Z",
-        "updatedAt": "2025-03-31T11:23:38.875Z",
-        "id": 1501
+        "createdAt": "2025-04-08T11:30:23.812Z",
+        "updatedAt": "2025-04-08T11:30:23.812Z",
+        "id": 3281
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 120,
         "type": "expense",
         "category": "recurring",
         "description": "Impôts",
         "date": "2025-06-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.815Z",
-        "updatedAt": "2025-03-31T11:23:38.876Z",
-        "id": 1502
+        "createdAt": "2025-04-08T11:30:23.813Z",
+        "updatedAt": "2025-04-08T11:30:23.813Z",
+        "id": 3282
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 120,
         "type": "expense",
         "category": "recurring",
         "description": "Impôts",
         "date": "2025-07-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.816Z",
-        "updatedAt": "2025-03-31T11:23:38.876Z",
-        "id": 1503
+        "createdAt": "2025-04-08T11:30:23.813Z",
+        "updatedAt": "2025-04-08T11:30:23.813Z",
+        "id": 3283
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 120,
         "type": "expense",
         "category": "recurring",
         "description": "Impôts",
         "date": "2025-08-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.816Z",
-        "updatedAt": "2025-03-31T11:23:38.877Z",
-        "id": 1504
+        "createdAt": "2025-04-08T11:30:23.813Z",
+        "updatedAt": "2025-04-08T11:30:23.813Z",
+        "id": 3284
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 120,
         "type": "expense",
         "category": "recurring",
         "description": "Impôts",
         "date": "2025-09-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.817Z",
-        "updatedAt": "2025-03-31T11:23:38.878Z",
-        "id": 1505
+        "createdAt": "2025-04-08T11:30:23.813Z",
+        "updatedAt": "2025-04-08T11:30:23.813Z",
+        "id": 3285
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 120,
         "type": "expense",
         "category": "recurring",
         "description": "Impôts",
         "date": "2025-10-04T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.818Z",
-        "updatedAt": "2025-03-31T11:23:38.878Z",
-        "id": 1506
+        "createdAt": "2025-04-08T11:30:23.814Z",
+        "updatedAt": "2025-04-08T11:30:23.814Z",
+        "id": 3286
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 120,
         "type": "expense",
         "category": "recurring",
         "description": "Impôts",
         "date": "2025-11-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.818Z",
-        "updatedAt": "2025-03-31T11:23:38.879Z",
-        "id": 1507
+        "createdAt": "2025-04-08T11:30:23.814Z",
+        "updatedAt": "2025-04-08T11:30:23.814Z",
+        "id": 3287
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 120,
         "type": "expense",
         "category": "recurring",
         "description": "Impôts",
         "date": "2025-12-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.820Z",
-        "updatedAt": "2025-03-31T11:23:38.880Z",
-        "id": 1508
+        "createdAt": "2025-04-08T11:30:23.814Z",
+        "updatedAt": "2025-04-08T11:30:23.814Z",
+        "id": 3288
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 120,
         "type": "expense",
         "category": "recurring",
         "description": "Impôts",
         "date": "2026-01-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.821Z",
-        "updatedAt": "2025-03-31T11:23:38.880Z",
-        "id": 1509
+        "createdAt": "2025-04-08T11:30:23.814Z",
+        "updatedAt": "2025-04-08T11:30:23.814Z",
+        "id": 3289
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 120,
         "type": "expense",
         "category": "recurring",
         "description": "Impôts",
         "date": "2026-02-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.821Z",
-        "updatedAt": "2025-03-31T11:23:38.881Z",
-        "id": 1510
+        "createdAt": "2025-04-08T11:30:23.815Z",
+        "updatedAt": "2025-04-08T11:30:23.815Z",
+        "id": 3290
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Divers",
         "date": "2025-03-20T20:21:34.392Z",
-        "createdAt": "2025-03-30T12:55:30.822Z",
-        "updatedAt": "2025-03-31T11:23:38.882Z",
-        "id": 1511
+        "createdAt": "2025-04-08T11:30:23.815Z",
+        "updatedAt": "2025-04-08T11:30:23.815Z",
+        "id": 3291
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Divers",
         "date": "2025-04-20T19:21:34.392Z",
-        "createdAt": "2025-03-30T12:55:30.823Z",
-        "updatedAt": "2025-03-31T11:23:38.882Z",
-        "id": 1512
+        "createdAt": "2025-04-08T11:30:23.815Z",
+        "updatedAt": "2025-04-08T11:30:23.815Z",
+        "id": 3292
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Divers",
         "date": "2025-05-20T19:21:34.392Z",
-        "createdAt": "2025-03-30T12:55:30.824Z",
-        "updatedAt": "2025-03-31T11:23:38.883Z",
-        "id": 1513
+        "createdAt": "2025-04-08T11:30:23.815Z",
+        "updatedAt": "2025-04-08T11:30:23.815Z",
+        "id": 3293
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Divers",
         "date": "2025-06-20T19:21:34.392Z",
-        "createdAt": "2025-03-30T12:55:30.824Z",
-        "updatedAt": "2025-03-31T11:23:38.884Z",
-        "id": 1514
+        "createdAt": "2025-04-08T11:30:23.816Z",
+        "updatedAt": "2025-04-08T11:30:23.816Z",
+        "id": 3294
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Divers",
         "date": "2025-07-20T19:21:34.392Z",
-        "createdAt": "2025-03-30T12:55:30.825Z",
-        "updatedAt": "2025-03-31T11:23:38.885Z",
-        "id": 1515
+        "createdAt": "2025-04-08T11:30:23.816Z",
+        "updatedAt": "2025-04-08T11:30:23.816Z",
+        "id": 3295
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Divers",
         "date": "2025-08-20T19:21:34.392Z",
-        "createdAt": "2025-03-30T12:55:30.826Z",
-        "updatedAt": "2025-03-31T11:23:38.886Z",
-        "id": 1516
+        "createdAt": "2025-04-08T11:30:23.816Z",
+        "updatedAt": "2025-04-08T11:30:23.816Z",
+        "id": 3296
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Divers",
         "date": "2025-09-20T19:21:34.392Z",
-        "createdAt": "2025-03-30T12:55:30.827Z",
-        "updatedAt": "2025-03-31T11:23:38.886Z",
-        "id": 1517
+        "createdAt": "2025-04-08T11:30:23.816Z",
+        "updatedAt": "2025-04-08T11:30:23.816Z",
+        "id": 3297
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Divers",
         "date": "2025-10-20T19:21:34.392Z",
-        "createdAt": "2025-03-30T12:55:30.829Z",
-        "updatedAt": "2025-03-31T11:23:38.887Z",
-        "id": 1518
+        "createdAt": "2025-04-08T11:30:23.817Z",
+        "updatedAt": "2025-04-08T11:30:23.817Z",
+        "id": 3298
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Divers",
         "date": "2025-11-20T20:21:34.392Z",
-        "createdAt": "2025-03-30T12:55:30.830Z",
-        "updatedAt": "2025-03-31T11:23:38.888Z",
-        "id": 1519
+        "createdAt": "2025-04-08T11:30:23.817Z",
+        "updatedAt": "2025-04-08T11:30:23.817Z",
+        "id": 3299
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Divers",
         "date": "2025-12-20T20:21:34.392Z",
-        "createdAt": "2025-03-30T12:55:30.831Z",
-        "updatedAt": "2025-03-31T11:23:38.888Z",
-        "id": 1520
+        "createdAt": "2025-04-08T11:30:23.817Z",
+        "updatedAt": "2025-04-08T11:30:23.817Z",
+        "id": 3300
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Divers",
         "date": "2026-01-20T20:21:34.392Z",
-        "createdAt": "2025-03-30T12:55:30.832Z",
-        "updatedAt": "2025-03-31T11:23:38.889Z",
-        "id": 1521
+        "createdAt": "2025-04-08T11:30:23.817Z",
+        "updatedAt": "2025-04-08T11:30:23.817Z",
+        "id": 3301
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 100,
         "type": "expense",
         "category": "recurring",
         "description": "Divers",
         "date": "2026-02-20T20:21:34.392Z",
-        "createdAt": "2025-03-30T12:55:30.833Z",
-        "updatedAt": "2025-03-31T11:23:38.890Z",
-        "id": 1522
+        "createdAt": "2025-04-08T11:30:23.818Z",
+        "updatedAt": "2025-04-08T11:30:23.818Z",
+        "id": 3302
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 340,
         "type": "expense",
         "category": "exceptional",
         "description": "Permis Lisa",
         "date": "2025-03-27T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.833Z",
-        "updatedAt": "2025-03-31T11:23:38.891Z",
-        "id": 1523
+        "createdAt": "2025-04-08T11:30:23.818Z",
+        "updatedAt": "2025-04-08T11:30:23.818Z",
+        "id": 3303
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 340,
         "type": "expense",
         "category": "exceptional",
         "description": "Permis Lisa",
         "date": "2025-04-27T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.834Z",
-        "updatedAt": "2025-03-31T11:23:38.891Z",
-        "id": 1524
+        "createdAt": "2025-04-08T11:30:23.818Z",
+        "updatedAt": "2025-04-08T11:30:23.818Z",
+        "id": 3304
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 340,
         "type": "expense",
         "category": "exceptional",
         "description": "Permis Lisa",
         "date": "2025-05-27T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.835Z",
-        "updatedAt": "2025-03-31T11:23:38.892Z",
-        "id": 1525
+        "createdAt": "2025-04-08T11:30:23.818Z",
+        "updatedAt": "2025-04-08T11:30:23.818Z",
+        "id": 3305
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 330,
         "type": "expense",
         "category": "exceptional",
         "description": "RTX",
         "date": "2025-03-04T23:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.837Z",
-        "updatedAt": "2025-03-31T11:23:38.892Z",
-        "id": 1526
+        "createdAt": "2025-04-08T11:30:23.819Z",
+        "updatedAt": "2025-04-08T11:30:23.819Z",
+        "id": 3306
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 450,
         "type": "expense",
         "category": "exceptional",
         "description": "Croisière",
         "date": "2025-04-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.838Z",
-        "updatedAt": "2025-03-31T11:23:38.893Z",
-        "id": 1527
+        "createdAt": "2025-04-08T11:30:23.819Z",
+        "updatedAt": "2025-04-08T11:30:23.819Z",
+        "id": 3307
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 450,
         "type": "expense",
         "category": "exceptional",
         "description": "Croisière",
         "date": "2025-06-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.838Z",
-        "updatedAt": "2025-03-31T11:23:38.894Z",
-        "id": 1528
+        "createdAt": "2025-04-08T11:30:23.819Z",
+        "updatedAt": "2025-04-08T11:30:23.819Z",
+        "id": 3308
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 450,
         "type": "expense",
         "category": "exceptional",
         "description": "Croisière",
         "date": "2025-08-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.839Z",
-        "updatedAt": "2025-03-31T11:23:38.894Z",
-        "id": 1529
+        "createdAt": "2025-04-08T11:30:23.820Z",
+        "updatedAt": "2025-04-08T11:30:23.820Z",
+        "id": 3309
       },
       {
-        "accountId": 5,
+        "accountId": 19,
         "amount": 450,
         "type": "expense",
         "category": "exceptional",
         "description": "Croisière",
         "date": "2025-09-09T22:00:00.000Z",
-        "createdAt": "2025-03-30T12:55:30.840Z",
-        "updatedAt": "2025-03-31T11:23:38.895Z",
-        "id": 1530
+        "createdAt": "2025-04-08T11:30:23.820Z",
+        "updatedAt": "2025-04-08T11:30:23.820Z",
+        "id": 3310
       }
     ],
     "recurringTransactions": [],
     "categories": [],
     "preferences": {
       "defaultCurrency": "EUR",
-      "theme": "redbank",
+      "theme": "softbank",
       "dateFormat": "dd/MM/yyyy",
       "createdAt": "2025-03-28T18:24:45.244Z",
-      "updatedAt": "2025-04-03T07:24:31.402Z",
+      "updatedAt": "2025-04-08T12:03:34.915Z",
       "id": 1,
       "useFinancialMonth": true,
       "financialMonthStartDay": 28
     },
     "balanceAdjustments": [
       {
-        "accountId": 6,
+        "accountId": 20,
         "yearMonth": "2025-03",
         "adjustedBalance": -750,
         "note": "",
-        "date": null,
-        "createdAt": "2025-03-28T19:07:54.542Z",
-        "updatedAt": "2025-03-28T19:07:54.542Z",
-        "id": 8
+        "date": "1970-01-01T00:00:00.000Z",
+        "createdAt": "2025-04-08T11:30:23.822Z",
+        "updatedAt": "2025-04-08T11:30:23.822Z",
+        "id": 18
       }
     ],
     "version": 2,
-    "timestamp": 1743696778000,
+    "timestamp": 1744114478394,
     "devices": {},
-    "lastSyncTime": "2025-04-03T16:12:58.331Z"
+    "lastSyncTime": "2025-04-08T12:14:39.066Z"
   }
 }

@@ -87,54 +87,15 @@ export function AccountingJournal({ yearMonth }: AccountingJournalProps) {
   // Fonction pour éliminer les doublons du journal (suppression physique en base de données)
   const handleCleanupDuplicates = async () => {
     try {
-      // Récupérer toutes les entrées du mois
-      const entries = await db.accountingJournal.getByMonth(selectedMonth);
-      
-      // Mémoriser les entrées déjà traitées avec une clé unique
-      const processedEntries = new Map();
-      const duplicatesToRemove = [];
-      
-      // Identifier les doublons
-      for (const entry of entries) {
-        // Créer une clé unique qui identifie cette entrée
-        const entryDate = new Date(entry.date);
-        const dateStr = `${entryDate.getFullYear()}-${entryDate.getMonth()+1}-${entryDate.getDate()}`;
-        const key = `${dateStr}_${entry.category}_${entry.name}_${entry.amount}_${entry.accountId || 'global'}`;
-        
-        if (!processedEntries.has(key)) {
-          // Première occurrence de cette entrée
-          processedEntries.set(key, entry.id);
-        } else {
-          // Doublon détecté, ajouter à la liste des doublons à supprimer
-          duplicatesToRemove.push(entry.id);
-        }
-      }
-      
-      console.log(`${duplicatesToRemove.length} doublons identifiés dans le journal`);
-      
-      // Supprimer les doublons de la base de données
-      if (duplicatesToRemove.length > 0) {
-        for (const id of duplicatesToRemove) {
-          await db.accountingJournal.delete(id);
-        }
-        
-        // Rafraîchir les données affichées
-        await refetch();
-        
-        // Signaler le succès
-        const virtualDuplicatesCount = journalEntries.length - dedupedEntries.length;
-        toast.success(`${duplicatesToRemove.length} entrées dupliquées supprimées de la base de données.`);
-        
-        if (virtualDuplicatesCount > 0) {
-          toast.info(`Notez que ${virtualDuplicatesCount} doublons restent masqués automatiquement lors de l'affichage.`);
-        }
+      const { removeJournalDuplicatesForMonth } = await import('@/lib/repairDB');
+      const removedCount = await removeJournalDuplicatesForMonth(selectedMonth);
+
+      await refetch();
+
+      if (removedCount > 0) {
+        toast.success(`${removedCount} doublons supprimés définitivement de la base.`);
       } else {
-        if (journalEntries.length - dedupedEntries.length > 0) {
-          // Des doublons sont détectés en mémoire mais pas en base
-          toast.info(`${journalEntries.length - dedupedEntries.length} doublons sont masqués automatiquement lors de l'affichage, mais aucun n'a été supprimé physiquement de la base de données.`);
-        } else {
-          toast.info('Aucun doublon trouvé dans le journal.');
-        }
+        toast.info('Aucun doublon trouvé dans la base.');
       }
     } catch (error) {
       console.error('Erreur lors de la suppression des doublons:', error);
@@ -142,39 +103,14 @@ export function AccountingJournal({ yearMonth }: AccountingJournalProps) {
     }
   };
 
-  // Fonction pour régénérer le journal selon le mode actif (calendaire/financier)
+  // Fonction pour régénérer COMPLÈTEMENT le journal
   const handleRegenerateJournal = async () => {
     try {
       // Utiliser la fonction toast de sonner directement pour des messages simples
-      toast("Régénération du journal en cours...");
+      toast("Régénération COMPLÈTE du journal en cours (cela peut prendre un moment)...");
       
-      if (isFinancialMonthEnabled) {
-        // Mode financier: utiliser la plage de dates calculée
-        // D'abord supprimer les entrées existantes dans cette plage
-        toast.info(`Mode financier: utilisation de la période ${format(dateRange.start, 'dd/MM/yyyy')} au ${format(dateRange.end, 'dd/MM/yyyy')}`);
-        
-        // Récupérer les entrées dans cette plage
-        const entriesToDelete = await db.accountingJournal.getByDateRange(dateRange.start, dateRange.end);
-        
-        // Supprimer ces entrées
-        for (const entry of entriesToDelete) {
-          if (entry.id) {
-            await db.accountingJournal.delete(entry.id);
-          }
-        }
-        
-        // Générer le nouveau journal pour cette plage de dates
-        await accountingJournalService.generateJournalForDateRange(dateRange.start, dateRange.end);
-      } else {
-        // Mode calendaire: utiliser le mois sélectionné (méthode existante)
-        toast.info(`Mode calendaire: génération pour le mois ${selectedMonth}`);
-        
-        // D'abord supprimer toutes les entrées du mois
-        await db.accountingJournal.deleteAllEntriesForMonth(selectedMonth);
-        
-        // Ensuite appeler le service pour régénérer le journal
-        await accountingJournalService.generateJournalForMonth(selectedMonth);
-      }
+      // Appeler la méthode du service qui efface tout et régénère
+      await accountingJournalService.generateCompleteJournal(); // Correction du nom de la méthode
       
       // Rafraîchir les données affichées
       await refetch();
@@ -193,6 +129,7 @@ export function AccountingJournal({ yearMonth }: AccountingJournalProps) {
   const { data: journalEntries = [], isLoading, refetch } = useQuery({
     queryKey: ['accountingJournal', selectedMonth, selectedAccount, isFinancialMonthEnabled, dateRange],
     queryFn: async () => {
+      console.log('Fetching journal entries for', selectedMonth, 'account', selectedAccount);
       let entries;
       
       if (isFinancialMonthEnabled) {
@@ -205,17 +142,17 @@ export function AccountingJournal({ yearMonth }: AccountingJournalProps) {
       
       // Filtrer par compte si un compte est sélectionné
       if (selectedAccount !== 'all') {
-        // Ne montrer que les entrées du compte sélectionné
-        return entries.filter(entry => entry.accountId === selectedAccount);
+        // Montrer les entrées du compte sélectionné ET les soldes initiaux globaux
+        return entries.filter(entry =>
+          entry.accountId === Number(selectedAccount) ||
+          (entry.name === 'INITIAL_BALANCE' && (entry.accountId === null || entry.accountId === undefined))
+        );
       }
       
-      // Si "tous les comptes" est sélectionné, montrer toutes les entrées des comptes individuels
-      // mais pas les entrées globales (celles sans accountId)
-      return entries.filter(entry => entry.accountId !== undefined);
+      // Si "tous les comptes" est sélectionné, montrer toutes les entrées
+      return entries;
     },
-    // Réduire le temps de cache pour obtenir des mises à jour plus fréquentes
     staleTime: 1000 * 30, // 30 secondes
-    // Activer le rafraîchissement automatique
     refetchInterval: 1000 * 60, // Rafraîchir toutes les minutes
   });
   
@@ -319,12 +256,22 @@ export function AccountingJournal({ yearMonth }: AccountingJournalProps) {
   // Fonction pour générer un export CSV du journal
   const handleExportCsv = async () => {
     try {
-      const csvContent = await db.accountingJournal.exportMonthToCSV(
-        selectedMonth,
-        selectedAccount !== 'all' ? selectedAccount as number : undefined
-      );
-      
-      // Créer un blob et un lien de téléchargement
+      const headers = ['Date', 'Catégorie', 'Description', 'Compte', 'Montant'];
+      const rows = sortedEntries.map(entry => [
+        new Date(entry.date).toLocaleDateString('fr-FR'),
+        entry.category,
+        entry.name,
+        entry.accountId ? getAccountName(entry.accountId) : 'Global',
+        entry.amount.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })
+      ]);
+
+      const csvArray = [
+        headers.join(';'),
+        ...rows.map(row => row.join(';'))
+      ];
+
+      const csvContent = '\uFEFF' + csvArray.join('\n');
+
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -383,36 +330,17 @@ export function AccountingJournal({ yearMonth }: AccountingJournalProps) {
     return Array.from(uniqueEntries.values());
   };
   
-  // Trier les entrées - Priorité au Solde Initial, puis par date et catégorie
-  // Appliquer d'abord la déduplication en mémoire avant le tri
+  // Appliquer la déduplication
   const dedupedEntries = useMemo(() => removeDuplicateEntries(journalEntries), [journalEntries]);
-  
-  const sortedEntries = [...dedupedEntries].sort((a, b) => {
-    // Toujours placer le Solde Initial en première position, quel que soit sa date
-    if (a.name === JournalEntryName.INITIAL_BALANCE) return -1;
-    if (b.name === JournalEntryName.INITIAL_BALANCE) return 1;
-    
-    // Ensuite par date
-    const dateA = new Date(a.date).getTime();
-    const dateB = new Date(b.date).getTime();
-    if (dateA !== dateB) return dateA - dateB;
-    
-    // Ensuite par isCalculated (les entrées non calculées d'abord)
-    if (a.isCalculated !== b.isCalculated) return a.isCalculated ? 1 : -1;
-    
-    // Enfin par nom pour les entrées calculées
-    const nameOrder: { [key: string]: number } = {
-      [JournalEntryName.MONTHLY_INCOME_TOTAL]: 1,
-      [JournalEntryName.MONTHLY_EXPENSE_TOTAL]: 2,
-      [JournalEntryName.MONTHLY_BALANCE]: 3,
-      [JournalEntryName.EXPECTED_BALANCE]: 4,
-      [JournalEntryName.ADJUSTED_BALANCE]: 5,
-    };
-    
-    const orderA = a.isCalculated ? (nameOrder[a.name] || 99) : 0;
-    const orderB = b.isCalculated ? (nameOrder[b.name] || 99) : 0;
-    return orderA - orderB;
-  });
+
+  // Trier les entrées : Solde initial en premier, puis par date croissante
+  const sortedEntries = useMemo(() => {
+    return [...dedupedEntries].sort((a, b) => {
+      if (a.name === 'INITIAL_BALANCE' && b.name !== 'INITIAL_BALANCE') return -1;
+      if (b.name === 'INITIAL_BALANCE' && a.name !== 'INITIAL_BALANCE') return 1;
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    });
+  }, [dedupedEntries]);
   
   // Fonction pour déterminer si une entrée est en en-tête ou résumé
   const isHeaderOrSummary = (entry: JournalEntry) => {
@@ -429,16 +357,23 @@ export function AccountingJournal({ yearMonth }: AccountingJournalProps) {
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <div>
           <CardTitle>Journal Comptable</CardTitle>
-          <CardDescription className="space-y-1">
-            {/* Ligne 1: Compte sélectionné */}
-            <div>
-              {selectedAccount !== 'all' 
-                ? `Compte: ${getAccountName(selectedAccount as number)}` 
-                : 'Tous les comptes'}
+          <div className="space-y-1 text-sm text-muted-foreground">
+            <div className="flex flex-col md:flex-row md:items-center md:space-x-4">
+              <div className="font-semibold">
+                {selectedAccount !== 'all' 
+                  ? `Compte: ${getAccountName(selectedAccount as number)}`
+                  : 'Tous les comptes'}
+              </div>
+              <div className="font-semibold text-lg text-green-700 dark:text-green-400">
+                {(() => {
+                  const soldePrev = sortedEntries.find(e => e.name === 'Solde Prévu Fin de Mois');
+                  return soldePrev
+                    ? soldePrev.amount.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })
+                    : '';
+                })()}
+              </div>
             </div>
-            
-            {/* Ligne 2: Période affichée selon le mode (calendaire/financier) */}
-            <div className="flex items-center text-sm">
+            <div className="flex items-center text-sm mt-1">
               <CalendarRange className="h-3.5 w-3.5 mr-1 text-muted-foreground" />
               {isFinancialMonthEnabled ? (
                 <span className="text-primary font-medium">
@@ -451,7 +386,7 @@ export function AccountingJournal({ yearMonth }: AccountingJournalProps) {
                 </span>
               )}
             </div>
-          </CardDescription>
+          </div>
         </div>
         
         <div className="flex space-x-2">
@@ -506,40 +441,6 @@ export function AccountingJournal({ yearMonth }: AccountingJournalProps) {
             Regénérer le journal
           </Button>
           
-          <Button variant="outline" onClick={async () => {
-            try {
-              // Obtenir la date actuelle et calculer les 6 prochains mois
-              const currentDate = new Date();
-              const months = [];
-              
-              for (let i = 0; i < 6; i++) {
-                const date = new Date(currentDate);
-                date.setMonth(currentDate.getMonth() + i);
-                months.push(format(date, 'yyyy-MM'));
-              }
-              
-              if (confirm(`Voulez-vous générer le journal pour les 6 prochains mois?\n${months.join(', ')}`)) {
-                // Utiliser la nouvelle méthode du service pour générer plusieurs mois
-                await accountingJournalService.generateJournalForMultipleMonths(months);
-                
-                // Rafraîchir l'affichage pour le mois sélectionné
-                await refetch();
-                
-                // Notifier la fin
-                alert(`Génération terminée pour les 6 prochains mois:\n${months.join('\n')}`);
-              }
-            } catch (error) {
-              console.error('Erreur lors de la génération des journaux futurs:', error);
-              alert('Erreur lors de la génération des journaux futurs. Consultez la console pour plus de détails.');
-            }
-          }} className="mr-2 bg-blue-100 hover:bg-blue-200">
-            Anticiper (6 mois)
-          </Button>
-          
-          <Button variant="outline" onClick={handleExportCsv}>
-            <Download className="h-4 w-4 mr-2" />
-            Exporter CSV
-          </Button>
         </div>
       </CardHeader>
       
@@ -548,7 +449,7 @@ export function AccountingJournal({ yearMonth }: AccountingJournalProps) {
           <div className="text-center py-8">Chargement du journal comptable...</div>
         ) : sortedEntries.length === 0 ? (
           <div className="text-center py-8">
-            <p>Aucune entrée dans le journal pour cette période.</p>
+            <div>Aucune entrée dans le journal pour cette période.</div>
             <Button
               variant="outline"
               className="mt-4"
@@ -626,9 +527,67 @@ export function AccountingJournal({ yearMonth }: AccountingJournalProps) {
             </Table>
             
             <div className="mt-4 flex justify-end">
-              <Button onClick={handleExportCsv} className="bg-primary">
+              <Button onClick={handleExportCsv} className="bg-primary mr-2">
                 <Download className="h-4 w-4 mr-2" />
-                Télécharger le journal au format CSV
+                Exporter CSV
+              </Button>
+              <Button onClick={async () => {
+                try {
+                  const months = [];
+                  const currentDate = new Date(`${selectedMonth}-01`);
+                  for (let i = 0; i < 6; i++) {
+                    const date = new Date(currentDate);
+                    date.setMonth(currentDate.getMonth() + i);
+                    months.push(format(date, 'yyyy-MM'));
+                  }
+
+                  const allEntries = [];
+                  for (const month of months) {
+                    const entries = await db.accountingJournal.getByMonth(month);
+                    const filtered = entries.filter(entry => {
+                      if (selectedAccount !== 'all') {
+                        return entry.accountId === Number(selectedAccount) ||
+                          (entry.name === 'INITIAL_BALANCE' && (entry.accountId === null || entry.accountId === undefined));
+                      }
+                      return true;
+                    });
+                    allEntries.push(...filtered);
+                  }
+
+                  // Trier toutes les entrées par date
+                  allEntries.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+                  const headers = ['Date', 'Catégorie', 'Description', 'Compte', 'Montant'];
+                  const rows = allEntries.map(entry => [
+                    new Date(entry.date).toLocaleDateString('fr-FR'),
+                    entry.category,
+                    entry.name,
+                    entry.accountId ? getAccountName(entry.accountId) : 'Global',
+                    entry.amount.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })
+                  ]);
+
+                  const csvArray = [
+                    headers.join(';'),
+                    ...rows.map(row => row.join(';'))
+                  ];
+
+                  const csvContent = '\uFEFF' + csvArray.join('\n');
+
+                  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                  const url = URL.createObjectURL(blob);
+                  const link = document.createElement('a');
+                  link.setAttribute('href', url);
+                  link.setAttribute('download', `journal_6mois_${selectedAccount !== 'all' ? 'compte_' + selectedAccount : 'tous_comptes'}.csv`);
+                  link.style.visibility = 'hidden';
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                } catch (error) {
+                  console.error('Erreur lors de l\'export CSV 6 mois:', error);
+                }
+              }} className="bg-primary">
+                <Download className="h-4 w-4 mr-2" />
+                Télécharger le journal (6 mois) au format CSV
               </Button>
             </div>
           </div>

@@ -425,6 +425,12 @@ export const transactionsAPI = {
     await initDB();
     return db.getAll('transactions');
   },
+  
+  // Récupérer une transaction par son ID
+  async getById(id: number): Promise<Transaction | undefined> {
+    await initDB();
+    return db.get('transactions', id);
+  },
 
   // Récupérer les transactions avec pagination
   async getAllPaginated(page: number = 1, pageSize: number = 20): Promise<{transactions: Transaction[], total: number}> {
@@ -875,10 +881,34 @@ export const balanceAdjustmentsAPI = {
   }
 };
 
-// API pour le journal comptable
-export const accountingJournalAPI = {
-  // Ajouter une entrée au journal
-  async add(entry: Omit<JournalEntry, 'id'>): Promise<number> {
+  // API pour le journal comptable
+  export const accountingJournalAPI = {
+    // Supprimer toutes les entrées du journal
+    async deleteAllEntries(): Promise<void> {
+      await initDB();
+      try {
+        const entries = await this.getAll();
+        
+        if (entries.length === 0) {
+          return;
+        }
+        
+        console.log(`Suppression de ${entries.length} entrées du journal comptable`);
+        
+        const tx = db.transaction('accountingJournal', 'readwrite');
+        const store = tx.objectStore('accountingJournal');
+        
+        for (const entry of entries) {
+          await store.delete(entry.id!);
+        }
+      } catch (error) {
+        console.error('Erreur lors de la suppression de toutes les entrées du journal:', error);
+        throw error;
+      }
+    },
+
+    // Ajouter une entrée au journal
+    async add(entry: Omit<JournalEntry, 'id'>): Promise<number> {
     await initDB();
     return db.add('accountingJournal', entry);
   },

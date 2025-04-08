@@ -254,6 +254,79 @@ export async function repairDatabase(): Promise<boolean> {
 }
 
 /**
+ * Supprime définitivement les doublons dans le journal pour un mois donné
+ * @param month format 'yyyy-MM'
+ * @returns nombre de doublons supprimés
+ */
+export async function removeJournalDuplicatesForMonth(month: string): Promise<number> {
+  try {
+    const dbModule = await import('@/lib/db');
+    const db = dbModule.default;
+
+    const entries = await db.accountingJournal.getByMonth(month);
+
+    const uniqueEntries = new Map<string, number>();
+    const duplicatesToRemove: number[] = [];
+
+    for (const entry of entries) {
+      const entryDate = new Date(entry.date);
+      const dateStr = `${entryDate.getFullYear()}-${entryDate.getMonth()+1}-${entryDate.getDate()}`;
+      const key = `${dateStr}_${entry.category}_${entry.name}_${entry.amount}_${entry.accountId || 'global'}`;
+
+      if (!uniqueEntries.has(key)) {
+        uniqueEntries.set(key, entry.id);
+      } else {
+        duplicatesToRemove.push(entry.id);
+      }
+    }
+
+    for (const id of duplicatesToRemove) {
+      await db.accountingJournal.delete(id);
+    }
+
+    return duplicatesToRemove.length;
+  } catch (error) {
+    console.error(`Erreur lors de la suppression des doublons pour ${month}:`, error);
+    return 0;
+  }
+}
+
+/**
+ * Suppression définitive des doublons dans le journal comptable pour tous les mois
+ */
+export async function cleanupAllJournalDuplicates(): Promise<void> {
+  try {
+    const dbModule = await import('@/lib/db');
+    const db = dbModule.default;
+
+    // Récupérer toutes les entrées du journal
+    const allEntries = await db.accountingJournal.getAll();
+
+    // Grouper par mois (format yyyy-MM)
+    const entriesByMonth = new Map<string, any[]>();
+    for (const entry of allEntries) {
+      const date = new Date(entry.date);
+      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+      if (!entriesByMonth.has(monthKey)) {
+        entriesByMonth.set(monthKey, []);
+      }
+      entriesByMonth.get(monthKey)!.push(entry);
+    }
+
+    let totalDuplicates = 0;
+
+    for (const month of entriesByMonth.keys()) {
+      const removed = await removeJournalDuplicatesForMonth(month);
+      totalDuplicates += removed;
+    }
+
+    console.log(`Suppression automatique : ${totalDuplicates} doublons supprimés dans le journal comptable.`);
+  } catch (error) {
+    console.error('Erreur lors du nettoyage automatique des doublons dans le journal:', error);
+  }
+}
+
+/**
  * Migre les ajustements de solde depuis la version serveur vers la version locale
  */
 export async function migrateBalanceAdjustments(serverData: any): Promise<void> {

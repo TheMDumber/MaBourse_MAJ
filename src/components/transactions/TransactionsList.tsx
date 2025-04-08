@@ -87,7 +87,7 @@ export function TransactionsList({
   const [renderKey, setRenderKey] = useState(0);
   const { currentMonth, setCurrentMonth } = useFinancialMonth();
   const [pagination, setPagination] = useState<PaginationConfig>({
-    pageSize: 10,
+    pageSize: 15,
     currentPage: 1,
     totalItems: 0,
     totalPages: 1
@@ -1232,12 +1232,6 @@ export function TransactionsList({
                   style: "currency",
                   currency: "EUR",
                 }).format(categoryTotals.balance)}
-              </p>
-              <p className="text-sm text-muted-foreground mt-1">
-                Solde final: {new Intl.NumberFormat("fr-FR", {
-                  style: "currency",
-                  currency: "EUR",
-                }).format(journalBalance !== null ? journalBalance : getCachedBalance(currentMonth) || 0)}
               </p>
             </CardContent>
           </Card>
