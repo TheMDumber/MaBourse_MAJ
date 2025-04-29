@@ -1,6 +1,6 @@
 import { format, parse, isAfter, isBefore, addMonths, endOfMonth, startOfMonth, isWithinInterval, subMonths } from 'date-fns';
 import db, { initDB } from './db';
-import { TransactionType } from './types';
+import { TransactionType, RecurringTransaction } from './types';
 import { objectStoreExists } from './dbUtils';
 import { getFinancialMonthRange, isFinancialMonthEnabled } from './financialMonthUtils';
 import { calculatePeriodDates, calculatePreviousPeriodDates } from './dateUtils';
@@ -260,8 +260,6 @@ export async function getForecastBalance(
       expense: monthData.expense,
       isAdjusted
     };
-
-    // Code supprimé - Nous utilisons maintenant une approche unifiée pour tous les modes
   } catch (error) {
     console.error('Erreur lors du calcul du solde prévisionnel:', error);
     return { balance: 0, income: 0, expense: 0, isAdjusted: false };
@@ -335,19 +333,6 @@ async function calculateMonthForForecast(
     console.log('AUCUNE TRANSACTION TROUVÉE DANS CETTE PÉRIODE');
   }
   
-  // Récupérer les transactions récurrentes applicables à cette période
-  const recurringTransactions = await db.recurringTransactions.getAll();
-  const applicableRecurringTransactions = recurringTransactions.filter(rtx => {
-    const rtxStartDate = new Date(rtx.startDate);
-    const rtxEndDate = rtx.endDate ? new Date(rtx.endDate) : undefined;
-    
-    // Une transaction récurrente est applicable si:
-    // 1. Sa date de début est antérieure ou égale à la fin de la période
-    // 2. Sa date de fin (si elle existe) est postérieure ou égale au début de la période
-    return isAfter(endDate, rtxStartDate) && 
-           (!rtxEndDate || !isBefore(rtxEndDate, startDate));
-  });
-  
   // Calculer les revenus et dépenses pour la période
   let totalIncome = 0;
   let totalExpense = 0;
@@ -374,24 +359,65 @@ async function calculateMonthForForecast(
   }
   
   // Traiter les transactions récurrentes applicables
-  for (const rtx of applicableRecurringTransactions) {
+  console.log("Vérification des transactions récurrentes pour la période...");
+  const recurringTransactions = await db.recurringTransactions.getAll();
+  let appliedRecurringTransactions = 0;
+  
+  for (const rtx of recurringTransactions) {
+    // Ignorer les transactions récurrentes désactivées
+    if (rtx.isDisabled) {
+      continue;
+    }
+    
     const isRelevantAccount = accountId === "all" || rtx.accountId === accountId;
     const isTargetOfTransfer = accountId === "all" || rtx.toAccountId === accountId;
     
-    if (isRelevantAccount) {
-      if (rtx.type === TransactionType.INCOME) {
-        totalIncome += rtx.amount;
-      } else if (rtx.type === TransactionType.EXPENSE) {
-        totalExpense += rtx.amount;
-      } else if (rtx.type === TransactionType.TRANSFER) {
-        totalExpense += rtx.amount;
-      }
+    // Vérifier si la transaction récurrente est applicable (date de début avant la fin de la période)
+    const rtxStartDate = new Date(rtx.startDate || rtx.createdAt);
+    if (isAfter(rtxStartDate, endDate)) {
+      continue; // Pas encore applicable
     }
     
-    // Pour les transferts, ajouter au compte de destination
-    if (rtx.type === TransactionType.TRANSFER && isTargetOfTransfer && rtx.toAccountId) {
-      totalIncome += rtx.amount;
+    // Vérifier la date de fin si elle existe
+    if (rtx.endDate && isBefore(new Date(rtx.endDate), startDate)) {
+      continue; // Déjà terminée
     }
+    
+    // Pour les prévisions futures, nous considérons que la transaction récurrente sera exécutée
+    // même si elle n'a pas encore été exécutée
+    const nextExecution = new Date(rtx.nextExecution);
+    if (isWithinInterval(nextExecution, { start: startDate, end: endDate })) {
+      if (isRelevantAccount) {
+        if (rtx.type === TransactionType.INCOME) {
+          totalIncome += rtx.amount;
+          appliedRecurringTransactions++;
+          console.log(`Transaction récurrente de revenu (${rtx.description}) pour ${rtx.amount}€ appliquée`);
+        } else if (rtx.type === TransactionType.EXPENSE) {
+          totalExpense += rtx.amount;
+          appliedRecurringTransactions++;
+          console.log(`Transaction récurrente de dépense (${rtx.description}) pour ${rtx.amount}€ appliquée`);
+        } else if (rtx.type === TransactionType.TRANSFER) {
+          totalExpense += rtx.amount;
+          appliedRecurringTransactions++;
+          console.log(`Transaction récurrente de transfert (${rtx.description}) pour ${rtx.amount}€ appliquée (sortie)`);
+        }
+      }
+      
+      // Pour les transferts, ajouter au compte de destination
+      if (rtx.type === TransactionType.TRANSFER && isTargetOfTransfer && rtx.toAccountId) {
+        totalIncome += rtx.amount;
+        if (!isRelevantAccount) { // Éviter de compter deux fois
+          appliedRecurringTransactions++;
+          console.log(`Transaction récurrente de transfert (${rtx.description}) pour ${rtx.amount}€ appliquée (entrée)`);
+        }
+      }
+    }
+  }
+  
+  if (appliedRecurringTransactions > 0) {
+    console.log(`${appliedRecurringTransactions} transactions récurrentes prises en compte dans les prévisions`);
+  } else {
+    console.log("Aucune transaction récurrente applicable pour cette période");
   }
   
   console.log(`Total des revenus dans la période: ${totalIncome}€`);

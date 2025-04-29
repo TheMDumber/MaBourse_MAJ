@@ -66,7 +66,6 @@ const transactionFormSchema = z.object({
   }),
   category: z.enum([ExpenseCategory.FIXED, ExpenseCategory.RECURRING, ExpenseCategory.EXCEPTIONAL]).optional(),
   isRecurring: z.boolean().default(false),
-  recurringMonths: z.number().min(1, "Veuillez entrer un nombre de mois valide").default(12).optional(),
 }).refine(data => {
   // If it's a transfer, toAccountId is required and must be different from accountId
   if (data.type === TransactionType.TRANSFER) {
@@ -76,15 +75,6 @@ const transactionFormSchema = z.object({
 }, {
   message: "Pour un transfert, veuillez sélectionner un compte destination différent du compte source",
   path: ["toAccountId"],
-}).refine(data => {
-  // If it's recurring, recurringMonths is required
-  if (data.isRecurring) {
-    return data.recurringMonths !== undefined && data.recurringMonths > 0;
-  }
-  return true;
-}, {
-  message: "Veuillez spécifier un nombre de mois valide pour cette transaction récurrente",
-  path: ["recurringMonths"],
 });
 
 type TransactionFormValues = z.infer<typeof transactionFormSchema>;
@@ -118,7 +108,6 @@ export function TransactionForm({
       description: "",
       date: new Date(),
       isRecurring: false,
-      recurringMonths: 12,
     },
   });
 
@@ -144,41 +133,29 @@ export function TransactionForm({
 
   async function onSubmit(data: TransactionFormValues) {
     try {
-      if (data.isRecurring && data.recurringMonths) {
-        // Créer plusieurs instances de transactions sur les prochains mois
-        const months = data.recurringMonths;
-        const baseTransaction = {
+      if (data.isRecurring) {
+        // Si c'est une transaction récurrente, créer une vraie RecurringTransaction
+        const today = new Date();
+        const nextExecution = new Date(data.date); // Première date d'exécution = date sélectionnée
+        
+        // Créer la transaction récurrente
+        await db.recurringTransactions.create({
           accountId: data.accountId,
           toAccountId: data.type === TransactionType.TRANSFER ? data.toAccountId : undefined,
           amount: data.amount,
           type: data.type,
           category: data.type === TransactionType.EXPENSE ? data.category : undefined,
           description: data.description,
-        };
-
-        // Créer les transactions pour chaque mois demandé
-        const createdTransactionIds = [];
-        for (let i = 0; i < months; i++) {
-          const transactionDate = new Date(data.date);
-          transactionDate.setMonth(transactionDate.getMonth() + i);
-          
-          const transactionId = await db.transactions.create({
-            ...baseTransaction,
-            date: transactionDate,
-          });
-          
-          createdTransactionIds.push(transactionId);
-        }
+          frequency: RecurringFrequency.MONTHLY, // Par défaut mensuel
+          startDate: today,
+          nextExecution: nextExecution,
+        });
         
-        // Mettre à jour le journal comptable pour chaque transaction créée
-        for (const transactionId of createdTransactionIds) {
-          const transaction = await db.transactions.getById(transactionId);
-          if (transaction) {
-            await accountingJournalService.handleTransactionAdded(transaction);
-          }
-        }
-        
-        toast.success(`${data.type === TransactionType.INCOME ? "Revenus" : "Dépenses"} mensuels créés pour ${months} mois !`);
+        const typeText = data.type === TransactionType.INCOME ? "Revenu" : 
+                        data.type === TransactionType.EXPENSE ? "Dépense" : "Transfert";
+        toast.success(`${typeText} récurrent ajouté avec succès !`, {
+          description: `Se répétera le ${nextExecution.getDate()} de chaque mois`
+        });
       } else {
         // Créer une transaction normale
         const transactionId = await db.transactions.create({
@@ -514,28 +491,9 @@ export function TransactionForm({
             {/* Options de récurrence */}
             {isRecurring && (
               <div className="space-y-4 border p-3 rounded-lg">
-                <FormField
-                  control={form.control}
-                  name="recurringMonths"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nombre de mois</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          min="1"
-                          placeholder="12"
-                          onChange={(e) => field.onChange(parseInt(e.target.value))}
-                          value={field.value || 12}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        Cette transaction sera répétée mensuellement pendant ce nombre de mois
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <FormDescription className="p-3">
+                  Cette transaction sera configurée comme récurrente et se répétera chaque mois à partir de la date sélectionnée.
+                </FormDescription>
               </div>
             )}
             

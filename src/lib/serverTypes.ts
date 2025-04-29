@@ -20,10 +20,10 @@ export interface UserSession {
 
 // Requête d'inscription
 export interface RegisterRequest extends AuthCredentials {
-  data: any; // Données initiales
+  data: unknown; // Données initiales (type renforcé)
 }
 
 // Requête de sauvegarde
 export interface SaveDataRequest extends AuthCredentials {
-  data: any; // Données à sauvegarder
+  data: unknown; // Données à sauvegarder (type renforcé)
 }

@@ -113,10 +113,11 @@ const Settings = () => {
           : "Toutes vos données ont été exportées avec succès",
       });
     } catch (error) {
-      console.error('Erreur lors de l\'exportation:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Une erreur inconnue est survenue';
+      console.error('Erreur détaillée lors de l\'exportation:', error);
       toast({
         title: "Erreur d'exportation",
-        description: "Une erreur est survenue lors de l'exportation des données",
+        description: `Une erreur est survenue: ${errorMessage}`,
         variant: "destructive",
       });
     } finally {
@@ -189,30 +190,33 @@ const Settings = () => {
               description: message,
             });
             
-            // Recharger les comptes après l'importation
-            const updatedAccounts = await db.accounts.getAll();
-            setAccounts(updatedAccounts);
-            
             // Forcer la mise à jour de l'UI complète via React Query
             try {
               const { queryClient } = await import('@/lib/queryConfig');
               if (queryClient) {
-                console.log('Mise à jour de l\'UI après importation...');
-                
+                console.log('Invalidation des requêtes après importation...');
+                // Invalider les requêtes pertinentes pour forcer le re-fetch des données
+                await queryClient.invalidateQueries(['accounts']); // Clé pour les comptes
+                await queryClient.invalidateQueries(['transactions']); // Clé pour les transactions (ajuster si nécessaire)
+                // Recharger les comptes locaux pour la sélection dans le dialogue (si toujours nécessaire)
+                const updatedAccounts = await db.accounts.getAll();
+                setAccounts(updatedAccounts);
+
                 // Invalider toutes les requêtes importantes avec plus de précision
                 queryClient.resetQueries({ queryKey: ['accounts'] });
                 queryClient.resetQueries({ queryKey: ['transactions'] });
                 queryClient.resetQueries({ queryKey: ['recurringTransactions'] });
                 queryClient.resetQueries({ queryKey: ['balanceAdjustments'] });
                 queryClient.resetQueries({ queryKey: ['statistics'] });
-                
+
                 // Forcer un rafraîchissement de la page actuelle après un court délai
                 // pour s'assurer que toutes les invalidations ont eu le temps de se propager
                 setTimeout(() => {
                   window.location.reload();
                 }, 500);
-              }
-            } catch (e) {
+              } // Fin du if (queryClient)
+            } // Fin du try
+            catch (e) {
               console.error('Erreur lors de la mise à jour de l\'UI:', e);
               // En cas d'erreur, forcer un rafraîchissement de la page
               window.location.reload();
@@ -235,11 +239,11 @@ const Settings = () => {
       
       reader.readAsText(selectedFile);
     } catch (error) {
-      console.error('Erreur lors de l\'importation:', error);
-      setIsImporting(false);
+      const errorMessage = error instanceof Error ? error.message : 'Une erreur inconnue est survenue';
+      console.error('Erreur détaillée lors de l\'importation:', error);
       toast({
         title: "Erreur d'importation",
-        description: "Une erreur est survenue lors de l'importation des données",
+        description: `Une erreur est survenue: ${errorMessage}`,
         variant: "destructive",
       });
     }
@@ -308,10 +312,11 @@ const Settings = () => {
         });
       }
     } catch (error) {
-      console.error('Erreur lors de la réinitialisation:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Une erreur inconnue est survenue';
+      console.error('Erreur détaillée lors de la réinitialisation:', error);
       toast({
         title: "Erreur de réinitialisation",
-        description: "Une erreur est survenue lors de la réinitialisation des données",
+        description: `Une erreur est survenue: ${errorMessage}`,
         variant: "destructive",
       });
     } finally {
@@ -338,10 +343,11 @@ const Settings = () => {
         });
       }
     } catch (error) {
-      console.error('Erreur lors de la synchronisation:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Une erreur inconnue est survenue';
+      console.error('Erreur détaillée lors de la synchronisation:', error);
       toast({
         title: "Erreur de synchronisation",
-        description: "Une erreur inattendue est survenue",
+        description: `Une erreur est survenue: ${errorMessage}`,
         variant: "destructive",
       });
     } finally {

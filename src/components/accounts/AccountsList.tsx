@@ -65,10 +65,11 @@ export const AccountsList = () => {
       // Remplacer complètement l'état avec les comptes uniques
       setAccounts(uniqueAccounts);
     } catch (error) {
-      console.error('Erreur lors du chargement des comptes:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Une erreur inconnue est survenue';
+      console.error('Erreur détaillée lors du chargement des comptes:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de charger les comptes",
+        title: "Erreur de chargement",
+        description: `Impossible de charger les comptes: ${errorMessage}`,
         variant: "destructive"
       });
     } finally {
@@ -97,10 +98,11 @@ export const AccountsList = () => {
       });
       loadAccounts(); // Recharger la liste
     } catch (error) {
-      console.error('Erreur lors de la suppression du compte:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Une erreur inconnue est survenue';
+      console.error('Erreur détaillée lors de la suppression du compte:', error);
       toast({
-        title: "Erreur",
-        description: "Impossible de supprimer le compte",
+        title: "Erreur de suppression",
+        description: `Impossible de supprimer le compte: ${errorMessage}`,
         variant: "destructive"
       });
     }
